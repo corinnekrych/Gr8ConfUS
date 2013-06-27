@@ -67,18 +67,29 @@ function submitForm(input, output) {
 
 var editor1 = new dslPrez.editor("editor1");
 function editor1Key1() {
-    var value = "def ask(question) {\n"
-        + "    println \"question: $question\"\n"
+    var value = "def move(left) {\n"
+        + "    println \"moving $left\"\n"
         + "}\n"
-        + "ask \"what is your name?\"\n";
+        + "move \"left\"\n";
     editor1.replaceRange(value, {line:5, ch:0});
 }
 function editor1Send() {
     var value = editor1.getValue();
     submitForm(value, "#output1");
 }
+
+var editor1 = new dslPrez.editor("editor1");
+function editor1Key2() {
+    var value = "def left = \"left\"\n";
+    editor1.replaceRange(value, {line:8, ch:0});
+    editor1.removeLine(9);
+    value = "move left\n";
+    editor1.replaceRange(value, {line:9, ch:0});
+}
+
 var keymap = {
     "1" : editor1Key1,
+    "2" : editor1Key2,
     "Ctrl-S" : editor1Send,
     "Cmd-S" : editor1Send
 };
@@ -88,30 +99,32 @@ editor1.addKeyMap(keymap);
 
 var editor2 = new dslPrez.editor("editor2");
 function editor2Key1() {
-    var value = "abstract class SurveyScript extends Script {\n"
-        + "  def ask = {question -> println \"question: $question\" }\n"
+    var value = "abstract class GameScript extends Script {\n"
+        + "  def move = {left -> println \"moving $left\" }\n"
+        + "  def left = \"left\"\n"
         + "}\n";
     editor2.replaceRange(value, {line: 1, ch: 0});
 }
 function editor2Key2() {
-    editor2.removeLine(8);
-    editor2.removeLine(8);
-    editor2.removeLine(8);
+    editor2.removeLine(9);
+    editor2.removeLine(9);
+    editor2.removeLine(9);
+    editor2.removeLine(9);
 }
 function editor2Key3() {
     var value = "def compilerConfig = new CompilerConfiguration()\n"
-        + "compilerConfig.scriptBaseClass = SurveyScript.class.name\n"
+        + "compilerConfig.scriptBaseClass = GameScript.class.name\n"
         + "def binding = new Binding()\n";
-    editor2.removeLine(5);
-    editor2.replaceRange(value, {line: 4, ch: 0});
+    editor2.removeLine(6);
+    editor2.replaceRange(value, {line: 5, ch: 0});
 }
 function editor2Key4() {
-    editor2.removeLine(7);
+    editor2.removeLine(8);
     var value = "" +
         "def shell = new GroovyShell(this.class.classLoader,\n" +
         "                            binding,\n" +
         "                            compilerConfig)\n";
-    editor2.replaceRange(value, {line: 7, ch: 0});
+    editor2.replaceRange(value, {line: 8, ch: 0});
 }
 function editor2Send() {
     var value = editor2.getValue();
@@ -128,6 +141,86 @@ var keymap2 = {
 };
 
 editor2.addKeyMap(keymap2);
+
+function submitTurtleForm(input, output) {
+    var url = serverUrl + "/console/execute?=";
+    var draw;
+    $.post(url, {
+        content : input
+    }, function(data) {
+        var value = "";
+        if (data.stacktrace === "" || data.stacktrace.buffer !== undefined) {
+            value = data.result;
+            //value = JSON.parse(value);
+//            draw = ktDraw(document.getElementById('canvas'), conf, that.currentMaze.steps[0]);
+//            $.each(myGameObject.configuration.steps, function(key, value) {
+//                that.draw(value, function () {
+//                    var win = myGameObject.configuration.winningAnimation;
+//                    if (win) {
+//                        that.draw.win(win.x, win.y);
+//                    }
+//                });
+//            });
+        } else {
+            value = data.stacktrace;
+        }
+        $(output).text(value);
+        $('#next').click();
+    });
+}
+//that.model.executed.attach(function (data, event) {
+//    // only for my game
+//    if (that.gameId == data.item.configuration.id) {
+//        // refresh me if it's not myself pls
+//        if (!data.item.NOTIFIED || that.player != data.item.configuration.player) {
+//            var myGameObject = data.item;
+//            $.each(myGameObject.configuration.steps, function(key, value) {
+//                that.draw(value, function () {
+//                    var win = myGameObject.configuration.winningAnimation;
+//                    if (win) {
+//                        that.draw.win(win.x, win.y);
+//                    }
+//                });
+//            });
+//        }
+//    }
+//});
+
+var editor2a = new dslPrez.editor("editor2a");
+function editor2aSend() {
+    var value = editor2a.getValue();
+    value += "import groovy.lang.Script;\nimport org.codehaus.groovy.control.CompilerConfiguration\n";
+    submitForm(value, "#output2a");
+}
+var keymap2a = {
+    "Ctrl-S" :editor2aSend,
+    "Cmd-S" :editor2aSend
+};
+editor2a.addKeyMap(keymap2a);
+
+var editor2b = new dslPrez.editor("editor2b");
+function editor2bSend() {
+    var value = editor2b.getValue();
+    value += "import groovy.lang.Script;\nimport org.codehaus.groovy.control.CompilerConfiguration\n";
+    submitForm(value, "#output2b");
+}
+var keymap2b = {
+    "Ctrl-S" :editor2bSend,
+    "Cmd-S" :editor2bSend
+};
+editor2b.addKeyMap(keymap2b);
+
+var editor2c = new dslPrez.editor("editor2c");
+function editor2cSend() {
+    var value = editor2c.getValue();
+    value += "import groovy.lang.Script;\nimport org.codehaus.groovy.control.CompilerConfiguration\n";
+    submitForm(value, "#output2c");
+}
+var keymap2c = {
+    "Ctrl-S" :editor2cSend,
+    "Cmd-S" :editor2cSend
+};
+editor2c.addKeyMap(keymap2c);
 
 var editor3 = new dslPrez.editor("editor3");
 

@@ -181,7 +181,8 @@ var showCloud = function() {
         {text: "command chaining", weight: 1},
         {text: "compile time transformation", weight: 7},
         {text: "AST transformation", weight: 10},
-        {text: "CST transformation", weight: 5}
+        {text: "CST transformation", weight: 5},
+        {text: "TypeChecked DSL", weight: 10}
     ];
     $("#wordcloud").empty();
     $("#wordcloud").jQCloud(word_array);

@@ -28,7 +28,7 @@
         </a>
     </div>
     <div style="display: inline-block; margin:0 auto;">
-        <a href="https://github.com/corinnekrych/DslPrez">Groovy DSL and User Interaction</a>
+        <a href="https://github.com/corinnekrych/DslPrez">Groovy DSL for Kids</a>
     </div>
     <div style="float:right">
         <a href="http://grails.org">
@@ -38,14 +38,14 @@
 </div>
 <div style="overflow: hidden;" id="wrapper">
 <ul>
-
+<!--
 <li class="slide"  title="Start">
 
     <div class="container-narrow">
         <hr>
 
         <div class="jumbotron">
-            <h1>Groovy DSL and User Interaction</h1>
+            <h1>Groovy DSL for kids</h1>
         </div>
 
         <hr>
@@ -74,51 +74,120 @@
             <p style=""><img width="30%" src="img/gr8uslogo_with_tagline.png"/></p>
         </div>
 
+        <code style="visibility: hidden;" id="animationcontent" class="language-javascript">var f = true;
+            function animate() { f = !f;
+            moveObject('franklin', {
+            role: 'turtle1', y: 6,
+            x: f ? 8 : 1,
+            rotation: 0
+            }, animate);
+
+            }
+            animate();</pre></code>
+        <canvas id="animationcanvas" width="500" height="500" ></canvas>
+        <script>
+            (function () {
+                var canvas = document.getElementById('animationcanvas');
+                var ctx = canvas.getContext('2d');
+                var grid = 10;
+                ctx.scale(canvas.width / grid, canvas.height / grid);
+                ctx.translate(1/2, 1/2);
+
+                function drawGrid() {
+                    for (var i = 0; i < grid; i++) {
+                        for (var j = 0; j < grid; j++) {
+                            ctx.beginPath();
+                            ctx.lineWidth = 0.01;
+                            ctx.strokeStyle = 'green';
+                            ctx.moveTo(i, 0);
+                            ctx.lineTo(i, grid - 1);
+                            ctx.moveTo(0, j);
+                            ctx.lineTo(grid - 1, j);
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                var images = {};
+                function draw(place) {
+                    if (!images[place.role]) {
+                        images[place.role] = new Image();
+                        images[place.role].src = 'img/' + place.role + '.png';
+                    }
+                    ctx.save();
+                    ctx.translate(place.x, grid - 1 - place.y);
+                    ctx.rotate(- place.rotation);
+                    ctx.drawImage(images[place.role], -1/2, -1/2, 1, 1);
+                    ctx.restore();
+                }
+
+                function average(from, to, progress) {
+                    return from + (to - from) * progress;
+                }
+
+                var duration = 7000;
+                var current = {};
+                var animated = {};
+                function animate() {
+                    var name;
+                    var cont = false;
+                    ctx.clearRect(-1, -1, grid + 1, grid + 1);
+                    //drawGrid();
+                    for (name in animated) {
+                        if (animated.hasOwnProperty(name)) {
+                            var to = animated[name];
+                            var from = current[name];
+                            var progress = (Date.now() - to.startTime) / duration;
+                            if (progress > 1) {
+                                current[name] = {
+                                    role: to.role,
+                                    x: to.x,
+                                    y: to.y,
+                                    rotation: to.rotation
+                                };
+                                delete animated[name];
+                                if (to.cb) {
+                                    to.cb();
+                                }
+                            } else {
+                                cont = true;
+                                draw({
+                                    role: to.role,
+                                    x: average(from.x, to.x, progress),
+                                    y: average(from.y, to.y, progress),
+                                    rotation: average(from.rotation, to.rotation, progress)
+                                });
+                            }
+                        }
+                    }
+                    for (name in current) {
+                        if (current.hasOwnProperty(name) && !animated[name]) {
+                            draw(current[name]);
+                        }
+                    }
+                    if (cont) {
+                        setTimeout(animate, 1000 / 60);
+                    }
+                }
+
+                function moveObject(name, object, callback) {
+                    if (!current[name]) {
+                        current[name] = object;
+                        animate();
+                        callback();
+                    } else {
+                        object.startTime = Date.now();
+                        object.cb = callback;
+                        animated[name] = object;
+                        animate();
+                    }
+                }
+                eval('(function() {' + document.getElementById('animationcontent').innerHTML + '}())');
+            })();
+        </script>
+
     </div>
 </li>
-
-<!--<li class="slide"  title="Start">-->
-
-    <!--<div class="container-narrow">-->
-        <!--<hr>-->
-
-        <!--<div class="jumbotron">-->
-            <!--<h1>Groovy DSL and User Interaction</h1>-->
-        <!--</div>-->
-
-        <!--<hr>-->
-        <!--<div class="row-fluid marketing">-->
-            <!--<div class="span6">-->
-                <!--<p><img width="20%" src="img/corinne_krych.png"/></p>-->
-                <!--<h4>Corinne Krych</h4>-->
-            <!--</div>-->
-
-            <!--<div class="span6">-->
-                <!--<p><img width="20%" src="img/fabrice.png"/></p>-->
-                <!--<h4>Fabrice Matrat</h4>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<hr>-->
-
-        <!--<div class="row-fluid marketing">-->
-            <!--<div class="span6">-->
-                <!--<h3 style="text-align: right;">RivieraGUG</h3>-->
-                <!--<p style="text-align: right;font-size: 20px"> meets with </p>-->
-                <!--<h3 style="text-align: right;">Riviera Scala Clojure</h3>-->
-                <!--<div class="jumbotron" style="text-align: right;">-->
-                    <!--<p>to run this presentation: be full screen (F11)</p>-->
-                    <!--<p>to submit the editor code to cloud foundry: ctrl S (command S on Mac)</p>-->
-                    <!--<p>be careful using 1,2,3... it makes code snippet appears in the editor</p>-->
-                <!--</div>-->
-            <!--</div>-->
-
-            <!--<div class="span4">-->
-                <!--<img src="img/rivierargug.png"/>-->
-            <!--</div>-->
-        <!--</div>-->
-
-    <!--</div>-->
-<!--</li>-->
 
 <li class="slide" title="Corinne">
     <div class="container-narrow">
@@ -144,6 +213,28 @@
                 <a href="mailto:corinnekrych@gmail.com"><img width="24px" src="img/gmail.png" ></a>
                 <h4>corinnekrych@gmail.com</h4>
             </div>
+        </div>
+
+        <br/>
+        <div style="float: left; font-size: 25px; text-align: left; display: inline-block; width: 16%">
+            <img src="img/rivierargug.png" width="100%"/>
+        </div>
+        <div style="float:left;text-align:left;display:inline-block;width: 16%">
+            <img src="img/3musket33rs.jpeg" width="100%"/>
+        </div>
+
+        <div style="float: left; font-size: 25px; text-align: left; display: inline-block; width: 16%">
+            <img src="img/js-sophia-small.png" width="100%"/>
+        </div>
+
+        <div style="float: right; font-size: 25px; text-align: left; display: inline-block; width: 16%">
+            <img src="img/logo_duchess_all_in_one_small.png" width="100%"/>
+        </div>
+        <div style="float:right;text-align:right;display:inline-block;width: 16%">
+            <img src="img/aerogear.png" width="100%"/>
+        </div>
+        <div style="float:right;text-align:right;display:inline-block;width: 16%">
+            <img src="img/redhat-logo-cloud.jpeg" width="90%"/>
         </div>
     </div>
 </li>
@@ -173,70 +264,43 @@
                 <h4>fabricematrat@gmail.com</h4>
             </div>
         </div>
+        <br/>
+        <div style="width: 100%">
+            <div style="float:left;text-align:right;display:inline-block;width: 30%">
+                <img src="img/3musket33rs.jpeg" width="50%"/>
+            </div>
+            <div style="float:left;text-align:right;display:inline-block;width: 10%">
+                &nbsp;
+            </div>
+            <div style="float: left; font-size: 25px; text-align: left; display: inline-block; width: 30%">
+                <img src="img/rivierargug.png" width="50%"/>
+            </div>
+            <div style="float: left; font-size: 25px; text-align: left; display: inline-block; width: 30%">
+                <img src="img/js-sophia-small.png" width="50%"/>
+            </div>
+        </div>
     </div>
 </li>
 
-<li class="slide" title="Seco">
+<li class="slide" title="Coming from...">
     <div class="container-narrow">
         <hr>
         <div class="jumbotron">
-            <h1>Amadeus Selling</h1> <h1>Platform Connect</h1><br/>
+            <h1>Kids <b>DSL</b>?</h1><br/>
         </div>
         <hr>
         <div class="row-fluid marketing">
-            <div class="span6">
-                <img src="img/bookingfile.png" width="80%"/>
+            <div class="span2">
             </div>
-            <div class="span6">
-                <img src="img/cryptic.png" width="80%"/>
+            <div class="span8">
+                <p style="line-height: 150%;font-size: 35px"><strong>Grails48 + Amadeus</p>
+                <p style="line-height: 150%;font-size: 30px" ></p>
+            </div>
+            <div class="span2">
             </div>
         </div>
     </div>
 </li>
-
-<li class="slide" title="Booking File">
-    <img src="img/bookingfile.png" width="80%"/>
-</li>
-
-<li class="slide" title="Cryptic">
-    <img src="img/cryptic.png" width="80%"/>
-</li>
-
-<li class="slide" title="Productivity Suite">
-    <div class="container-narrow">
-        <hr>
-        <div class="jumbotron">
-            <br/>
-            <h1>Productivity Suite</h1><br/>
-            <br/>
-        </div>
-        <hr>
-        <div class="row-fluid marketing">
-            <div class="span4">
-                <img src="img/smk.PNG" width="80%"/>
-            </div>
-            <div class="span4">
-                <img src="img/simple_editor.png" width="80%"/>
-            </div>
-            <div class="span4">
-                <img src="img/advanced_editor2.png" width="80%"/>
-            </div>
-        </div>
-    </div>
-</li>
-
-<li class="slide" title="Smart Keys">
-    <img src="img/smk.PNG" width="80%"/>
-</li>
-
-<li class="slide" title="Simple Editor">
-    <img src="img/simple_editor.png" width="80%"/>
-</li>
-
-<li class="slide" title="Advanced Editor">
-    <img src="img/advanced_editor2.png" width="80%"/>
-</li>
-
 
 <li class="slide" title="DSL Definition">
     <div class="container-narrow">
@@ -322,7 +386,6 @@
     <div class="container-narrow">
         <hr>
         <div class="jumbotron">
-            <!-- http://openclipart.org/detail/164749/cube-of-rubik-by-sprint-->
             <img style="width:15%" src="img/cube_of_rubik_1.png"><br/>
         </div>
         <hr>
@@ -362,20 +425,20 @@
             <div class="span4">
                 <h1>Mini Language</h1>
                 <hr>
-                <pre class="code">prepare tapas for starter</pre>
+                <pre class="code">prepare cake for tea</pre>
                 <hr>
             </div>
             <div class="span4">
                 <h1>Scripting</h1>
                 <hr>
                 <div> </div>
-                <pre class="code">['tortilla', 'paella'].each{eat it}</pre>
+                <pre class="code">['cake', 'smoothie'].each{eat it}</pre>
                 <hr>
             </div>
             <div class="span4">
                 <h1>Fluent API</h1>
                 <hr>
-                <pre class="code">lunch.willBe 45.minutes.from.now</pre>
+                <pre class="code">tea.willBe 45.minutes.from.now</pre>
                 <hr>
             </div>
         </div>
@@ -425,18 +488,51 @@
     </div>
 </li>
 
+<li class="slide" title="DSL & Game">
+    <div class="container-narrow">
+        <hr>
+        <div class="jumbotron">
+            <br/>
+            <h1>Game rules & DSL</h1><br/>
+            <br/>
+        </div>
+        <hr>
+        <div class="row-fluid marketing">
+            <div class="span6">
+                <h1>User1: Franklin</h1>
+                <hr>
+                <pre class="code">move left by 2.steps
 
-<li class="slide" style="text-align: left" title="Simple (Press 1)">
+when (franklin.isHere) {
+
+}</pre>
+                <hr>
+            </div>
+            <div class="span6">
+                <h1>User2: Emily</h1>
+                <hr>
+                <div> </div>
+                <pre class="code">['cake', 'smoothie'].each{eat it}</pre>
+                <hr>
+            </div>
+
+        </div>
+    </div>
+</li>
+
+    -->
+
+<li class="slide" style="text-align: left" title="Script (Press 1)">
     <textarea id="editor1" name="editor1">
 // Configure the GroovyShell.
 def shell = new GroovyShell()
 
 ///////////////////////
-def surveyDSL = '''
+def gameDSL = '''
 '''
 //////////////////////
 // Run DSL script.
-def result = shell.evaluate surveyDSL
+def result = shell.evaluate gameDSL
     </textarea>
 </li>
 
@@ -457,22 +553,30 @@ def result = shell.evaluate surveyDSL
     </div>
 </li>
 
-<li class="slide" style="text-align: left" title="? (Press 1..4)">
+<!------------------------------------------------------------------->
+<!-- Base Class
+<!-- step 1 define base class
+<!-- step 2 remove move definition in script
+<!-- step 3 introduce compilerConfiguration
+<!-- step 4 inject it in groovy shell
+<!------------------------------------------------------------------->
+<li class="slide" style="text-align: left" title="Base class (Press 1..4)">
     <textarea id="editor2" name="editor2">
 // Configure the GroovyShell.
 def shell = new GroovyShell()
 
 ///////////////////////
-def surveyDSL = '''
-def ask(question) {
-  println "question: $question"
+def gameDSL = '''
+def move(left) {
+  println "moving $left"
 }
-ask "what is your name?"
+def left = "left"
+move left
 
 '''
 //////////////////////
 // Run DSL script.
-def result = shell.evaluate surveyDSL
+def result = shell.evaluate gameDSL
     </textarea>
 </li>
 
@@ -492,6 +596,232 @@ def result = shell.evaluate surveyDSL
         </div>
     </div>
 </li>
+
+<!------------------------------------------------------------------->
+<!-- Binding
+<!-- step 1 introduce right in binding
+<!-- step 2 ad move right command
+<!------------------------------------------------------------------->
+<li class="slide" style="text-align: left" title="Binding (Press 1..4)">
+    <textarea id="editor2a" name="editor2a">
+// Configure the GroovyShell.
+abstract class GameScript extends Script {
+  def move = {left -> println "moving $left" }
+  def left = "left"
+}
+def compilerConfig = new CompilerConfiguration()
+compilerConfig.scriptBaseClass = GameScript.class.name
+def binding = new Binding([right: "right"])
+def shell = new GroovyShell(this.class.classLoader,
+        binding,
+        compilerConfig)
+///////////////////////
+def gameDSL = '''
+move left
+move right
+'''
+//////////////////////
+// Run DSL script.
+def result = shell.evaluate gameDSL
+    </textarea>
+</li>
+
+<li class="slide" style="text-align: left" title="output2a">
+    <div class="container-narrow">
+        <div class="row-fluid marketing">
+            <div class="span2">
+            </div>
+            <div class="span8">
+                <hr>
+                <pre class="code" id="output2a">
+                </pre>
+                <hr>
+            </div>
+            <div class="span2">
+            </div>
+        </div>
+    </div>
+</li>
+
+<!------------------------------------------------------------------->
+<!-- Structure my code
+<!-- step 1 Position
+<!-- step 2 Turtle
+<!-- step 3 Direction
+<!-- step4 inject binding, remove def left in GameScript
+<!-- step5 replace inheritance by binding
+<!------------------------------------------------------------------->
+<li class="slide" style="text-align: left" title="Action! (Press 1..4)">
+    <textarea id="editor2b" name="editor2">
+class Position {
+  int x
+  int y
+  Position left() {
+     new Position(x - 1, y);
+  }
+  Position right() {
+    new Position(x + 1 , y);
+  }
+  def Position(moveX, moveY) {
+     x = moveX
+     y = moveY
+  }
+}
+
+class Turtle {
+   def steps = []
+   def currentPosition
+   Turtle(Position start) {
+      currentPosition = start
+   }
+
+   Turtle move(Direction dir) {
+      Position newPosition
+      if (dir == Direction.left) {
+        newPosition = currentPosition.left()
+      } else if (dir == Direction.right) {
+        newPosition = currentPosition.right()
+      }
+      steps.add(newPosition)
+      currentPosition = newPosition
+      println "x = $currentPosition.x and y = $currentPosition.y"
+      this
+   }
+}
+enum Direction {
+  left, right
+}
+
+// Configure the GroovyShell.
+abstract class GameScript extends Script {
+    def turtle = new Turtle(new Position(1, 1))
+    def move = { direction ->
+        turtle.move direction
+    }
+}
+def compilerConfig = new CompilerConfiguration()
+compilerConfig.scriptBaseClass = GameScript.class.name
+def binding = new Binding([left: Direction.left, right: Direction.right])
+def shell = new GroovyShell(this.class.classLoader,
+        binding,
+        compilerConfig)
+///////////////////////
+def gameDSL = '''
+move left
+move right
+'''
+//////////////////////
+// Run DSL script.
+def result = shell.evaluate gameDSL
+    </textarea>
+</li>
+
+<li class="slide" style="text-align: left" title="output2b">
+    <div class="container-narrow">
+        <div class="row-fluid marketing">
+            <div class="span2">
+            </div>
+            <div class="span8">
+                <hr>
+                <pre class="code" id="output2b">
+                </pre>
+                <hr>
+            </div>
+            <div class="span2">
+            </div>
+        </div>
+    </div>
+</li>
+
+<!------------------------------------------------------------------->
+<!-- JSONBuilder
+<!-- step 1 use steps instead println
+<!-- step 2 after eval get value
+<!------------------------------------------------------------------->
+<li class="slide" style="text-align: left" title="JSONBuilder (Press 1..4)">
+    <textarea id="editor2c" name="editor2c">
+class Position {
+  int x
+  int y
+  Position left() {
+     new Position(x - 1, y);
+  }
+  Position right() {
+    new Position(x + 1 , y);
+  }
+  def Position(moveX, moveY) {
+     x = moveX
+     y = moveY
+  }
+}
+
+class Turtle {
+   def steps = []
+   def currentPosition
+   Turtle(Position start) {
+      currentPosition = start
+   }
+
+   Turtle move(Direction dir) {
+      Position newPosition
+      if (dir == Direction.left) {
+        newPosition = currentPosition.left()
+      } else if (dir == Direction.right) {
+        newPosition = currentPosition.right()
+      }
+      steps.add(newPosition)
+      currentPosition = newPosition
+      steps.add(newPosition) //println "x = $currentPosition.x and y = $currentPosition.y"
+      this
+   }
+}
+enum Direction {
+  left, right
+}
+
+// Configure the GroovyShell.
+abstract class GameScript extends Script {
+    def turtle = new Turtle(new Position(1, 1))
+    def move = { direction ->
+        turtle.move direction
+    }
+}
+def compilerConfig = new CompilerConfiguration()
+compilerConfig.scriptBaseClass = GameScript.class.name
+var steps = []
+def binding = new Binding([left: Direction.left, right: Direction.right, steps: steps])
+def shell = new GroovyShell(this.class.classLoader,
+        binding,
+        compilerConfig)
+///////////////////////
+def gameDSL = '''
+move left
+move right
+'''
+//////////////////////
+// Run DSL script.
+def result = shell.evaluate gameDSL
+result.steps
+</textarea>
+</li>
+
+<li class="slide" style="text-align: left" title="output2c">
+    <div class="container-narrow">
+        <div class="row-fluid marketing">
+            <div class="span2">
+            </div>
+            <div class="span8">
+                <hr>
+                <pre class="code" id="output2c">
+                </pre>
+                <hr>
+            </div>
+            <div class="span2">
+            </div>
+        </div>
+    </div>
+</li>
+
 
 <li class="slide" title="Command Chaining">
     <div class="container-narrow">
