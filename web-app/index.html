@@ -521,7 +521,11 @@ when (franklin.isHere) {
 </li>
 
     -->
-
+<!------------------------------------------------------------------->
+<!-- 1. Script
+<!-- step 1 define base class
+<!-- step 2 remove move definition in script
+<!------------------------------------------------------------------->
 <li class="slide" style="text-align: left" title="Script (Press 1)">
     <textarea id="editor1" name="editor1">
 // Configure the GroovyShell.
@@ -554,7 +558,7 @@ def result = shell.evaluate gameDSL
 </li>
 
 <!------------------------------------------------------------------->
-<!-- Base Class
+<!-- 2. Base Class
 <!-- step 1 define base class
 <!-- step 2 remove move definition in script
 <!-- step 3 introduce compilerConfiguration
@@ -598,12 +602,12 @@ def result = shell.evaluate gameDSL
 </li>
 
 <!------------------------------------------------------------------->
-<!-- Binding
+<!-- 3. Binding
 <!-- step 1 introduce right in binding
 <!-- step 2 ad move right command
 <!------------------------------------------------------------------->
 <li class="slide" style="text-align: left" title="Binding (Press 1..4)">
-    <textarea id="editor2a" name="editor2a">
+    <textarea id="editor3" name="editor3">
 // Configure the GroovyShell.
 abstract class GameScript extends Script {
   def move = {left -> println "moving $left" }
@@ -626,14 +630,14 @@ def result = shell.evaluate gameDSL
     </textarea>
 </li>
 
-<li class="slide" style="text-align: left" title="output2a">
+<li class="slide" style="text-align: left" title="output3">
     <div class="container-narrow">
         <div class="row-fluid marketing">
             <div class="span2">
             </div>
             <div class="span8">
                 <hr>
-                <pre class="code" id="output2a">
+                <pre class="code" id="output3">
                 </pre>
                 <hr>
             </div>
@@ -651,8 +655,8 @@ def result = shell.evaluate gameDSL
 <!-- step4 inject binding, remove def left in GameScript
 <!-- step5 replace inheritance by binding
 <!------------------------------------------------------------------->
-<li class="slide" style="text-align: left" title="Action! (Press 1..4)">
-    <textarea id="editor2b" name="editor2">
+<li class="slide" style="text-align: left" title="Add Turtle class (Press 1..4)">
+    <textarea id="editor4" name="editor4">
 class Position {
   int x
   int y
@@ -692,16 +696,9 @@ enum Direction {
   left, right
 }
 
-// Configure the GroovyShell.
-abstract class GameScript extends Script {
-    def turtle = new Turtle(new Position(1, 1))
-    def move = { direction ->
-        turtle.move direction
-    }
-}
+def turtle = new Turtle(new Position(1, 1))
 def compilerConfig = new CompilerConfiguration()
-compilerConfig.scriptBaseClass = GameScript.class.name
-def binding = new Binding([left: Direction.left, right: Direction.right])
+def binding = new Binding([move: turtle.&move, left: Direction.left, right: Direction.right])
 def shell = new GroovyShell(this.class.classLoader,
         binding,
         compilerConfig)
@@ -716,14 +713,14 @@ def result = shell.evaluate gameDSL
     </textarea>
 </li>
 
-<li class="slide" style="text-align: left" title="output2b">
+<li class="slide" style="text-align: left" title="output4">
     <div class="container-narrow">
         <div class="row-fluid marketing">
             <div class="span2">
             </div>
             <div class="span8">
                 <hr>
-                <pre class="code" id="output2b">
+                <pre class="code" id="output4">
                 </pre>
                 <hr>
             </div>
@@ -734,12 +731,14 @@ def result = shell.evaluate gameDSL
 </li>
 
 <!------------------------------------------------------------------->
-<!-- JSONBuilder
+<!-- Building JSON
 <!-- step 1 use steps instead println
-<!-- step 2 after eval get value
+<!-- step 2 after eval get value of steps
+<!-- step 3 jsonbuilder
+<!-- cmd-S for text output cmd-D for canvas output
 <!------------------------------------------------------------------->
-<li class="slide" style="text-align: left" title="JSONBuilder (Press 1..4)">
-    <textarea id="editor2c" name="editor2c">
+<li class="slide" style="text-align: left" title="Building JSON for HTML5 display(Press 1..4)">
+    <textarea id="editor5" name="editor5">
 class Position {
   int x
   int y
@@ -760,6 +759,7 @@ class Turtle {
    def currentPosition
    Turtle(Position start) {
       currentPosition = start
+      steps.add(start)
    }
 
    Turtle move(Direction dir) {
@@ -769,9 +769,8 @@ class Turtle {
       } else if (dir == Direction.right) {
         newPosition = currentPosition.right()
       }
-      steps.add(newPosition)
       currentPosition = newPosition
-      steps.add(newPosition) //println "x = $currentPosition.x and y = $currentPosition.y"
+      steps.add(newPosition)
       this
    }
 }
@@ -779,17 +778,11 @@ enum Direction {
   left, right
 }
 
-// Configure the GroovyShell.
-abstract class GameScript extends Script {
-    def turtle = new Turtle(new Position(1, 1))
-    def move = { direction ->
-        turtle.move direction
-    }
-}
+def turtle = new Turtle(new Position(1, 1))
 def compilerConfig = new CompilerConfiguration()
-compilerConfig.scriptBaseClass = GameScript.class.name
-var steps = []
-def binding = new Binding([left: Direction.left, right: Direction.right, steps: steps])
+def binding = new Binding([move: turtle.&move,
+                           left: Direction.left,
+                           right: Direction.right])
 def shell = new GroovyShell(this.class.classLoader,
         binding,
         compilerConfig)
@@ -800,20 +793,28 @@ move right
 '''
 //////////////////////
 // Run DSL script.
-def result = shell.evaluate gameDSL
-result.steps
+// result contains turtle object
+// with all steps
+def myResultTurtle = shell.evaluate gameDSL
+def builder = new groovy.json.JsonBuilder()
+builder {
+   steps myResultTurtle.steps
+}
+println builder
+builder.toString()
 </textarea>
 </li>
 
-<li class="slide" style="text-align: left" title="output2c">
+<li class="slide" style="text-align: left" title="output5">
     <div class="container-narrow">
         <div class="row-fluid marketing">
             <div class="span2">
             </div>
             <div class="span8">
                 <hr>
-                <pre class="code" id="output2c">
+                <pre class="code" id="output5">
                 </pre>
+                <canvas id="canvas" width="1000" height="1000" style="max-width: 500px; width: 100%;"></canvas>
                 <hr>
             </div>
             <div class="span2">
@@ -823,6 +824,19 @@ result.steps
 </li>
 
 
+<!------------------------------------------------------------------->
+<!-- slide html5
+<!------------------------------------------------------------------->
+
+<!------------------------------------------------------------------->
+<!-- slide Mixing with plain Groovy  (added up and down + cached in js to focus on script)
+<!-- step 1 move up down
+<!-- step 2 3.times
+<!------------------------------------------------------------------->
+
+<!------------------------------------------------------------------->
+<!-- slide command chaining
+<!------------------------------------------------------------------->
 <li class="slide" title="Command Chaining">
     <div class="container-narrow">
         <hr>
@@ -844,49 +858,6 @@ result.steps
         </div>
     </div>
 </li>
-
-<li class="slide" style="text-align: left" title="? (Press 1..6))">
-    <textarea id="editor3" name="editor3">
-abstract class SurveyScript extends Script {
-  def ask(question) {
-    println "question: $question"
-  }
-}
-def compilerConfig = new CompilerConfiguration()
-compilerConfig.scriptBaseClass = SurveyScript.class.name
-def binding = new Binding()
-// Configure the GroovyShell.
-def shell = new GroovyShell(this.class.classLoader,
-                            binding,
-                            compilerConfig)
-///////////////////////
-def surveyDSL = '''
-ask "what is your name?"
-'''
-//////////////////////
-// Run DSL script.
-shell.evaluate surveyDSL
-    </textarea>
-</li>
-
-
-<li class="slide" style="text-align: left" title="output3">
-    <div class="container-narrow">
-        <div class="row-fluid marketing">
-            <div class="span2">
-            </div>
-            <div class="span8">
-                <hr>
-                <pre class="output" id="output3">
-                </pre>
-                <hr>
-            </div>
-            <div class="span2">
-            </div>
-        </div>
-    </div>
-</li>
-
 <li class="slide" title="Command Chaining">
     <div class="container-narrow">
         <hr>
@@ -903,16 +874,16 @@ shell.evaluate surveyDSL
         <div class="span5">
             <hr>
             <div style="line-height:150%;font-size:25px;text-align:left;">
-                <div style="color:grey"> ask "question" into var</div>
-                <div>    => ask(question).into(var)</div>
+                <div style="color:grey"> move left</div>
+                <div>    => move(left)</div>
             </div>
             <hr>
         </div>
         <div class="span5">
             <hr>
             <div style="line-height:150%;font-size:25px;text-align:left;">
-                <div style="color:grey">ask "question" assign to var</div>
-                <div>    => ask("question").assign(to).var</div>
+                <div style="color:grey">move left by 2</div>
+                <div>    => ask(left).by(to)</div>
             </div>
             <hr>
         </div>
@@ -920,9 +891,95 @@ shell.evaluate surveyDSL
         </div>
     </div>
 </li>
+<!------------------------------------------------------------------->
+<!-- 6. Command chaining
+<!------------------------------------------------------------------->
+<li class="slide" style="text-align: left" title="? (Press 1..6))">
+    <textarea id="editor6" name="editor6">
 
-<li class="slide" style="text-align: left" title="? (Press 1..4)">
-    <textarea id="editor4" name="editor4">
+    </textarea>
+</li>
+
+
+<li class="slide" style="text-align: left" title="output6">
+    <div class="container-narrow">
+        <div class="row-fluid marketing">
+            <div class="span2">
+            </div>
+            <div class="span8">
+                <hr>
+                <pre class="output" id="output6">
+                </pre>
+                <hr>
+            </div>
+            <div class="span2">
+            </div>
+        </div>
+    </div>
+</li>
+
+<!------------------------------------------------------------------->
+<!-- Category
+<!-- step 1 move left 2.steps
+<!-- step 2
+<!-- step 3
+<!------------------------------------------------------------------->
+<li class="slide" style="text-align: left" title="? (Press 1..6))">
+    <textarea id="editor7" name="editor7">
+
+    </textarea>
+</li>
+
+
+<li class="slide" style="text-align: left" title="output7">
+    <div class="container-narrow">
+        <div class="row-fluid marketing">
+            <div class="span2">
+            </div>
+            <div class="span8">
+                <hr>
+                <pre class="output" id="output7">
+                </pre>
+                <hr>
+            </div>
+            <div class="span2">
+            </div>
+        </div>
+    </div>
+</li>
+
+<!------------------------------------------------------------------->
+<!-- Mixing our DSL and Groovy
+<!-- step 1 move left 2.steps
+<!-- step 2
+<!-- step 3
+<!------------------------------------------------------------------->
+<!--///////////////////////-->
+<!--def gameDSL = '''-->
+<!--def x = true-->
+<!--if (x==true) {-->
+<!--3.times {-->
+<!--moves left-->
+<!--move right-->
+<!--}-->
+<!--}-->
+<!--'''-->
+
+<!------------------------------------------------------------------->
+<!-- Runtime error
+<!-- step 1
+<!-- step 2
+<!-- step 3
+<!------------------------------------------------------------------->
+
+<!------------------------------------------------------------------->
+<!-- Property missing
+<!-- step 1
+<!-- step 2
+<!-- step 3
+<!------------------------------------------------------------------->
+<li class="slide" style="text-align: left" title="PropertyMissing (Press 1..4)">
+    <textarea id="editor8" name="editor8">
 abstract class SurveyScript extends Script {
   def i = 1
   def map = [:]
@@ -973,14 +1030,14 @@ shell.evaluate surveyDSL
     </textarea>
 </li>
 
-<li class="slide" style="text-align: left" title="output4">
+<li class="slide" style="text-align: left" title="output8">
     <div class="container-narrow">
         <div class="row-fluid marketing">
             <div class="span2">
             </div>
             <div class="span8">
                 <hr>
-                <pre class="output" id="output4">
+                <pre class="output" id="output8">
                 </pre>
                 <hr>
             </div>
@@ -999,7 +1056,7 @@ shell.evaluate surveyDSL
 </li>
 
 <li class="slide" style="text-align: left" title="? (Press 1..2)">
-    <textarea id="editor5" name="editor5">
+    <textarea id="editor9" name="editor9">
 def compilerConfig = new CompilerConfiguration()
 compilerConfig.scriptBaseClass = SurveyScript.class.name
 def binding = new Binding()
@@ -1049,14 +1106,14 @@ abstract class SurveyScript extends Script {
     </textarea>
 </li>
 
-<li class="slide" style="text-align: left" title="output5">
+<li class="slide" style="text-align: left" title="output9">
     <div class="container-narrow">
         <div class="row-fluid marketing">
             <div class="span2">
             </div>
             <div class="span8">
                 <hr>
-                <pre class="output" id="output5">
+                <pre class="output" id="output9">
                 </pre>
                 <hr>
             </div>
@@ -1074,8 +1131,8 @@ abstract class SurveyScript extends Script {
     </div>
 </li>
 
-<li class="slide" style="text-align: left" title="editor6">
-    <textarea id="editor6" name="editor6">
+<li class="slide" style="text-align: left" title="editor10">
+    <textarea id="editor10" name="editor6">
 def getShell(binding) {
   def config = new CompilerConfiguration()
   config.addCompilationCustomizers(new SurveyCustomizer())
@@ -1193,14 +1250,14 @@ public class SurveyCustomizer extends CompilationCustomizer {
     </textarea>
 </li>
 
-<li class="slide" style="text-align: left" title="output6">
+<li class="slide" style="text-align: left" title="output10">
     <div class="container-narrow">
         <div class="row-fluid marketing">
             <div class="span2">
             </div>
             <div class="span8">
                 <hr>
-                <pre class="output" id="output6">
+                <pre class="output" id="output10">
                 </pre>
                 <hr>
             </div>
@@ -1220,7 +1277,7 @@ public class SurveyCustomizer extends CompilationCustomizer {
 </li>
 
 <li class="slide" style="text-align: left" title="editor7">
-    <textarea id="editor7" name="editor7">
+    <textarea id="editor11" name="editor11">
 def getShell(binding) {
   def config = new CompilerConfiguration()
   config.addCompilationCustomizers(new SurveyCustomizer())
@@ -1387,14 +1444,14 @@ public class SurveyCustomizer extends CompilationCustomizer {
     </textarea>
 </li>
 
-<li class="slide" style="text-align: left" title="output7">
+<li class="slide" style="text-align: left" title="output11">
     <div class="container-narrow">
         <div class="row-fluid marketing">
             <div class="span2">
             </div>
             <div class="span8">
                 <hr>
-                <pre class="output" id="output7">
+                <pre class="output" id="output11">
                 </pre>
                 <hr>
             </div>
@@ -1404,8 +1461,8 @@ public class SurveyCustomizer extends CompilationCustomizer {
     </div>
 </li>
 
-<li class="slide" style="text-align: left" title="editor8">
-    <textarea id="editor8" name="editor8">
+<li class="slide" style="text-align: left" title="editor12">
+    <textarea id="editor12" name="editor12">
 ask "What's your name?" assign to name
 ask name + ", why did you come to Greach?" assign to why
 ask "Is this Groovy DSL a great talk?" assign to dsl
@@ -1420,14 +1477,14 @@ ask "Would you come back?" assign to comeback
 </li>
 
 
-<li class="slide" style="text-align: left" title="output8">
+<li class="slide" style="text-align: left" title="output12">
     <div class="container-narrow">
         <div class="row-fluid marketing">
             <div class="span2">
             </div>
             <div class="span8">
                 <hr>
-                <pre id="output8">
+                <pre id="output12">
                 <pre style="font-size: 22px;font-family: monospace;line-height: 120%" id="scriptContent"></pre>
                 <label style="font-size: 22px;font-family: monospace;line-height: 120%" for="answer" id="displayQuestion"></label>
                 <input class="input-medium search-query" type="text" id="answer"/>
@@ -1535,6 +1592,6 @@ ask "Would you come back?" assign to comeback
 <script src="js/jqcloud-1.0.2.min.js"></script>
 <script src="js/prez.js"></script>
 <script src="js/slide.js"></script>
-
+<script src="js/ktDraw.js"></script>
 </body>
 </html>

@@ -101,7 +101,7 @@
           animate();
         }
       };
-      src[file].src = 'images/game/' + file;
+      src[file].src = 'img/' + file;
     };
     var fetchImages = function (imgs) {
       for (var name in imgs) {
