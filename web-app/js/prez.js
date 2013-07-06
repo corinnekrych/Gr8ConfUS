@@ -46,9 +46,9 @@ document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 2
 
 
 
-var serverUrl = "http://localhost:8080/DslPrez";
+//var serverUrl = "http://localhost:8080/DslPrez";
 //var serverUrl = "http://dslprez.cloudfoundry.com";
-
+var serverUrl = "http://vast-escarpment-3640.herokuapp.com";
 function submitForm(input, output) {
     var url = serverUrl + "/console/execute?=";
     $.post(url, {
