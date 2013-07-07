@@ -151,7 +151,7 @@ var keymap2 = {
 
 editor2.addKeyMap(keymap2);
 
-function submitTurtleForm(input, output) {
+function submitTurtleForm(input, output, canvasId) {
     var url = serverUrl + "/console/execute?=";
     var draw;
     $.post(url, {
@@ -165,7 +165,7 @@ function submitTurtleForm(input, output) {
             var conf = {
                 grid: 6,
                 gridLineWidth: 2,
-                stepDuration: 2000,
+                stepDuration: 1000,
                 images: {
                      franklin: 'turtle1.png',
                      emily: 'turtle1.png'
@@ -179,7 +179,7 @@ function submitTurtleForm(input, output) {
                     direction: "+x"
                 }
             };
-            draw = ktDraw(document.getElementById('canvas'), conf, init);
+            draw = ktDraw(document.getElementById(canvasId), conf, init);
             $.each(value.steps, function(key, value) {
                 var currentFranklin = {franklin: value};
                 draw(currentFranklin, function () {
@@ -236,6 +236,17 @@ editor4.addKeyMap(keymap4);
 // TODO step 1 use steps instead println
 // TODO step 2 after eval get value of steps
 // TODO step 3 jsonbuilder
+// TODO step 4 up stairs
+// TODO step 5 if
+//5.times {
+//    if(turtle.currentPosition.x < 5)
+//        move right
+//else
+//    move left
+//    if(turtle.currentPosition.y < 5)
+//        move up
+//else
+//    move down
 //------------------------------------------------------------------->
 var editor5 = new dslPrez.editor("editor5");
 function editor5Send() {
@@ -246,7 +257,7 @@ function editor5Send() {
 function editor5TurtleSend() {
     var value = editor5.getValue();
     value += "import groovy.lang.Script;\nimport org.codehaus.groovy.control.CompilerConfiguration\n";
-    submitTurtleForm(value, "#output5");
+    submitTurtleForm(value, "#output5", 'canvas5');
 }
 var keymap5 = {
     "Ctrl-S" :editor5TurtleSend,
@@ -257,67 +268,227 @@ editor5.addKeyMap(keymap5);
 
 //------------------------------------------------------------------->
 // 6. Command chaining
-//------------------------------------------------------------------->
-var editor6 = new dslPrez.editor("editor6");
+// TODO add by
+//class Position {
+//    int x
+//    int y
+//    Direction direction
+//    Position left() {
+//        new Position(x, y, Direction.left);
+//    }
+//    Position right() {
+//        new Position(x, y, Direction.right);
+//    }
+//    Position up() {
+//        new Position(x , y, Direction.up);
+//    }
+//    Position down() {
+//        new Position(x , y, Direction.down);
+//    }
+//    def Position(moveX, moveY, myDirection) {
+//        x = moveX
+//        y = moveY
+//        direction = myDirection
+//    }
+//    Position move(Integer step) {
+//        Position newPosition
+//        if(direction == Direction.left) {
+//            newPosition = new Position(x - step, y, direction)
+//        } else if(direction == Direction.right) {
+//            newPosition = new Position(x + step, y, direction)
+//        } else if(direction == Direction.up) {
+//            newPosition = new Position(x, y + step, direction)
+//        } else if(direction == Direction.down) {
+//            newPosition = new Position(x, y - step, direction)
+//        }
+//    }
+//}
+//
+//class Turtle {
+//    def currentPosition
+//    def steps = []
+//    Turtle(Position start) {
+//        currentPosition = start
+//        steps.add(start)
+//    }
+//
+//    Turtle move(Direction dir) {
+//        Position newPosition
+//        if (dir == Direction.left) {
+//            newPosition = currentPosition.left()
+//        } else if (dir == Direction.right) {
+//            newPosition = currentPosition.right()
+//        } else if (dir == Direction.up) {
+//            newPosition = currentPosition.up()
+//        } else if (dir == Direction.down) {
+//            newPosition = currentPosition.down()
+//        }
+//        currentPosition = newPosition
+//        this
+//    }
+//
+//    Turtle by (Integer step) {
+//        Position newPosition = currentPosition.move(step)
+//        steps.add(newPosition)
+//        currentPosition = newPosition
+//        this
+//    }
+//}
+//enum Direction {
+//    left, right, up, down
+//}
+//
+//
+//def turtle = new Turtle(new Position(1, 1, Direction.left))
+//def compilerConfig = new CompilerConfiguration()
+//def binding = new Binding([turtle: turtle,
+//    move: turtle.&move,
+//    left: Direction.left,
+//    right: Direction.right,
+//    up: Direction.up,
+//    down: Direction.down])
+//def shell = new GroovyShell(this.class.classLoader,
+//    binding,
+//    compilerConfig)
+/////////////////////////
+//def gameDSL = '''
+//2.times {
+//    move right by 2
+//    move up by 1
+//}
+//'''
+////////////////////////
+//// Run DSL script.
+//// result contains turtle object
+//// with all steps
+//shell.evaluate gameDSL
+//def builder = new groovy.json.JsonBuilder()
+//builder {
+//    steps binding["turtle"].steps
+//}
+//println builder
+//builder.toString()
+// TODO category
+// TODO step3: odd number
+//class Position {
+//    int x
+//    int y
+//    Direction direction
+//    Position left() {
+//        new Position(x, y, Direction.left);
+//    }
+//    Position right() {
+//        new Position(x, y, Direction.right);
+//    }
+//    Position up() {
+//        new Position(x , y, Direction.up);
+//    }
+//    Position down() {
+//        new Position(x , y, Direction.down);
+//    }
+//    def Position(moveX, moveY, myDirection) {
+//        x = moveX
+//        y = moveY
+//        direction = myDirection
+//    }
+//    Position move(Integer step) {
+//        Position newPosition
+//        if(direction == Direction.left) {
+//            newPosition = new Position(x - step, y, direction)
+//        } else if(direction == Direction.right) {
+//            newPosition = new Position(x + step, y, direction)
+//        } else if(direction == Direction.up) {
+//            newPosition = new Position(x, y + step, direction)
+//        } else if(direction == Direction.down) {
+//            newPosition = new Position(x, y - step, direction)
+//        }
+//    }
+//}
+//
+//class Turtle {
+//    def currentPosition
+//    def steps = []
+//    Turtle(Position start) {
+//        currentPosition = start
+//        steps.add(start)
+//    }
+//
+//    Turtle move(Direction dir) {
+//        Position newPosition
+//        if (dir == Direction.left) {
+//            newPosition = currentPosition.left()
+//        } else if (dir == Direction.right) {
+//            newPosition = currentPosition.right()
+//        } else if (dir == Direction.up) {
+//            newPosition = currentPosition.up()
+//        } else if (dir == Direction.down) {
+//            newPosition = currentPosition.down()
+//        }
+//        currentPosition = newPosition
+//        this
+//    }
+//
+//    Map by (Integer step) {
+//        Position newPosition = currentPosition.move(step)
+//        steps.add(newPosition)
+//        currentPosition = newPosition
+//            [steps:"", step:""]
+//    }
+//}
+//enum Direction {
+//    left, right, up, down
+//}
+//
+//
+//def turtle = new Turtle(new Position(1, 1, Direction.left))
+//def compilerConfig = new CompilerConfiguration()
+//def binding = new Binding([turtle: turtle,
+//    move: turtle.&move,
+//    left: Direction.left,
+//    right: Direction.right,
+//    up: Direction.up,
+//    down: Direction.down])
+//def shell = new GroovyShell(this.class.classLoader,
+//    binding,
+//    compilerConfig)
+/////////////////////////
+//def gameDSL = '''
+//2.times {
+//    move right by 2 steps
+//    move up by 1 step
+//}
+//'''
+////////////////////////
+//// Run DSL script.
+//// result contains turtle object
+//// with all steps
+//shell.evaluate gameDSL
+//def builder = new groovy.json.JsonBuilder()
+//builder {
+//    steps binding["turtle"].steps
+//}
+//println builder
+//builder.toString()
 
-function editor6Send() {
+//------------------------------------------------------------------->
+
+
+
+var editor6 = new dslPrez.editor("editor6");
+function editor6TurtleSend() {
     var value = editor6.getValue();
     value += "import groovy.lang.Script;\nimport org.codehaus.groovy.control.CompilerConfiguration\n";
-    submitForm(value, "#output6");
+    submitTurtleForm(value, "#output6", 'canvas6');
 }
-function editor6Key1() {
-    var value = "ask \"what is your name?\" into name\n"
-        + "ask \"what is your birthdate?\" into date\n";
-    editor6.removeLine(14);
-    editor6.replaceRange(value, {line: 14, ch: 0});
-}
-function editor6Key2() {
-    editor6.removeLine(2);
-    var value = "    return this\n";
-    editor6.replaceRange(value, {line: 2, ch: 0});
-}
-function editor6Key3() {
-    var value = "  def into(variable) {\n" + "  }\n";
-    editor6.replaceRange(value, {line: 4, ch: 0});
-}
-function editor6Key4() {
-    var value = "  def map = [:]\n";
-    editor6.replaceRange(value, {line: 1, ch: 0});
-}
-function editor6Key5() {
-    var value = "  def i = 1;\n";
-    editor6.replaceRange(value, {line: 1, ch: 0});
-    value = "    map[\"question$i\"] = question\n";
-    editor6.replaceRange(value, {line: 4, ch: 0});
-    value = "    map[\"variable$i\"] = variable\n    i++\n";
-    editor6.replaceRange(value, {line: 8, ch: 0});
-}
-function editor6Key6() {
-    var value = "  def propertyMissing(def propertyName) {\n"
-        + "    propertyName\n"
-        + "  }\n"
-        + "  def display(Map mapToDisplay) {\n"
-        + "    mapToDisplay.eachWithIndex { key, value, index ->\n"
-        + "      println \"$key: $value\"\n"
-        + "      if (index % 2) { println \"______________________\\n\" }\n"
-        + "    }\n"
-        + "  }\n";
-    editor6.replaceRange(value, {line: 11, ch: 0});
-    value = "display map\n";
-    editor6.replaceRange(value, {line: 32, ch: 0});
-}
-
 var keymap6 = {
-    "Ctrl-S": editor6Send,
-    "Cmd-S": editor6Send,
-    "1": editor6Key1,
-    "2": editor6Key2,
-    "3": editor6Key3,
-    "4": editor6Key4,
-    "5": editor6Key5,
-    "6": editor6Key6
+    "Ctrl-S": editor6TurtleSend,
+    "Cmd-S": editor6TurtleSend
 };
 editor6.addKeyMap(keymap6);
+
+//------------------------------------------------------------------->
+// 6. Command chaining
+//------------------------------------------------------------------->
 
 var editor7 = new dslPrez.editor("editor7");
 

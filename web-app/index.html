@@ -38,7 +38,7 @@
 </div>
 <div style="overflow: hidden;" id="wrapper">
 <ul>
-<!--
+
 <li class="slide"  title="Start">
 
     <div class="container-narrow">
@@ -520,7 +520,7 @@ when (franklin.isHere) {
     </div>
 </li>
 
-    -->
+
 <!------------------------------------------------------------------->
 <!-- 1. Script
 <!-- step 1 define base class
@@ -733,8 +733,10 @@ def result = shell.evaluate gameDSL
 <!------------------------------------------------------------------->
 <!-- Building JSON
 <!-- step 1 use steps instead println
+<!-- step 1bis add up and down
 <!-- step 2 after eval get value of steps
 <!-- step 3 jsonbuilder
+<!-- step 4 up the stairs
 <!-- cmd-S for text output cmd-D for canvas output
 <!------------------------------------------------------------------->
 <li class="slide" style="text-align: left" title="Building JSON for HTML5 display(Press 1..4)">
@@ -748,6 +750,12 @@ class Position {
   Position right() {
     new Position(x + 1 , y);
   }
+  Position up() {
+    new Position(x , y + 1);
+  }
+  Position down() {
+    new Position(x , y - 1);
+  }
   def Position(moveX, moveY) {
      x = moveX
      y = moveY
@@ -755,8 +763,8 @@ class Position {
 }
 
 class Turtle {
-   def steps = []
    def currentPosition
+  def steps = []
    Turtle(Position start) {
       currentPosition = start
       steps.add(start)
@@ -768,6 +776,10 @@ class Turtle {
         newPosition = currentPosition.left()
       } else if (dir == Direction.right) {
         newPosition = currentPosition.right()
+      } else if (dir == Direction.up) {
+        newPosition = currentPosition.up()
+      } else if (dir == Direction.down) {
+        newPosition = currentPosition.down()
       }
       currentPosition = newPosition
       steps.add(newPosition)
@@ -775,33 +787,40 @@ class Turtle {
    }
 }
 enum Direction {
-  left, right
+  left, right, up, down
 }
+
 
 def turtle = new Turtle(new Position(1, 1))
 def compilerConfig = new CompilerConfiguration()
-def binding = new Binding([move: turtle.&move,
+def binding = new Binding([turtle: turtle,
+  						   move: turtle.&move,
                            left: Direction.left,
-                           right: Direction.right])
+                           right: Direction.right,
+                           up: Direction.up,
+                           down: Direction.down])
 def shell = new GroovyShell(this.class.classLoader,
         binding,
         compilerConfig)
 ///////////////////////
 def gameDSL = '''
-move left
-move right
+4.times {
+  move right
+  move up
+}
 '''
 //////////////////////
 // Run DSL script.
 // result contains turtle object
 // with all steps
-def myResultTurtle = shell.evaluate gameDSL
+shell.evaluate gameDSL
 def builder = new groovy.json.JsonBuilder()
 builder {
-   steps myResultTurtle.steps
+   steps binding["turtle"].steps
 }
 println builder
 builder.toString()
+
 </textarea>
 </li>
 
@@ -814,7 +833,7 @@ builder.toString()
                 <hr>
                 <pre class="code" id="output5">
                 </pre>
-                <canvas id="canvas" width="1000" height="1000" style="max-width: 500px; width: 100%;"></canvas>
+                <canvas id="canvas5" width="1000" height="1000" style="max-width: 500px; width: 100%;"></canvas>
                 <hr>
             </div>
             <div class="span2">
@@ -822,17 +841,6 @@ builder.toString()
         </div>
     </div>
 </li>
-
-
-<!------------------------------------------------------------------->
-<!-- slide html5
-<!------------------------------------------------------------------->
-
-<!------------------------------------------------------------------->
-<!-- slide Mixing with plain Groovy  (added up and down + cached in js to focus on script)
-<!-- step 1 move up down
-<!-- step 2 3.times
-<!------------------------------------------------------------------->
 
 <!------------------------------------------------------------------->
 <!-- slide command chaining
@@ -857,17 +865,6 @@ builder.toString()
         <div class="span2">
         </div>
     </div>
-</li>
-<li class="slide" title="Command Chaining">
-    <div class="container-narrow">
-        <hr>
-        <div class="jumbotron">
-            <br/>
-            <h1>Back to command chaining</h1><br/>
-            <br/>
-        </div>
-        <hr>
-    </div>
     <div class="row-fluid marketing">
         <div class="span1">
         </div>
@@ -883,7 +880,7 @@ builder.toString()
             <hr>
             <div style="line-height:150%;font-size:25px;text-align:left;">
                 <div style="color:grey">move left by 2</div>
-                <div>    => ask(left).by(to)</div>
+                <div>    => move(left).by(2)</div>
             </div>
             <hr>
         </div>
@@ -891,12 +888,114 @@ builder.toString()
         </div>
     </div>
 </li>
+
 <!------------------------------------------------------------------->
 <!-- 6. Command chaining
+<!-- step1: add by
+<1-- step2: category
+<1-- step3: odd number
 <!------------------------------------------------------------------->
-<li class="slide" style="text-align: left" title="? (Press 1..6))">
+<li class="slide" style="text-align: left" title="Command Chaining (Press 1..6))">
     <textarea id="editor6" name="editor6">
+class Position {
+  int x
+  int y
+  Direction direction
+  Position left() {
+     new Position(x, y, Direction.left);
+  }
+  Position right() {
+    new Position(x, y, Direction.right);
+  }
+  Position up() {
+    new Position(x , y, Direction.up);
+  }
+  Position down() {
+    new Position(x , y, Direction.down);
+  }
+  def Position(moveX, moveY, myDirection) {
+    x = moveX
+    y = moveY
+    direction = myDirection
+  }
+  Position move(Integer step) {
+    Position newPosition
+    if(direction == Direction.left) {
+      newPosition = new Position(x - step, y, direction)
+    } else if(direction == Direction.right) {
+      newPosition = new Position(x + step, y, direction)
+    } else if(direction == Direction.up) {
+      newPosition = new Position(x, y + step, direction)
+    } else if(direction == Direction.down) {
+      newPosition = new Position(x, y - step, direction)
+    }
+  }
+}
 
+class Turtle {
+  def currentPosition
+  def steps = []
+  Turtle(Position start) {
+    currentPosition = start
+    steps.add(start)
+  }
+
+  Turtle move(Direction dir) {
+    Position newPosition
+    if (dir == Direction.left) {
+      newPosition = currentPosition.left()
+    } else if (dir == Direction.right) {
+      newPosition = currentPosition.right()
+    } else if (dir == Direction.up) {
+      newPosition = currentPosition.up()
+    } else if (dir == Direction.down) {
+      newPosition = currentPosition.down()
+    }
+    currentPosition = newPosition
+    this
+  }
+
+  Turtle by (Integer step) {
+    Position newPosition = currentPosition.move(step)
+    steps.add(newPosition)
+    currentPosition = newPosition
+    this
+  }
+}
+enum Direction {
+  left, right, up, down
+}
+
+
+def turtle = new Turtle(new Position(1, 1, Direction.left))
+def compilerConfig = new CompilerConfiguration()
+def binding = new Binding([turtle: turtle,
+  						   move: turtle.&move,
+                           left: Direction.left,
+                           right: Direction.right,
+                           up: Direction.up,
+                           down: Direction.down])
+def shell = new GroovyShell(this.class.classLoader,
+        binding,
+        compilerConfig)
+///////////////////////
+def gameDSL = '''
+2.times {
+  move right by 2
+  move up by 1
+}
+'''
+//////////////////////
+// Run DSL script.
+// result contains turtle object
+// with all steps
+shell.evaluate gameDSL
+def builder = new groovy.json.JsonBuilder()
+builder {
+   steps binding["turtle"].steps
+}
+println builder
+builder.toString()
     </textarea>
 </li>
 
@@ -908,8 +1007,9 @@ builder.toString()
             </div>
             <div class="span8">
                 <hr>
-                <pre class="output" id="output6">
+                <pre class="code" id="output6">
                 </pre>
+                <canvas id="canvas6" width="1000" height="1000" style="max-width: 500px; width: 100%;"></canvas>
                 <hr>
             </div>
             <div class="span2">
@@ -919,143 +1019,13 @@ builder.toString()
 </li>
 
 <!------------------------------------------------------------------->
-<!-- Category
-<!-- step 1 move left 2.steps
-<!-- step 2
-<!-- step 3
-<!------------------------------------------------------------------->
-<li class="slide" style="text-align: left" title="? (Press 1..6))">
-    <textarea id="editor7" name="editor7">
-
-    </textarea>
-</li>
-
-
-<li class="slide" style="text-align: left" title="output7">
-    <div class="container-narrow">
-        <div class="row-fluid marketing">
-            <div class="span2">
-            </div>
-            <div class="span8">
-                <hr>
-                <pre class="output" id="output7">
-                </pre>
-                <hr>
-            </div>
-            <div class="span2">
-            </div>
-        </div>
-    </div>
-</li>
-
-<!------------------------------------------------------------------->
-<!-- Mixing our DSL and Groovy
-<!-- step 1 move left 2.steps
-<!-- step 2
-<!-- step 3
-<!------------------------------------------------------------------->
-<!--///////////////////////-->
-<!--def gameDSL = '''-->
-<!--def x = true-->
-<!--if (x==true) {-->
-<!--3.times {-->
-<!--moves left-->
-<!--move right-->
-<!--}-->
-<!--}-->
-<!--'''-->
-
-<!------------------------------------------------------------------->
-<!-- Runtime error
-<!-- step 1
-<!-- step 2
+<!-- Ask
+<!-- step 1 ask question into variable
+<!-- step 2 ask question assign to variable
 <!-- step 3
 <!------------------------------------------------------------------->
 
-<!------------------------------------------------------------------->
-<!-- Property missing
-<!-- step 1
-<!-- step 2
-<!-- step 3
-<!------------------------------------------------------------------->
-<li class="slide" style="text-align: left" title="PropertyMissing (Press 1..4)">
-    <textarea id="editor8" name="editor8">
-abstract class SurveyScript extends Script {
-  def i = 1
-  def map = [:]
-
-  def ask(question) {
-    map["question$i"] = question
-    return this
-  }
-
-  def into(variable) {
-    map["variable$i"] = variable
-    i++
-  }
-
-  def propertyMissing(def propertyName) {
-    propertyName
-  }
-
-  def display(Map mapToDisplay) {
-    mapToDisplay.eachWithIndex { key, value, index ->
-      println "$key: $value"
-      if (index % 2) {
-        println "______________________________________\n"
-      }
-    }
-  }
-}
-
-def compilerConfig = new CompilerConfiguration()
-compilerConfig.scriptBaseClass = SurveyScript.class.name
-
-def binding = new Binding()
-
-// Configure the GroovyShell.
-def shell = new GroovyShell(this.class.classLoader,
-                            binding,
-                            compilerConfig)
-
-///////////////////////
-def surveyDSL = '''
-ask "what is your name?" into name
-ask "what is your birthdate?" into date
-display map
-'''
-//////////////////////
-// Run DSL script.
-shell.evaluate surveyDSL
-    </textarea>
-</li>
-
-<li class="slide" style="text-align: left" title="output8">
-    <div class="container-narrow">
-        <div class="row-fluid marketing">
-            <div class="span2">
-            </div>
-            <div class="span8">
-                <hr>
-                <pre class="output" id="output8">
-                </pre>
-                <hr>
-            </div>
-            <div class="span2">
-            </div>
-        </div>
-    </div>
-</li>
-
-<li class="slide" title="DSL Sequence">
-    <div class="row-fluid marketing">
-        <div class="span12">
-            <img style="width:500px" src="img/dslsequence.png">
-        </div>
-    </div>
-</li>
-
-<li class="slide" style="text-align: left" title="? (Press 1..2)">
+<li class="slide" style="text-align: left" title="Ask syntax (Press 1..2)">
     <textarea id="editor9" name="editor9">
 def compilerConfig = new CompilerConfiguration()
 compilerConfig.scriptBaseClass = SurveyScript.class.name
@@ -1130,7 +1100,9 @@ abstract class SurveyScript extends Script {
         </div>
     </div>
 </li>
-
+<!------------------------------------------------------------------->
+<!-- AST for user transform
+<!------------------------------------------------------------------->
 <li class="slide" style="text-align: left" title="editor10">
     <textarea id="editor10" name="editor6">
 def getShell(binding) {
