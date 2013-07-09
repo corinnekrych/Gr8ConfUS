@@ -648,7 +648,7 @@ def result = shell.evaluate gameDSL
 
 <!------------------------------------------------------------------->
 <!-- Structure my code
-<!-- step 1 dslprez.Position
+<!-- step 1 Position
 <!-- step 2 Turtle
 <!-- step 3 Direction
 <!-- step4 inject binding, remove def left in GameScript
@@ -656,16 +656,16 @@ def result = shell.evaluate gameDSL
 <!------------------------------------------------------------------->
 <li class="slide" style="text-align: left" title="Add Turtle class (Press 1..4)">
     <textarea id="editor4" name="editor4">
-class dslprez.Position {
+class Position {
   int x
   int y
-  dslprez.Position left() {
-     new dslprez.Position(x - 1, y);
+  Position left() {
+     new Position(x - 1, y);
   }
-  dslprez.Position right() {
-    new dslprez.Position(x + 1 , y);
+  Position right() {
+    new Position(x + 1 , y);
   }
-  def dslprez.Position(moveX, moveY) {
+  def Position(moveX, moveY) {
      x = moveX
      y = moveY
   }
@@ -674,12 +674,12 @@ class dslprez.Position {
 class Turtle {
    def steps = []
    def currentPosition
-   Turtle(dslprez.Position start) {
+   Turtle(Position start) {
       currentPosition = start
    }
 
    Turtle move(Direction dir) {
-      dslprez.Position newPosition
+      Position newPosition
       if (dir == Direction.left) {
         newPosition = currentPosition.left()
       } else if (dir == Direction.right) {
@@ -695,7 +695,7 @@ enum Direction {
   left, right
 }
 
-def turtle = new Turtle(new dslprez.Position(1, 1))
+def turtle = new Turtle(new Position(1, 1))
 def compilerConfig = new CompilerConfiguration()
 def binding = new Binding([move: turtle.&move, left: Direction.left, right: Direction.right])
 def shell = new GroovyShell(this.class.classLoader,
@@ -740,22 +740,22 @@ def result = shell.evaluate gameDSL
 <!------------------------------------------------------------------->
 <li class="slide" style="text-align: left" title="Building JSON for HTML5 display(Press 1..4)">
     <textarea id="editor5" name="editor5">
-class dslprez.Position {
+class Position {
   int x
   int y
-  dslprez.Position left() {
-     new dslprez.Position(x - 1, y);
+  Position left() {
+     new Position(x - 1, y);
   }
-  dslprez.Position right() {
-    new dslprez.Position(x + 1 , y);
+  Position right() {
+    new Position(x + 1 , y);
   }
-  dslprez.Position up() {
-    new dslprez.Position(x , y + 1);
+  Position up() {
+    new Position(x , y + 1);
   }
-  dslprez.Position down() {
-    new dslprez.Position(x , y - 1);
+  Position down() {
+    new Position(x , y - 1);
   }
-  def dslprez.Position(moveX, moveY) {
+  def Position(moveX, moveY) {
      x = moveX
      y = moveY
   }
@@ -764,13 +764,13 @@ class dslprez.Position {
 class Turtle {
    def currentPosition
   def steps = []
-   Turtle(dslprez.Position start) {
+   Turtle(Position start) {
       currentPosition = start
       steps.add(start)
    }
 
    Turtle move(Direction dir) {
-      dslprez.Position newPosition
+      Position newPosition
       if (dir == Direction.left) {
         newPosition = currentPosition.left()
       } else if (dir == Direction.right) {
@@ -790,7 +790,7 @@ enum Direction {
 }
 
 
-def turtle = new Turtle(new dslprez.Position(1, 1))
+def turtle = new Turtle(new Position(1, 1))
 def compilerConfig = new CompilerConfiguration()
 def binding = new Binding([turtle: turtle,
   						   move: turtle.&move,
@@ -895,37 +895,37 @@ builder.toString()
 <!------------------------------------------------------------------->
 <li class="slide" style="text-align: left" title="Command Chaining (Press 1..6))">
     <textarea id="editor6" name="editor6">
-class dslprez.Position {
+class Position {
   int x
   int y
   Direction direction
-  dslprez.Position left() {
-     new dslprez.Position(x, y, Direction.left);
+  Position left() {
+     new Position(x, y, Direction.left);
   }
-  dslprez.Position right() {
-    new dslprez.Position(x, y, Direction.right);
+  Position right() {
+    new Position(x, y, Direction.right);
   }
-  dslprez.Position up() {
-    new dslprez.Position(x , y, Direction.up);
+  Position up() {
+    new Position(x , y, Direction.up);
   }
-  dslprez.Position down() {
-    new dslprez.Position(x , y, Direction.down);
+  Position down() {
+    new Position(x , y, Direction.down);
   }
-  def dslprez.Position(moveX, moveY, myDirection) {
+  def Position(moveX, moveY, myDirection) {
     x = moveX
     y = moveY
     direction = myDirection
   }
-  dslprez.Position move(Integer step) {
-    dslprez.Position newPosition
+  Position move(Integer step) {
+    Position newPosition
     if(direction == Direction.left) {
-      newPosition = new dslprez.Position(x - step, y, direction)
+      newPosition = new Position(x - step, y, direction)
     } else if(direction == Direction.right) {
-      newPosition = new dslprez.Position(x + step, y, direction)
+      newPosition = new Position(x + step, y, direction)
     } else if(direction == Direction.up) {
-      newPosition = new dslprez.Position(x, y + step, direction)
+      newPosition = new Position(x, y + step, direction)
     } else if(direction == Direction.down) {
-      newPosition = new dslprez.Position(x, y - step, direction)
+      newPosition = new Position(x, y - step, direction)
     }
   }
 }
@@ -933,13 +933,13 @@ class dslprez.Position {
 class Turtle {
   def currentPosition
   def steps = []
-  Turtle(dslprez.Position start) {
+  Turtle(Position start) {
     currentPosition = start
     steps.add(start)
   }
 
   Turtle move(Direction dir) {
-    dslprez.Position newPosition
+    Position newPosition
     if (dir == Direction.left) {
       newPosition = currentPosition.left()
     } else if (dir == Direction.right) {
@@ -954,7 +954,7 @@ class Turtle {
   }
 
   Turtle by (Integer step) {
-    dslprez.Position newPosition = currentPosition.move(step)
+    Position newPosition = currentPosition.move(step)
     steps.add(newPosition)
     currentPosition = newPosition
     this
@@ -965,7 +965,7 @@ enum Direction {
 }
 
 
-def turtle = new Turtle(new dslprez.Position(1, 1, Direction.left))
+def turtle = new Turtle(new Position(1, 1, Direction.left))
 def compilerConfig = new CompilerConfiguration()
 def binding = new Binding([turtle: turtle,
   						   move: turtle.&move,
@@ -1024,37 +1024,37 @@ builder.toString()
 <!------------------------------------------------------------------->
 <li class="slide" style="text-align: left" title="Adding behavior to Integer (Press 1..2))">
     <textarea id="editor7" name="editor7">
-class dslprez.Position {
+class Position {
   int x
   int y
   Direction direction
-  dslprez.Position left() {
-     new dslprez.Position(x, y, Direction.left);
+  Position left() {
+     new Position(x, y, Direction.left);
   }
-  dslprez.Position right() {
-    new dslprez.Position(x, y, Direction.right);
+  Position right() {
+    new Position(x, y, Direction.right);
   }
-  dslprez.Position up() {
-    new dslprez.Position(x , y, Direction.up);
+  Position up() {
+    new Position(x , y, Direction.up);
   }
-  dslprez.Position down() {
-    new dslprez.Position(x , y, Direction.down);
+  Position down() {
+    new Position(x , y, Direction.down);
   }
-  def dslprez.Position(moveX, moveY, myDirection) {
+  def Position(moveX, moveY, myDirection) {
     x = moveX
     y = moveY
     direction = myDirection
   }
-  dslprez.Position move(Integer step) {
-    dslprez.Position newPosition
+  Position move(Integer step) {
+    Position newPosition
     if(direction == Direction.left) {
-      newPosition = new dslprez.Position(x - step, y, direction)
+      newPosition = new Position(x - step, y, direction)
     } else if(direction == Direction.right) {
-      newPosition = new dslprez.Position(x + step, y, direction)
+      newPosition = new Position(x + step, y, direction)
     } else if(direction == Direction.up) {
-      newPosition = new dslprez.Position(x, y + step, direction)
+      newPosition = new Position(x, y + step, direction)
     } else if(direction == Direction.down) {
-      newPosition = new dslprez.Position(x, y - step, direction)
+      newPosition = new Position(x, y - step, direction)
     }
   }
 }
@@ -1062,13 +1062,13 @@ class dslprez.Position {
 class Turtle {
   def currentPosition
   def steps = []
-  Turtle(dslprez.Position start) {
+  Turtle(Position start) {
     currentPosition = start
     steps.add(start)
   }
 
   Turtle move(Direction dir) {
-    dslprez.Position newPosition
+    Position newPosition
     if (dir == Direction.left) {
       newPosition = currentPosition.left()
     } else if (dir == Direction.right) {
@@ -1083,7 +1083,7 @@ class Turtle {
   }
 
   Turtle by (Integer step) {
-    dslprez.Position newPosition = currentPosition.move(step)
+    Position newPosition = currentPosition.move(step)
     steps.add(newPosition)
     currentPosition = newPosition
     this
@@ -1094,7 +1094,7 @@ enum Direction {
 }
 
 
-def turtle = new Turtle(new dslprez.Position(1, 1, Direction.left))
+def turtle = new Turtle(new Position(1, 1, Direction.left))
 def compilerConfig = new CompilerConfiguration()
 def binding = new Binding([turtle: turtle,
   						   move: turtle.&move,
