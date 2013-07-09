@@ -55,6 +55,25 @@ var changeSlide = function(e, value) {
         e.preventDefault();    
 }
 
+
+$('#run').click(function(e) {
+
+    var url = serverUrl + "/survey/runTurtle?=";
+    $.post(url, {   }, function(data) {
+        var toto =data;
+        if(data.finished==true) {
+            $(".surveystart").hide();
+            for(var index = 1; index <= counter;index++)  {
+                if (answerMap[index]) {
+                    var output8Value = '<div class="displayAnswer">' + answerMap[index].question + ' ' + answerMap[index].answer + '</div>';
+                    $("#output8bis").append(output8Value);
+                }
+            }
+            $('#next').click();
+        }
+    });
+});
+
 $('#previous').click(function(e) {
     changeSlide(e, 0);
 });

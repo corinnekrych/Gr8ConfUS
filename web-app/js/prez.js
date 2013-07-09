@@ -45,10 +45,9 @@ document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 2
 
 
 
-
-//var serverUrl = "http://localhost:8080/DslPrez";
+var serverUrl = "http://localhost:8080/DslPrez";
 //var serverUrl = "http://dslprez.cloudfoundry.com";
-var serverUrl = "http://vast-escarpment-3640.herokuapp.com";
+//var serverUrl = "http://vast-escarpment-3640.herokuapp.com";
 function submitForm(input, output) {
     var url = serverUrl + "/console/execute?=";
     $.post(url, {
@@ -82,7 +81,6 @@ function editor1Send() {
     submitForm(value, "#output1");
 }
 
-var editor1 = new dslPrez.editor("editor1");
 function editor1Key2() {
     var value = "def left = \"left\"\n";
     editor1.replaceRange(value, {line:8, ch:0});
@@ -213,7 +211,7 @@ editor3.addKeyMap(keymap3);
 
 //------------------------------------------------------------------->
 // 4. Structure my code
-// TODO step 1 Position
+// TODO step 1 dslprez.Position
 // TODO step 2 Turtle
 // TODO step 3 Direction
 // TODO step4 inject binding, remove def left in GameScript
@@ -269,37 +267,37 @@ editor5.addKeyMap(keymap5);
 //------------------------------------------------------------------->
 // 6. Command chaining
 // TODO add by
-//class Position {
+//class dslprez.Position {
 //    int x
 //    int y
 //    Direction direction
-//    Position left() {
-//        new Position(x, y, Direction.left);
+//    dslprez.Position left() {
+//        new dslprez.Position(x, y, Direction.left);
 //    }
-//    Position right() {
-//        new Position(x, y, Direction.right);
+//    dslprez.Position right() {
+//        new dslprez.Position(x, y, Direction.right);
 //    }
-//    Position up() {
-//        new Position(x , y, Direction.up);
+//    dslprez.Position up() {
+//        new dslprez.Position(x , y, Direction.up);
 //    }
-//    Position down() {
-//        new Position(x , y, Direction.down);
+//    dslprez.Position down() {
+//        new dslprez.Position(x , y, Direction.down);
 //    }
-//    def Position(moveX, moveY, myDirection) {
+//    def dslprez.Position(moveX, moveY, myDirection) {
 //        x = moveX
 //        y = moveY
 //        direction = myDirection
 //    }
-//    Position move(Integer step) {
-//        Position newPosition
+//    dslprez.Position move(Integer step) {
+//        dslprez.Position newPosition
 //        if(direction == Direction.left) {
-//            newPosition = new Position(x - step, y, direction)
+//            newPosition = new dslprez.Position(x - step, y, direction)
 //        } else if(direction == Direction.right) {
-//            newPosition = new Position(x + step, y, direction)
+//            newPosition = new dslprez.Position(x + step, y, direction)
 //        } else if(direction == Direction.up) {
-//            newPosition = new Position(x, y + step, direction)
+//            newPosition = new dslprez.Position(x, y + step, direction)
 //        } else if(direction == Direction.down) {
-//            newPosition = new Position(x, y - step, direction)
+//            newPosition = new dslprez.Position(x, y - step, direction)
 //        }
 //    }
 //}
@@ -307,13 +305,13 @@ editor5.addKeyMap(keymap5);
 //class Turtle {
 //    def currentPosition
 //    def steps = []
-//    Turtle(Position start) {
+//    Turtle(dslprez.Position start) {
 //        currentPosition = start
 //        steps.add(start)
 //    }
 //
 //    Turtle move(Direction dir) {
-//        Position newPosition
+//        dslprez.Position newPosition
 //        if (dir == Direction.left) {
 //            newPosition = currentPosition.left()
 //        } else if (dir == Direction.right) {
@@ -328,7 +326,7 @@ editor5.addKeyMap(keymap5);
 //    }
 //
 //    Turtle by (Integer step) {
-//        Position newPosition = currentPosition.move(step)
+//        dslprez.Position newPosition = currentPosition.move(step)
 //        steps.add(newPosition)
 //        currentPosition = newPosition
 //        this
@@ -339,7 +337,7 @@ editor5.addKeyMap(keymap5);
 //}
 //
 //
-//def turtle = new Turtle(new Position(1, 1, Direction.left))
+//def turtle = new Turtle(new dslprez.Position(1, 1, Direction.left))
 //def compilerConfig = new CompilerConfiguration()
 //def binding = new Binding([turtle: turtle,
 //    move: turtle.&move,
@@ -368,39 +366,38 @@ editor5.addKeyMap(keymap5);
 //}
 //println builder
 //builder.toString()
-// TODO category
 // TODO step3: odd number
-//class Position {
+//class dslprez.Position {
 //    int x
 //    int y
 //    Direction direction
-//    Position left() {
-//        new Position(x, y, Direction.left);
+//    dslprez.Position left() {
+//        new dslprez.Position(x, y, Direction.left);
 //    }
-//    Position right() {
-//        new Position(x, y, Direction.right);
+//    dslprez.Position right() {
+//        new dslprez.Position(x, y, Direction.right);
 //    }
-//    Position up() {
-//        new Position(x , y, Direction.up);
+//    dslprez.Position up() {
+//        new dslprez.Position(x , y, Direction.up);
 //    }
-//    Position down() {
-//        new Position(x , y, Direction.down);
+//    dslprez.Position down() {
+//        new dslprez.Position(x , y, Direction.down);
 //    }
-//    def Position(moveX, moveY, myDirection) {
+//    def dslprez.Position(moveX, moveY, myDirection) {
 //        x = moveX
 //        y = moveY
 //        direction = myDirection
 //    }
-//    Position move(Integer step) {
-//        Position newPosition
+//    dslprez.Position move(Integer step) {
+//        dslprez.Position newPosition
 //        if(direction == Direction.left) {
-//            newPosition = new Position(x - step, y, direction)
+//            newPosition = new dslprez.Position(x - step, y, direction)
 //        } else if(direction == Direction.right) {
-//            newPosition = new Position(x + step, y, direction)
+//            newPosition = new dslprez.Position(x + step, y, direction)
 //        } else if(direction == Direction.up) {
-//            newPosition = new Position(x, y + step, direction)
+//            newPosition = new dslprez.Position(x, y + step, direction)
 //        } else if(direction == Direction.down) {
-//            newPosition = new Position(x, y - step, direction)
+//            newPosition = new dslprez.Position(x, y - step, direction)
 //        }
 //    }
 //}
@@ -408,13 +405,13 @@ editor5.addKeyMap(keymap5);
 //class Turtle {
 //    def currentPosition
 //    def steps = []
-//    Turtle(Position start) {
+//    Turtle(dslprez.Position start) {
 //        currentPosition = start
 //        steps.add(start)
 //    }
 //
 //    Turtle move(Direction dir) {
-//        Position newPosition
+//        dslprez.Position newPosition
 //        if (dir == Direction.left) {
 //            newPosition = currentPosition.left()
 //        } else if (dir == Direction.right) {
@@ -429,7 +426,7 @@ editor5.addKeyMap(keymap5);
 //    }
 //
 //    Map by (Integer step) {
-//        Position newPosition = currentPosition.move(step)
+//        dslprez.Position newPosition = currentPosition.move(step)
 //        steps.add(newPosition)
 //        currentPosition = newPosition
 //            [steps:"", step:""]
@@ -440,7 +437,7 @@ editor5.addKeyMap(keymap5);
 //}
 //
 //
-//def turtle = new Turtle(new Position(1, 1, Direction.left))
+//def turtle = new Turtle(new dslprez.Position(1, 1, Direction.left))
 //def compilerConfig = new CompilerConfiguration()
 //def binding = new Binding([turtle: turtle,
 //    move: turtle.&move,
@@ -487,55 +484,206 @@ var keymap6 = {
 editor6.addKeyMap(keymap6);
 
 //------------------------------------------------------------------->
-// 6. Command chaining
+// 7. category/mixin
+// TODO step 1 use
+//class dslprez.Position {
+//    int x
+//    int y
+//    Direction direction
+//    dslprez.Position left() {
+//        new dslprez.Position(x, y, Direction.left);
+//    }
+//    dslprez.Position right() {
+//        new dslprez.Position(x, y, Direction.right);
+//    }
+//    dslprez.Position up() {
+//        new dslprez.Position(x , y, Direction.up);
+//    }
+//    dslprez.Position down() {
+//        new dslprez.Position(x , y, Direction.down);
+//    }
+//    def dslprez.Position(moveX, moveY, myDirection) {
+//        x = moveX
+//        y = moveY
+//        direction = myDirection
+//    }
+//    dslprez.Position move(Integer step) {
+//        dslprez.Position newPosition
+//        if(direction == Direction.left) {
+//            newPosition = new dslprez.Position(x - step, y, direction)
+//        } else if(direction == Direction.right) {
+//            newPosition = new dslprez.Position(x + step, y, direction)
+//        } else if(direction == Direction.up) {
+//            newPosition = new dslprez.Position(x, y + step, direction)
+//        } else if(direction == Direction.down) {
+//            newPosition = new dslprez.Position(x, y - step, direction)
+//        }
+//    }
+//}
+//
+//class Turtle {
+//    def currentPosition
+//    def steps = []
+//    Turtle(dslprez.Position start) {
+//        currentPosition = start
+//        steps.add(start)
+//    }
+//
+//    Turtle move(Direction dir) {
+//        dslprez.Position newPosition
+//        if (dir == Direction.left) {
+//            newPosition = currentPosition.left()
+//        } else if (dir == Direction.right) {
+//            newPosition = currentPosition.right()
+//        } else if (dir == Direction.up) {
+//            newPosition = currentPosition.up()
+//        } else if (dir == Direction.down) {
+//            newPosition = currentPosition.down()
+//        }
+//        currentPosition = newPosition
+//        this
+//    }
+//
+//    Turtle by (Integer step) {
+//        dslprez.Position newPosition = currentPosition.move(step)
+//        steps.add(newPosition)
+//        currentPosition = newPosition
+//        this
+//    }
+//}
+//
+//class StepCategory {
+//    static Integer getSteps(Integer self) {
+//        self
+//    }
+//}
+//enum Direction {
+//    left, right, up, down
+//}
+//
+//
+//def turtle = new Turtle(new dslprez.Position(1, 1, Direction.left))
+//def compilerConfig = new CompilerConfiguration()
+//def binding = new Binding([turtle: turtle,
+//    move: turtle.&move,
+//    left: Direction.left,
+//    right: Direction.right,
+//    up: Direction.up,
+//    down: Direction.down])
+//def shell = new GroovyShell(this.class.classLoader,
+//    binding,
+//    compilerConfig)
+/////////////////////////
+//def gameDSL = '''
+////use(StepCategory) {
+//
+//move left by 2.steps
+//move right by 3.steps
+//
+////}
+//'''
+////////////////////////
+//// Run DSL script.
+//// result contains turtle object
+//// with all steps
+//shell.evaluate "use(StepCategory) {" + gameDSL + "}"
+//
+//def builder = new groovy.json.JsonBuilder()
+//builder {
+//    steps binding["turtle"].steps
+//}
+//println builder
+//builder.toString()
+
+
+// TODO step 2
+//2.times {
+//    move right by 2.steps
+//    move up by 1.steps
+//}
+//gameDSL = "use(StepCategory) { $gameDSL }"
+// TODO step3 annotation
+//@Category(Integer)
+//class StepCategory {
+//    Integer getSteps() {
+//        this;
+//    }
+//}
+//
 //------------------------------------------------------------------->
-
 var editor7 = new dslPrez.editor("editor7");
-
-function editor7Send() {
+function editor7TurtleSend() {
     var value = editor7.getValue();
     value += "import groovy.lang.Script;\nimport org.codehaus.groovy.control.CompilerConfiguration\n";
-    submitForm(value, "#output7");
+    submitTurtleForm(value, "#output7", 'canvas7');
 }
-function editor7Key1() {
-    editor7.removeLine(40);
-    editor7.removeLine(40);
-    var value = "ask \"what is your name?\" assign to name\nask \"what is your birthdate?\" assign to date\n";
-    editor7.replaceRange(value, {line: 40, ch: 0});
-}
-function editor7Key2() {
-    editor7.removeLine(9);
-    editor7.removeLine(9);
-    editor7.removeLine(9);
-    editor7.removeLine(9);
-    var value = "  def assign(to) {\n  }\n";
-    editor7.replaceRange(value, {line: 9, ch: 0});
-}
-function editor7Key3() {
-    var value = "    [:].withDefault { }\n";
-    editor7.replaceRange(value, {line: 10, ch: 0});
-}
-function editor7Key4() {
-    editor7.removeLine(10);
-    var value = "    [:].withDefault { variable ->\n      map[\"variable$j\"] = variable\n      j++\n    }\n";
-    editor7.replaceRange(value, {line: 10, ch: 0});
-    value = "  def j = 1\n";
-    editor7.replaceRange(value, {line: 2, ch: 0});
-    value = "    i++\n";
-    editor7.replaceRange(value, {line: 7, ch: 0});
-}
-
 var keymap7 = {
-    "Ctrl-S": editor7Send,
-    "Cmd-S": editor7Send,
-    "1": editor7Key1,
-    "2": editor7Key2,
-    "3": editor7Key3,
-    "4": editor7Key4
+    "Ctrl-S": editor7TurtleSend,
+    "Cmd-S": editor7TurtleSend
 };
-
 editor7.addKeyMap(keymap7);
-/////////////TODO
+
+//------------------------------------------------------------------->
+// 8. TypeChecked
+//------------------------------------------------------------------->
+var editor8 = new dslPrez.editor("editor8");
+function editor8TurtleSend() {
+    var value = editor8.getValue();
+    value += "import groovy.lang.Script;\nimport org.codehaus.groovy.control.CompilerConfiguration\n";
+    submitTurtleForm(value, "#output8", 'canvas8');
+}
+var keymap8 = {
+    "Ctrl-S": editor8TurtleSend,
+    "Cmd-S": editor8TurtleSend
+};
+editor8.addKeyMap(keymap6);
+//var editor7 = new dslPrez.editor("editor7");
+//
+//function editor7Send() {
+//    var value = editor7.getValue();
+//    value += "import groovy.lang.Script;\nimport org.codehaus.groovy.control.CompilerConfiguration\n";
+//    submitForm(value, "#output7");
+//}
+//function editor7Key1() {
+//    editor7.removeLine(40);
+//    editor7.removeLine(40);
+//    var value = "ask \"what is your name?\" assign to name\nask \"what is your birthdate?\" assign to date\n";
+//    editor7.replaceRange(value, {line: 40, ch: 0});
+//}
+//function editor7Key2() {
+//    editor7.removeLine(9);
+//    editor7.removeLine(9);
+//    editor7.removeLine(9);
+//    editor7.removeLine(9);
+//    var value = "  def assign(to) {\n  }\n";
+//    editor7.replaceRange(value, {line: 9, ch: 0});
+//}
+//function editor7Key3() {
+//    var value = "    [:].withDefault { }\n";
+//    editor7.replaceRange(value, {line: 10, ch: 0});
+//}
+//function editor7Key4() {
+//    editor7.removeLine(10);
+//    var value = "    [:].withDefault { variable ->\n      map[\"variable$j\"] = variable\n      j++\n    }\n";
+//    editor7.replaceRange(value, {line: 10, ch: 0});
+//    value = "  def j = 1\n";
+//    editor7.replaceRange(value, {line: 2, ch: 0});
+//    value = "    i++\n";
+//    editor7.replaceRange(value, {line: 7, ch: 0});
+//}
+//
+//var keymap7 = {
+//    "Ctrl-S": editor7Send,
+//    "Cmd-S": editor7Send,
+//    "1": editor7Key1,
+//    "2": editor7Key2,
+//    "3": editor7Key3,
+//    "4": editor7Key4
+//};
+//
+//editor7.addKeyMap(keymap7);
+//
+
 
 //var editor5 = new dslPrez.editor("editor5");
 //

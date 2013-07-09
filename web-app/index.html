@@ -38,7 +38,7 @@
 </div>
 <div style="overflow: hidden;" id="wrapper">
 <ul>
-
+<!--
 <li class="slide"  title="Start">
 
     <div class="container-narrow">
@@ -293,7 +293,7 @@
             <div class="span2">
             </div>
             <div class="span8">
-                <p style="line-height: 150%;font-size: 35px"><strong>Grails48 + Amadeus</p>
+                <p style="line-height: 150%;font-size: 35px"><strong>Grails48 + Amadeus<strong></p>
                 <p style="line-height: 150%;font-size: 30px" ></p>
             </div>
             <div class="span2">
@@ -520,7 +520,7 @@ when (franklin.isHere) {
     </div>
 </li>
 
-
+-->
 <!------------------------------------------------------------------->
 <!-- 1. Script
 <!-- step 1 define base class
@@ -536,8 +536,7 @@ def gameDSL = '''
 '''
 //////////////////////
 // Run DSL script.
-def result = shell.evaluate gameDSL
-    </textarea>
+def result = shell.evaluate gameDSL</textarea>
 </li>
 
 <li class="slide" style="text-align: left" title="output">
@@ -649,7 +648,7 @@ def result = shell.evaluate gameDSL
 
 <!------------------------------------------------------------------->
 <!-- Structure my code
-<!-- step 1 Position
+<!-- step 1 dslprez.Position
 <!-- step 2 Turtle
 <!-- step 3 Direction
 <!-- step4 inject binding, remove def left in GameScript
@@ -657,16 +656,16 @@ def result = shell.evaluate gameDSL
 <!------------------------------------------------------------------->
 <li class="slide" style="text-align: left" title="Add Turtle class (Press 1..4)">
     <textarea id="editor4" name="editor4">
-class Position {
+class dslprez.Position {
   int x
   int y
-  Position left() {
-     new Position(x - 1, y);
+  dslprez.Position left() {
+     new dslprez.Position(x - 1, y);
   }
-  Position right() {
-    new Position(x + 1 , y);
+  dslprez.Position right() {
+    new dslprez.Position(x + 1 , y);
   }
-  def Position(moveX, moveY) {
+  def dslprez.Position(moveX, moveY) {
      x = moveX
      y = moveY
   }
@@ -675,12 +674,12 @@ class Position {
 class Turtle {
    def steps = []
    def currentPosition
-   Turtle(Position start) {
+   Turtle(dslprez.Position start) {
       currentPosition = start
    }
 
    Turtle move(Direction dir) {
-      Position newPosition
+      dslprez.Position newPosition
       if (dir == Direction.left) {
         newPosition = currentPosition.left()
       } else if (dir == Direction.right) {
@@ -696,7 +695,7 @@ enum Direction {
   left, right
 }
 
-def turtle = new Turtle(new Position(1, 1))
+def turtle = new Turtle(new dslprez.Position(1, 1))
 def compilerConfig = new CompilerConfiguration()
 def binding = new Binding([move: turtle.&move, left: Direction.left, right: Direction.right])
 def shell = new GroovyShell(this.class.classLoader,
@@ -741,22 +740,22 @@ def result = shell.evaluate gameDSL
 <!------------------------------------------------------------------->
 <li class="slide" style="text-align: left" title="Building JSON for HTML5 display(Press 1..4)">
     <textarea id="editor5" name="editor5">
-class Position {
+class dslprez.Position {
   int x
   int y
-  Position left() {
-     new Position(x - 1, y);
+  dslprez.Position left() {
+     new dslprez.Position(x - 1, y);
   }
-  Position right() {
-    new Position(x + 1 , y);
+  dslprez.Position right() {
+    new dslprez.Position(x + 1 , y);
   }
-  Position up() {
-    new Position(x , y + 1);
+  dslprez.Position up() {
+    new dslprez.Position(x , y + 1);
   }
-  Position down() {
-    new Position(x , y - 1);
+  dslprez.Position down() {
+    new dslprez.Position(x , y - 1);
   }
-  def Position(moveX, moveY) {
+  def dslprez.Position(moveX, moveY) {
      x = moveX
      y = moveY
   }
@@ -765,13 +764,13 @@ class Position {
 class Turtle {
    def currentPosition
   def steps = []
-   Turtle(Position start) {
+   Turtle(dslprez.Position start) {
       currentPosition = start
       steps.add(start)
    }
 
    Turtle move(Direction dir) {
-      Position newPosition
+      dslprez.Position newPosition
       if (dir == Direction.left) {
         newPosition = currentPosition.left()
       } else if (dir == Direction.right) {
@@ -791,7 +790,7 @@ enum Direction {
 }
 
 
-def turtle = new Turtle(new Position(1, 1))
+def turtle = new Turtle(new dslprez.Position(1, 1))
 def compilerConfig = new CompilerConfiguration()
 def binding = new Binding([turtle: turtle,
   						   move: turtle.&move,
@@ -892,42 +891,41 @@ builder.toString()
 <!------------------------------------------------------------------->
 <!-- 6. Command chaining
 <!-- step1: add by
-<1-- step2: category
 <1-- step3: odd number
 <!------------------------------------------------------------------->
 <li class="slide" style="text-align: left" title="Command Chaining (Press 1..6))">
     <textarea id="editor6" name="editor6">
-class Position {
+class dslprez.Position {
   int x
   int y
   Direction direction
-  Position left() {
-     new Position(x, y, Direction.left);
+  dslprez.Position left() {
+     new dslprez.Position(x, y, Direction.left);
   }
-  Position right() {
-    new Position(x, y, Direction.right);
+  dslprez.Position right() {
+    new dslprez.Position(x, y, Direction.right);
   }
-  Position up() {
-    new Position(x , y, Direction.up);
+  dslprez.Position up() {
+    new dslprez.Position(x , y, Direction.up);
   }
-  Position down() {
-    new Position(x , y, Direction.down);
+  dslprez.Position down() {
+    new dslprez.Position(x , y, Direction.down);
   }
-  def Position(moveX, moveY, myDirection) {
+  def dslprez.Position(moveX, moveY, myDirection) {
     x = moveX
     y = moveY
     direction = myDirection
   }
-  Position move(Integer step) {
-    Position newPosition
+  dslprez.Position move(Integer step) {
+    dslprez.Position newPosition
     if(direction == Direction.left) {
-      newPosition = new Position(x - step, y, direction)
+      newPosition = new dslprez.Position(x - step, y, direction)
     } else if(direction == Direction.right) {
-      newPosition = new Position(x + step, y, direction)
+      newPosition = new dslprez.Position(x + step, y, direction)
     } else if(direction == Direction.up) {
-      newPosition = new Position(x, y + step, direction)
+      newPosition = new dslprez.Position(x, y + step, direction)
     } else if(direction == Direction.down) {
-      newPosition = new Position(x, y - step, direction)
+      newPosition = new dslprez.Position(x, y - step, direction)
     }
   }
 }
@@ -935,13 +933,13 @@ class Position {
 class Turtle {
   def currentPosition
   def steps = []
-  Turtle(Position start) {
+  Turtle(dslprez.Position start) {
     currentPosition = start
     steps.add(start)
   }
 
   Turtle move(Direction dir) {
-    Position newPosition
+    dslprez.Position newPosition
     if (dir == Direction.left) {
       newPosition = currentPosition.left()
     } else if (dir == Direction.right) {
@@ -956,7 +954,7 @@ class Turtle {
   }
 
   Turtle by (Integer step) {
-    Position newPosition = currentPosition.move(step)
+    dslprez.Position newPosition = currentPosition.move(step)
     steps.add(newPosition)
     currentPosition = newPosition
     this
@@ -967,7 +965,7 @@ enum Direction {
 }
 
 
-def turtle = new Turtle(new Position(1, 1, Direction.left))
+def turtle = new Turtle(new dslprez.Position(1, 1, Direction.left))
 def compilerConfig = new CompilerConfiguration()
 def binding = new Binding([turtle: turtle,
   						   move: turtle.&move,
@@ -1018,14 +1016,175 @@ builder.toString()
     </div>
 </li>
 
+
 <!------------------------------------------------------------------->
-<!-- Ask
+<!-- 7. Adding behavior to Integer
+<!-- step1: catgory
+<1-- step3: mixin
+<!------------------------------------------------------------------->
+<li class="slide" style="text-align: left" title="Adding behavior to Integer (Press 1..2))">
+    <textarea id="editor7" name="editor7">
+class dslprez.Position {
+  int x
+  int y
+  Direction direction
+  dslprez.Position left() {
+     new dslprez.Position(x, y, Direction.left);
+  }
+  dslprez.Position right() {
+    new dslprez.Position(x, y, Direction.right);
+  }
+  dslprez.Position up() {
+    new dslprez.Position(x , y, Direction.up);
+  }
+  dslprez.Position down() {
+    new dslprez.Position(x , y, Direction.down);
+  }
+  def dslprez.Position(moveX, moveY, myDirection) {
+    x = moveX
+    y = moveY
+    direction = myDirection
+  }
+  dslprez.Position move(Integer step) {
+    dslprez.Position newPosition
+    if(direction == Direction.left) {
+      newPosition = new dslprez.Position(x - step, y, direction)
+    } else if(direction == Direction.right) {
+      newPosition = new dslprez.Position(x + step, y, direction)
+    } else if(direction == Direction.up) {
+      newPosition = new dslprez.Position(x, y + step, direction)
+    } else if(direction == Direction.down) {
+      newPosition = new dslprez.Position(x, y - step, direction)
+    }
+  }
+}
+
+class Turtle {
+  def currentPosition
+  def steps = []
+  Turtle(dslprez.Position start) {
+    currentPosition = start
+    steps.add(start)
+  }
+
+  Turtle move(Direction dir) {
+    dslprez.Position newPosition
+    if (dir == Direction.left) {
+      newPosition = currentPosition.left()
+    } else if (dir == Direction.right) {
+      newPosition = currentPosition.right()
+    } else if (dir == Direction.up) {
+      newPosition = currentPosition.up()
+    } else if (dir == Direction.down) {
+      newPosition = currentPosition.down()
+    }
+    currentPosition = newPosition
+    this
+  }
+
+  Turtle by (Integer step) {
+    dslprez.Position newPosition = currentPosition.move(step)
+    steps.add(newPosition)
+    currentPosition = newPosition
+    this
+  }
+}
+enum Direction {
+  left, right, up, down
+}
+
+
+def turtle = new Turtle(new dslprez.Position(1, 1, Direction.left))
+def compilerConfig = new CompilerConfiguration()
+def binding = new Binding([turtle: turtle,
+  						   move: turtle.&move,
+                           left: Direction.left,
+                           right: Direction.right,
+                           up: Direction.up,
+                           down: Direction.down])
+def shell = new GroovyShell(this.class.classLoader,
+        binding,
+        compilerConfig)
+///////////////////////
+def gameDSL = '''
+2.times {
+  move right by 2
+  move up by 1
+}
+'''
+//////////////////////
+// Run DSL script.
+// result contains turtle object
+// with all steps
+shell.evaluate gameDSL
+def builder = new groovy.json.JsonBuilder()
+builder {
+   steps binding["turtle"].steps
+}
+println builder
+builder.toString()
+
+    </textarea>
+</li>
+
+
+<li class="slide" style="text-align: left" title="output7">
+    <div class="container-narrow">
+        <div class="row-fluid marketing">
+            <div class="span2">
+            </div>
+            <div class="span8">
+                <hr>
+                <pre class="code" id="output7">
+                </pre>
+                <canvas id="canvas7" width="1000" height="1000" style="max-width: 500px; width: 100%;"></canvas>
+                <hr>
+            </div>
+            <div class="span2">
+            </div>
+        </div>
+    </div>
+</li>
+
+<!------------------------------------------------------------------->
+<!-- 8. TypeChecked
+<!-- step1:
+<1-- step3:
+<!------------------------------------------------------------------->
+<li class="slide" style="text-align: left" title="TypeChecked (Press 1..2))">
+    <textarea id="editor8" name="editor8">
+
+   gfgf
+    </textarea>
+</li>
+
+
+<li class="slide" style="text-align: left" title="output8">
+    <div class="container-narrow">
+        <div class="row-fluid marketing">
+            <div class="span2">
+            </div>
+            <div class="span8">
+                <hr>
+                <pre class="code" id="output8">
+                </pre>
+                <canvas id="canvas8" width="1000" height="1000" style="max-width: 500px; width: 100%;"></canvas>
+                <hr>
+            </div>
+            <div class="span2">
+            </div>
+        </div>
+    </div>
+</li>
+
+<!------------------------------------------------------------------->
+<!-- 9. Ask
 <!-- step 1 ask question into variable
 <!-- step 2 ask question assign to variable
 <!-- step 3
 <!------------------------------------------------------------------->
 
-<li class="slide" style="text-align: left" title="Ask syntax (Press 1..2)">
+<li class="slide" style="text-align: left" title="FRanklin wants to ask (Press 1..2)">
     <textarea id="editor9" name="editor9">
 def compilerConfig = new CompilerConfiguration()
 compilerConfig.scriptBaseClass = SurveyScript.class.name
@@ -1101,10 +1260,10 @@ abstract class SurveyScript extends Script {
     </div>
 </li>
 <!------------------------------------------------------------------->
-<!-- AST for user transform
+<!-- 10. AST for user transform
 <!------------------------------------------------------------------->
 <li class="slide" style="text-align: left" title="editor10">
-    <textarea id="editor10" name="editor6">
+    <textarea id="editor10" name="editor10">
 def getShell(binding) {
   def config = new CompilerConfiguration()
   config.addCompilationCustomizers(new SurveyCustomizer())
@@ -1247,7 +1406,9 @@ public class SurveyCustomizer extends CompilationCustomizer {
         </div>
     </div>
 </li>
-
+<!------------------------------------------------------------------->
+<!-- 11. AST for user transform (when)
+<!------------------------------------------------------------------->
 <li class="slide" style="text-align: left" title="editor7">
     <textarea id="editor11" name="editor11">
 def getShell(binding) {
@@ -1433,6 +1594,13 @@ public class SurveyCustomizer extends CompilationCustomizer {
     </div>
 </li>
 
+<!------------------------------------------------------------------->
+<!-- 11. until ... franklin.isHere
+<!------------------------------------------------------------------->
+
+<!------------------------------------------------------------------->
+<!-- 12. demo
+<!------------------------------------------------------------------->
 <li class="slide" style="text-align: left" title="editor12">
     <textarea id="editor12" name="editor12">
 ask "What's your name?" assign to name
@@ -1538,6 +1706,14 @@ ask "Would you come back?" assign to comeback
             <table><tr><td style="vertical-align:middle;"><img  src="img/previous.png" style="height:40px"/></td><td id="previous-title"> Previous</td></tr></table>
         </a>
     </div>
+
+    <div style="float:left;">
+        <a id="run">
+            <table><tr><td style="vertical-align:middle;"><img  src="img/grails4.png" style="height:40px"/></td></tr></table>
+        </a>
+    </div>
+
+
     <div style="display: inline-block; margin:0 auto;">
         <a id="current" style="font-size:20px;">Groovy DSL and User Interaction</a>
     </div>
