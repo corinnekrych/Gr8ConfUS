@@ -59,3 +59,4 @@ grails.project.dependency.resolution = {
         runtime ':hibernate:3.6.10.M3'
     }
 }
+

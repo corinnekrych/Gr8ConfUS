@@ -1,8 +1,11 @@
 package dslprez
 
+import groovy.transform.TypeChecked
+
+@TypeChecked
 class Turtle {
-    def currentPosition
-    def steps = []
+    Position currentPosition
+    List steps = []
     Turtle(Position start) {
         currentPosition = start
         steps.add(start)
@@ -29,6 +32,7 @@ class Turtle {
         currentPosition = newPosition
         this
     }
+
 }
 
 

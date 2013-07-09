@@ -1148,7 +1148,52 @@ builder.toString()
 
 <!------------------------------------------------------------------->
 <!-- 8. TypeChecked
-<!-- step1:
+<!-- step1: runtime error
+2.times {
+  if(true) {
+    move right by "2"
+  }
+  move up by 1
+}
+
+step2: TYpeChecked
+replace def for
+    Position currentPosition
+    List steps = []
+in
+@TypeChecked
+class Turtle {
+    Position currentPosition
+    List steps = []
+    Turtle(Position start) {
+        currentPosition = start
+        steps.add(start)
+    }
+
+    Turtle move(Direction dir) {
+        Position newPosition
+        if (dir == Direction.left) {
+            newPosition = currentPosition.left()
+        } else if (dir == Direction.right) {
+            newPosition = currentPosition.right()
+        } else if (dir == Direction.up) {
+            newPosition = currentPosition.up()
+        } else if (dir == Direction.down) {
+            newPosition = currentPosition.down()
+        }
+        currentPosition = newPosition
+        this
+    }
+
+    Turtle by (Integer step) {
+        Position newPosition = currentPosition.move(step)
+        steps.add(newPosition)
+        currentPosition = newPosition
+        this
+    }
+}
+
+
 <1-- step3:
 <!------------------------------------------------------------------->
 <li class="slide" style="text-align: left" title="TypeChecked (Press 1..2))">
