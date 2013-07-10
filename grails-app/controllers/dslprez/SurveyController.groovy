@@ -85,14 +85,9 @@ class SurveyController {
         def turtle = new dslprez.Turtle(new Position(1, 1, Direction.left))
         def compilerConfig = new CompilerConfiguration()
 
-        def classpath = compilerConfig.getClasspath()
-        classpath << "/Users/corinne/workspace/gr8confus/Gr8ConfUS/ext"
-
-        compilerConfig.setClasspathList(classpath)
-
         compilerConfig.addCompilationCustomizers(
                 new org.codehaus.groovy.control.customizers.ASTTransformationCustomizer(
-                        groovy.transform.TypeChecked, extensions:['TurtleExtention.groovy']))
+                        groovy.transform.TypeChecked, extensions:['TurtleExtension.groovy']))
 
         def binding = new Binding([turtle: turtle,
                 move: turtle.&move,
@@ -105,10 +100,8 @@ class SurveyController {
                 compilerConfig)
 
         def gameDSL = '''
-            2.times {
-              move right by 2
-              move up by 1
-            }
+turtle
+turtleee
         '''
 
         shell.evaluate gameDSL

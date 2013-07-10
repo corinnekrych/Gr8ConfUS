@@ -1,5 +1,5 @@
 unresolvedVariable { var ->
-    if ('turtle' == var.name) {
+    if ('turtleee' == var.name) {
         storeType(var, classNodeFor(dslprez.Turtle))
         handled = true
     }
