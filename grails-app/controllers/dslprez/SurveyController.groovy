@@ -100,8 +100,9 @@ class SurveyController {
                 compilerConfig)
 
         def gameDSL = '''
-turtle
+turtle1
 turtleee
+2
         '''
 
         shell.evaluate gameDSL

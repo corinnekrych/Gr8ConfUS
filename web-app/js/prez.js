@@ -625,6 +625,7 @@ editor7.addKeyMap(keymap7);
 
 //------------------------------------------------------------------->
 // 8. TypeChecked
+//TODO step 1
 //------------------------------------------------------------------->
 var editor8 = new dslPrez.editor("editor8");
 function editor8TurtleSend() {
@@ -636,7 +637,85 @@ var keymap8 = {
     "Ctrl-S": editor8TurtleSend,
     "Cmd-S": editor8TurtleSend
 };
-editor8.addKeyMap(keymap6);
+editor8.addKeyMap(keymap8);
+
+//------------------------------------------------------------------->
+// 9. Turn
+//------------------------------------------------------------------->
+var editor9 = new dslPrez.editor("editor9");
+function editor9TurtleSend() {
+    var value = editor9.getValue();
+    value += "import groovy.lang.Script;\nimport org.codehaus.groovy.control.CompilerConfiguration\n";
+    submitTurtleForm(value, "#output9", 'canvas9');
+}
+var keymap9 = {
+    "Ctrl-S": editor9TurtleSend,
+    "Cmd-S": editor9TurtleSend
+};
+editor9.addKeyMap(keymap9);
+
+//------------------------------------------------------------------->
+// 10. System.exit
+//------------------------------------------------------------------->
+var editor10 = new dslPrez.editor("editor10");
+function editor10TurtleSend() {
+    var value = editor10.getValue();
+    value += "import groovy.lang.Script;\nimport org.codehaus.groovy.control.CompilerConfiguration\n";
+    submitTurtleForm(value, "#output10", 'canvas10');
+}
+var keymap10 = {
+    "Ctrl-S": editor10TurtleSend,
+    "Cmd-S": editor10TurtleSend
+};
+editor10.addKeyMap(keymap10);
+
+
+//------------------------------------------------------------------->
+// 11. ask
+//------------------------------------------------------------------->
+var editor11 = new dslPrez.editor("editor11");
+function editor11Send() {
+    var value = editor11.getValue();
+    value += "import groovy.lang.Script;\nimport org.codehaus.groovy.control.CompilerConfiguration\n";
+    submitForm(value, "#output11");
+}
+var keymap11 = {
+    "Ctrl-S": editor11Send,
+    "Cmd-S": editor11Send
+};
+editor11.addKeyMap(keymap11);
+
+
+//------------------------------------------------------------------->
+// 12. ask AST
+//------------------------------------------------------------------->
+var editor12 = new dslPrez.editor("editor12");
+function editor12Send() {
+    var value = editor12.getValue();
+    value = "import groovy.lang.Script;\nimport org.codehaus.groovy.control.CompilerConfiguration\n"
+        +"import org.codehaus.groovy.ast.*\n"
+        +"import org.codehaus.groovy.ast.expr.*\n"
+        +"import org.codehaus.groovy.ast.stmt.*\n"
+        +"import org.codehaus.groovy.classgen.GeneratorContext\n"
+        +"import org.codehaus.groovy.control.CompilationFailedException\n"
+        +"import org.codehaus.groovy.control.CompilePhase\n"
+        +"import org.codehaus.groovy.control.CompilerConfiguration\n"
+        +"import org.codehaus.groovy.control.SourceUnit\n"
+        +"import org.codehaus.groovy.control.customizers.*\n"
+        +"import org.codehaus.groovy.ast.builder.AstBuilder\n"
+        +"import org.codehaus.groovy.syntax.Token\n"
+        +"import org.codehaus.groovy.syntax.Types\n"
+        +"import static org.objectweb.asm.Opcodes.ACC_PUBLIC\n" + value;
+    submitForm(value, "#output12");
+}
+var keymap12 = {
+    "Ctrl-S": editor12Send,
+    "Cmd-S": editor12Send
+};
+editor12.addKeyMap(keymap12);
+
+
+
 //var editor7 = new dslPrez.editor("editor7");
 //
 //function editor7Send() {

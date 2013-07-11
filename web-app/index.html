@@ -526,7 +526,7 @@ when (franklin.isHere) {
 <!-- step 1 define base class
 <!-- step 2 remove move definition in script
 <!------------------------------------------------------------------->
-<li class="slide" style="text-align: left" title="Script (Press 1)">
+<li class="slide" style="text-align: left" title="Script" keypress="(Press 1)">
     <textarea id="editor1" name="editor1">
 // Configure the GroovyShell.
 def shell = new GroovyShell()
@@ -1150,21 +1150,64 @@ builder.toString()
 <!-- 8. TypeChecked
 <!-- step1: runtime error
 2.times {
-  if(true) {
+  if(false) {
     move right by "2"
   }
   move up by 1
 }
 
-step2: TYpeChecked
-replace def for
-    Position currentPosition
-    List steps = []
-in
-@TypeChecked
+step2: TypeChecked our DSL
+compilerConfig.addCompilationCustomizers(
+  new org.codehaus.groovy.control.customizers.ASTTransformationCustomizer(
+  groovy.transform.TypeChecked, extensions:['TurtleExtension.groovy']))
+
+
+step3:
+in idea uncomment TurtleExtension.groovy
+
+step4
+mooove
+<!------------------------------------------------------------------->
+<li class="slide" style="text-align: left" title="TypeChecked (Press 1..2))">
+    <textarea id="editor8" name="editor8">
+class Position {
+    int x
+    int y
+    Direction direction
+    Position left() {
+        new Position(x, y, Direction.left);
+    }
+    Position right() {
+        new Position(x, y, Direction.right);
+    }
+    Position up() {
+        new Position(x , y, Direction.up);
+    }
+    Position down() {
+        new Position(x , y, Direction.down);
+    }
+    def Position(moveX, moveY, myDirection) {
+        x = moveX
+        y = moveY
+        direction = myDirection
+    }
+    Position move(Integer step) {
+        Position newPosition
+        if(direction == Direction.left) {
+            newPosition = new Position(x - step, y, direction)
+        } else if(direction == Direction.right) {
+            newPosition = new Position(x + step, y, direction)
+        } else if(direction == Direction.up) {
+            newPosition = new Position(x, y + step, direction)
+        } else if(direction == Direction.down) {
+            newPosition = new Position(x, y - step, direction)
+        }
+    }
+}
+
 class Turtle {
-    Position currentPosition
-    List steps = []
+    def currentPosition
+    def steps = []
     Turtle(Position start) {
         currentPosition = start
         steps.add(start)
@@ -1193,13 +1236,47 @@ class Turtle {
     }
 }
 
+enum Direction {
+    left, right, up, down
+}
 
-<1-- step3:
-<!------------------------------------------------------------------->
-<li class="slide" style="text-align: left" title="TypeChecked (Press 1..2))">
-    <textarea id="editor8" name="editor8">
 
-   gfgf
+def turtle = new Turtle(new Position(1, 1, Direction.left))
+def compilerConfig = new CompilerConfiguration()
+
+compilerConfig.addCompilationCustomizers(
+  new org.codehaus.groovy.control.customizers.ASTTransformationCustomizer(
+  groovy.transform.TypeChecked, extensions:['TurtleExtension.groovy']))
+
+def binding = new Binding([turtle: turtle,
+    move: turtle.&move,
+    left: Direction.left,
+    right: Direction.right,
+    up: Direction.up,
+    down: Direction.down])
+
+def shell = new GroovyShell(this.class.classLoader,
+    binding,
+    compilerConfig)
+///////////////////////
+def gameDSL = '''
+move right by 2
+move up by 3
+'''
+//////////////////////
+// Run DSL script.
+// result contains turtle object
+// with all steps
+shell.evaluate gameDSL
+
+def builder = new groovy.json.JsonBuilder()
+builder {
+    steps binding["turtle"].steps
+}
+println builder
+builder.toString()
+
+
     </textarea>
 </li>
 
@@ -1223,14 +1300,305 @@ class Turtle {
 </li>
 
 <!------------------------------------------------------------------->
-<!-- 9. Ask
-<!-- step 1 ask question into variable
-<!-- step 2 ask question assign to variable
-<!-- step 3
+<!-- 9. Turn around
+<!-- step 1 Add the while run kill server
+<!-- step 2 Add timedout
+<!-- step 3 Show the console
 <!------------------------------------------------------------------->
 
-<li class="slide" style="text-align: left" title="FRanklin wants to ask (Press 1..2)">
+<li class="slide" style="text-align: left" title="Franklin wants to turn around">
     <textarea id="editor9" name="editor9">
+class Position {
+    int x
+    int y
+    Direction direction
+    Position left() {
+        new Position(x, y, Direction.left);
+    }
+    Position right() {
+        new Position(x, y, Direction.right);
+    }
+    Position up() {
+        new Position(x , y, Direction.up);
+    }
+    Position down() {
+        new Position(x , y, Direction.down);
+    }
+    def Position(moveX, moveY, myDirection) {
+        x = moveX
+        y = moveY
+        direction = myDirection
+    }
+    Position move(Integer step) {
+        Position newPosition
+        if(direction == Direction.left) {
+            newPosition = new Position(x - step, y, direction)
+        } else if(direction == Direction.right) {
+            newPosition = new Position(x + step, y, direction)
+        } else if(direction == Direction.up) {
+            newPosition = new Position(x, y + step, direction)
+        } else if(direction == Direction.down) {
+            newPosition = new Position(x, y - step, direction)
+        }
+    }
+}
+
+class Turtle {
+    def currentPosition
+    def steps = []
+    Turtle(Position start) {
+        currentPosition = start
+        steps.add(start)
+    }
+
+    Turtle move(Direction dir) {
+        Position newPosition
+        if (dir == Direction.left) {
+            newPosition = currentPosition.left()
+        } else if (dir == Direction.right) {
+            newPosition = currentPosition.right()
+        } else if (dir == Direction.up) {
+            newPosition = currentPosition.up()
+        } else if (dir == Direction.down) {
+            newPosition = currentPosition.down()
+        }
+        currentPosition = newPosition
+        this
+    }
+
+    Turtle by (Integer step) {
+        Position newPosition = currentPosition.move(step)
+        steps.add(newPosition)
+        currentPosition = newPosition
+        this
+    }
+}
+
+enum Direction {
+    left, right, up, down
+}
+
+
+def turtle = new Turtle(new Position(1, 1, Direction.left))
+def compilerConfig = new CompilerConfiguration()
+
+def tc = new org.codehaus.groovy.control.customizers.ASTTransformationCustomizer(
+  groovy.transform.TypeChecked, extensions:['TurtleExtension.groovy'])
+def ti = new org.codehaus.groovy.control.customizers.ASTTransformationCustomizer(
+  [value:5L], groovy.transform.TimedInterrupt)
+
+compilerConfig.addCompilationCustomizers(tc, ti)
+
+def binding = new Binding([turtle: turtle,
+    move: turtle.&move,
+    left: Direction.left,
+    right: Direction.right,
+    up: Direction.up,
+    down: Direction.down])
+
+def shell = new GroovyShell(this.class.classLoader,
+    binding,
+    compilerConfig)
+///////////////////////
+def gameDSL = '''
+while(true) {
+    move right by 2
+    move up by 2
+    move left by 2
+    move down by 2
+}
+'''
+//////////////////////
+// Run DSL script.
+// result contains turtle object
+// with all steps
+shell.evaluate gameDSL
+
+def builder = new groovy.json.JsonBuilder()
+builder {
+    steps binding["turtle"].steps
+}
+println builder
+builder.toString()
+    </textarea>
+</li>
+
+<li class="slide" style="text-align: left" title="output9">
+    <div class="container-narrow">
+        <div class="row-fluid marketing">
+            <div class="span2">
+            </div>
+            <div class="span8">
+                <hr>
+                <pre class="code" id="output9">
+                </pre>
+                <canvas id="canvas9" width="1000" height="1000" style="max-width: 500px; width: 100%;"></canvas>
+                </pre>
+                <hr>
+            </div>
+            <div class="span2">
+            </div>
+        </div>
+    </div>
+</li>
+
+
+<!------------------------------------------------------------------->
+<!-- 10. Sneaky
+<!-- step 1 System run kill server
+<!-- step 2 Add SecureAST
+<!------------------------------------------------------------------->
+
+<li class="slide" style="text-align: left" title="Franklin wants to play with fire">
+    <textarea id="editor10" name="editor10">
+class Position {
+    int x
+    int y
+    Direction direction
+    Position left() {
+        new Position(x, y, Direction.left);
+    }
+    Position right() {
+        new Position(x, y, Direction.right);
+    }
+    Position up() {
+        new Position(x , y, Direction.up);
+    }
+    Position down() {
+        new Position(x , y, Direction.down);
+    }
+    def Position(moveX, moveY, myDirection) {
+        x = moveX
+        y = moveY
+        direction = myDirection
+    }
+    Position move(Integer step) {
+        Position newPosition
+        if(direction == Direction.left) {
+            newPosition = new Position(x - step, y, direction)
+        } else if(direction == Direction.right) {
+            newPosition = new Position(x + step, y, direction)
+        } else if(direction == Direction.up) {
+            newPosition = new Position(x, y + step, direction)
+        } else if(direction == Direction.down) {
+            newPosition = new Position(x, y - step, direction)
+        }
+    }
+}
+
+class Turtle {
+    def currentPosition
+    def steps = []
+    Turtle(Position start) {
+        currentPosition = start
+        steps.add(start)
+    }
+
+    Turtle move(Direction dir) {
+        Position newPosition
+        if (dir == Direction.left) {
+            newPosition = currentPosition.left()
+        } else if (dir == Direction.right) {
+            newPosition = currentPosition.right()
+        } else if (dir == Direction.up) {
+            newPosition = currentPosition.up()
+        } else if (dir == Direction.down) {
+            newPosition = currentPosition.down()
+        }
+        currentPosition = newPosition
+        this
+    }
+
+    Turtle by (Integer step) {
+        Position newPosition = currentPosition.move(step)
+        steps.add(newPosition)
+        currentPosition = newPosition
+        this
+    }
+}
+
+enum Direction {
+    left, right, up, down
+}
+
+
+def turtle = new Turtle(new Position(1, 1, Direction.left))
+def compilerConfig = new CompilerConfiguration()
+
+def tc = new org.codehaus.groovy.control.customizers.ASTTransformationCustomizer(
+  groovy.transform.TypeChecked, extensions:['TurtleExtension.groovy'])
+def ti = new org.codehaus.groovy.control.customizers.ASTTransformationCustomizer(
+  [value:5L], groovy.transform.TimedInterrupt)
+
+
+def secure = new org.codehaus.groovy.control.customizers.SecureASTCustomizer()
+secure.with {
+     receiversClassesBlackList = [
+        System
+     ].asImmutable()
+ }
+
+compilerConfig.addCompilationCustomizers(tc, ti, secure)
+
+def binding = new Binding([turtle: turtle,
+    move: turtle.&move,
+    left: Direction.left,
+    right: Direction.right,
+    up: Direction.up,
+    down: Direction.down])
+
+def shell = new GroovyShell(this.class.classLoader,
+    binding,
+    compilerConfig)
+///////////////////////
+def gameDSL = '''
+    move right by 2
+    move up by 2
+    move left by 2
+    move down by 2
+        System.exit(-1)
+'''
+//////////////////////
+// Run DSL script.
+// result contains turtle object
+// with all steps
+shell.evaluate gameDSL
+
+def builder = new groovy.json.JsonBuilder()
+builder {
+    steps binding["turtle"].steps
+}
+println builder
+builder.toString()
+    </textarea>
+</li>
+
+<li class="slide" style="text-align: left" title="output10">
+    <div class="container-narrow">
+        <div class="row-fluid marketing">
+            <div class="span2">
+            </div>
+            <div class="span8">
+                <hr>
+                <pre class="code" id="output10">
+                </pre>
+                <canvas id="canvas10" width="1000" height="1000" style="max-width: 500px; width: 100%;"></canvas>
+                </pre>
+                <hr>
+            </div>
+            <div class="span2">
+            </div>
+        </div>
+    </div>
+</li>
+
+
+<!------------------------------------------------------------------->
+<!-- 11. AST for user transform
+<!------------------------------------------------------------------->
+
+<li class="slide" style="text-align: left" title="Franklin wants to ask" keypress="(Press 1..2)">
+    <textarea id="editor11" name="editor9">
 def compilerConfig = new CompilerConfiguration()
 compilerConfig.scriptBaseClass = SurveyScript.class.name
 def binding = new Binding()
@@ -1242,7 +1610,7 @@ def shell = new GroovyShell(this.class.classLoader,
 ///////////////////////
 def surveyDSL = '''
 ask "what is your name?" assign to name
-ask "what is your birthdate?" assign to date
+ask "what is your birthday?" assign to date
 display map
 '''
 //////////////////////
@@ -1287,7 +1655,7 @@ abstract class SurveyScript extends Script {
             </div>
             <div class="span8">
                 <hr>
-                <pre class="output" id="output9">
+                <pre class="output" id="output11">
                 </pre>
                 <hr>
             </div>
@@ -1304,11 +1672,13 @@ abstract class SurveyScript extends Script {
         </div>
     </div>
 </li>
+
 <!------------------------------------------------------------------->
-<!-- 10. AST for user transform
+<!-- 12. AST for user transform
 <!------------------------------------------------------------------->
-<li class="slide" style="text-align: left" title="editor10">
-    <textarea id="editor10" name="editor10">
+
+<li class="slide" style="text-align: left" title="editor12">
+    <textarea id="editor12" name="editor12">
 def getShell(binding) {
   def config = new CompilerConfiguration()
   config.addCompilationCustomizers(new SurveyCustomizer())
@@ -1322,7 +1692,7 @@ def inputs = [:]
 binding.setVariable("inputs", inputs)
 def script = """
 ask "what's your name?" assign to name
-ask "First time in Greach?" assign to greach
+ask "what's your birthday?" assign to date
 """
 //first evaluate should run only the first ask
 getShell(binding).evaluate script
@@ -1426,242 +1796,6 @@ public class SurveyCustomizer extends CompilationCustomizer {
     </textarea>
 </li>
 
-<li class="slide" style="text-align: left" title="output10">
-    <div class="container-narrow">
-        <div class="row-fluid marketing">
-            <div class="span2">
-            </div>
-            <div class="span8">
-                <hr>
-                <pre class="output" id="output10">
-                </pre>
-                <hr>
-            </div>
-            <div class="span2">
-            </div>
-        </div>
-    </div>
-</li>
-
-
-<li class="slide" title="DSL Sequence">
-    <div class="row-fluid marketing">
-        <div class="span12">
-            <img src="img/when.png" width="80%"/>
-        </div>
-    </div>
-</li>
-<!------------------------------------------------------------------->
-<!-- 11. AST for user transform (when)
-<!------------------------------------------------------------------->
-<li class="slide" style="text-align: left" title="editor7">
-    <textarea id="editor11" name="editor11">
-def getShell(binding) {
-  def config = new CompilerConfiguration()
-  config.addCompilationCustomizers(new SurveyCustomizer())
-  config.scriptBaseClass = SurveyScript.name
-  new GroovyShell(this.class.classLoader,
-                  binding,
-                  config)
-}
-def inputs = [:]
-def binding = new Binding("inputs": inputs,
-                          "invokeNext": Boolean.TRUE)
-def script = """
-  ask "First time in Greach?" assign to greach
-  when (false) {
-    ask "Are you DSL addicted?" assign to dsl
-  }
-"""
-//first evaluate should run only the first ask
-getShell(binding).evaluate script
-//second evaluate should run only the second ask2
-getShell(binding).evaluate script
-
-
-abstract class SurveyScript extends Script {
-  def ask(question) {
-    [assign : { to ->
-      [:].withDefault {assignment ->
-        inputs.question = question
-        inputs.lastAssignment = assignment
-        println "ask called\n --> with counter: $inputs.counter \n" +
-                "--> question: $inputs.question\n" +
-                "--> stored variables: $inputs.lastAssignment\n" +
-                "______________________________________\n"
-        inputs.counter++
-        invokeNext = Boolean.FALSE
-      }
-    }]
-  }
-
-  def when(Boolean exp, Closure closure) {
-    if(exp) {
-      closure()
-    }  else {
-      inputs.counter++
-    }
-  }
-
-  def propertyMissing(String name) {
-    name
-  }
-
-  //entry point method each time the script is called
-  void dispatch() {
-
-    if(!inputs.answerMap) {
-      inputs.answerMap = [:]
-    }
-    if(!inputs.counter) {
-      inputs.counter=0
-    }
-    inputs.answerMap[inputs.counter] = [variable:inputs.lastAssignment,
-                                        question:inputs.question,
-                                        answer:inputs.answer]
-                                        invokeMethod()
-  }
-
-  def invokeMethod() {
-    try {
-      def methodToInvoke  = this.class.getMethod("doStep_${inputs.counter}")
-      methodToInvoke.invoke(this)
-      if (invokeNext) {
-        invokeMethod()
-      }
-    }
-    catch(NoSuchMethodException exp) {
-      inputs.finished = true
-    }
-  }
-}
-
-public class SurveyCustomizer extends CompilationCustomizer {
-  def step = 0
-
-  public SurveyCustomizer() {
-    super(CompilePhase.CONVERSION);
-  }
-
-  @Override
-  public void call(final SourceUnit source,
-                   final GeneratorContext context,
-                   final ClassNode classNode)
-    throws CompilationFailedException {
-    def methodCalls = []
-    def ast = source.getAST()
-    ast.classes.each {
-      def myClassNode = it
-      it.methods.each {
-        if (it.code instanceof BlockStatement && it.name == "run") {
-          it.code.statements.each {
-            methodCalls << it
-          }
-          def result = new AstBuilder().buildFromCode {
-            this.dispatch()
-          }
-          it.code = result[0];
-        }
-      }
-      methodCalls.each {
-        def booleans = []
-        addStatement(it, myClassNode, booleans)
-      }
-    }
-  }
-
-  private def addStatement(ExpressionStatement exprStmt,
-                           myClassNode,
-                           booleans) {
-    if (exprStmt.expression.hasProperty("method")) {
-      booleans << exprStmt.expression.arguments.expressions[0]
-      def whenClosure = exprStmt.expression.arguments.expressions[1]
-      whenClosure.code.statements.each {
-        addStatement(it, myClassNode, booleans)
-      }
-      if (booleans.size > 0) {
-        booleans.remove(booleans.size-1)
-      }
-    } else {
-      BlockStatement methodCodeBlock = new BlockStatement()
-      if (booleans.size > 0) {
-        def newWhenExpression = getWhenExpression(exprStmt, booleans)
-        methodCodeBlock.addStatement(newWhenExpression)
-      } else {
-        methodCodeBlock.addStatement(exprStmt)
-      }
-      myClassNode.addMethod("doStep_" + step,
-                            1,
-                            null,
-                            [] as Parameter[],
-                            [] as ClassNode[],
-                            methodCodeBlock)
-      step++
-    }
-    step
-  }
-
-  private ExpressionStatement getWhenExpression(ExpressionStatement exprStmt,
-                                                booleans) {
-    BlockStatement block = new BlockStatement()
-    block.addStatement(exprStmt)
-    ClosureExpression closureExpression = new ClosureExpression(null, block)
-
-    Expression binaryExpr = booleans[0];
-    for (def i = 0; i < booleans.size - 1; i++) {
-      binaryExpr = new BinaryExpression(binaryExpr,
-      Token.newSymbol("&&", 0, 0), booleans[i + 1])
-    }
-    new ExpressionStatement(new MethodCallExpression(
-                            new VariableExpression("this"),
-                            new ConstantExpression("when"),
-                            new ArgumentListExpression([binaryExpr,
-                                                        closureExpression])))
-  }
-}
-    </textarea>
-</li>
-
-<li class="slide" style="text-align: left" title="output11">
-    <div class="container-narrow">
-        <div class="row-fluid marketing">
-            <div class="span2">
-            </div>
-            <div class="span8">
-                <hr>
-                <pre class="output" id="output11">
-                </pre>
-                <hr>
-            </div>
-            <div class="span2">
-            </div>
-        </div>
-    </div>
-</li>
-
-<!------------------------------------------------------------------->
-<!-- 11. until ... franklin.isHere
-<!------------------------------------------------------------------->
-
-<!------------------------------------------------------------------->
-<!-- 12. demo
-<!------------------------------------------------------------------->
-<li class="slide" style="text-align: left" title="editor12">
-    <textarea id="editor12" name="editor12">
-ask "What's your name?" assign to name
-ask name + ", why did you come to Greach?" assign to why
-ask "Is this Groovy DSL a great talk?" assign to dsl
-when (dsl == "yes") {
-  ask "HTML5 Hands-on this afternoon?" assign to html5
-  when (html5 == "yes") {
-    ask "With the 3musket33rs ?" assign to us
-  }
-}
-ask "Would you come back?" assign to comeback
-    </textarea>
-</li>
-
-
 <li class="slide" style="text-align: left" title="output12">
     <div class="container-narrow">
         <div class="row-fluid marketing">
@@ -1669,12 +1803,7 @@ ask "Would you come back?" assign to comeback
             </div>
             <div class="span8">
                 <hr>
-                <pre id="output12">
-                <pre style="font-size: 22px;font-family: monospace;line-height: 120%" id="scriptContent"></pre>
-                <label style="font-size: 22px;font-family: monospace;line-height: 120%" for="answer" id="displayQuestion"></label>
-                <input class="input-medium search-query" type="text" id="answer"/>
-                <br style="line-height: 60%"/>
-                <button class="btn" id="submitButton" name="Run">Next</button>
+                <pre class="output" id="output12">
                 </pre>
                 <hr>
             </div>
@@ -1685,23 +1814,9 @@ ask "Would you come back?" assign to comeback
 </li>
 
 
-<li class="slide" style="text-align: left" title="output8bis">
-    <div class="container-narrow">
-        <div class="row-fluid marketing">
-            <div class="span2">
-            </div>
-            <div class="span8">
-                <hr>
-                <pre style="font-size: 30px;font-family: monospace;line-height: 120%" class="output" id="output8bis">
-                </pre>
-                <hr>
-            </div>
-            <div class="span2">
-            </div>
-        </div>
-    </div>
-</li>
-
+<!------------------------------------------------------------------->
+<!-- 12. References
+<!------------------------------------------------------------------->
 
 <li class="slide" title="References">
     <div class="container-narrow">

@@ -34,8 +34,9 @@ class ConsoleController {
 
 		def resultObject = new Result()
 		resultObject.result = stream.toString(encoding)
+        //println "resultobject: $resultObject.result"
         resultObject.shellResult = result
-        println "result: $result"
+        //println "shellresult: $resultObject.shellResult"
 		resultObject.stacktrace = stacktrace
 		
 		// to avoid grails bringing 404 error
