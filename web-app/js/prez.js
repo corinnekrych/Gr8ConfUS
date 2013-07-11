@@ -75,6 +75,10 @@ function editor1Key1() {
         + "}\n"
         + "move \"left\"\n";
     editor1.replaceRange(value, {line:5, ch:0});
+    editor1.addLineClass(5, "background", "highlight");
+    editor1.addLineClass(6, "background", "highlight");
+    editor1.addLineClass(7, "background", "highlight");
+    editor1.addLineClass(8, "background", "highlight");
 }
 function editor1Send() {
     var value = editor1.getValue();
@@ -82,16 +86,25 @@ function editor1Send() {
 }
 
 function editor1Key2() {
+    editor1.removeLineClass(5, "background", "highlight");
+    editor1.removeLineClass(6, "background", "highlight");
+    editor1.removeLineClass(7, "background", "highlight");
+    editor1.removeLineClass(8, "background", "highlight");
     var value = "def left = \"left\"\n";
     editor1.replaceRange(value, {line:8, ch:0});
     editor1.removeLine(9);
     value = "move left\n";
     editor1.replaceRange(value, {line:9, ch:0});
+    editor1.addLineClass(8, "background", "highlight");
+}
+function editor1Key3() {
+    editor1.removeLineClass(8, "background", "highlight");
 }
 
 var keymap = {
     "1" : editor1Key1,
     "2" : editor1Key2,
+    "3" : editor1Key3,
     "Ctrl-S" : editor1Send,
     "Cmd-S" : editor1Send
 };
@@ -194,8 +207,8 @@ function submitTurtleForm(input, output, canvasId) {
 
 //------------------------------------------------------------------->
 // 3. Binding
-// TODO step 1 introduce right in binding
-// TODO step 2 ad move right command
+// step 1 introduce right in binding
+// step 2 ad move right command
 //------------------------------------------------------------------->
 var editor3 = new dslPrez.editor("editor3");
 function editor3Send() {
@@ -203,9 +216,29 @@ function editor3Send() {
     value += "import groovy.lang.Script;\nimport org.codehaus.groovy.control.CompilerConfiguration\n";
     submitForm(value, "#output3");
 }
+
+function editor3Key1() {
+    var value = 'def binding = new Binding([right: "right"])';
+    editor3.replaceRange(value, {line: 7, ch: 0}, {line: 7});
+    editor3.addLineClass(7, "background", "highlight");
+}
+function editor3Key2() {
+    var value = 'move right\n';
+    editor3.replaceRange(value, {line: 14, ch: 0});
+    editor3.removeLineClass(7, "background", "highlight");
+    editor3.addLineClass(14, "background", "highlight");
+}
+function editor3Key3() {
+    var value = 'move right\n';
+    editor3.removeLineClass(14, "background", "highlight");
+}
+
 var keymap3 = {
     "Ctrl-S" :editor3Send,
-    "Cmd-S" :editor3Send
+    "Cmd-S" :editor3Send,
+    "1": editor3Key1,
+    "2": editor3Key2,
+    "3": editor3Key3
 };
 editor3.addKeyMap(keymap3);
 

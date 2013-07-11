@@ -614,14 +614,13 @@ abstract class GameScript extends Script {
 }
 def compilerConfig = new CompilerConfiguration()
 compilerConfig.scriptBaseClass = GameScript.class.name
-def binding = new Binding([right: "right"])
+def binding = new Binding()
 def shell = new GroovyShell(this.class.classLoader,
         binding,
         compilerConfig)
 ///////////////////////
 def gameDSL = '''
 move left
-move right
 '''
 //////////////////////
 // Run DSL script.
