@@ -1241,11 +1241,6 @@ enum Direction {
 
 
 def turtle = new Turtle(new Position(1, 1, Direction.left))
-def compilerConfig = new CompilerConfiguration()
-
-compilerConfig.addCompilationCustomizers(
-  new org.codehaus.groovy.control.customizers.ASTTransformationCustomizer(
-  groovy.transform.TypeChecked, extensions:['TurtleExtension.groovy']))
 
 def binding = new Binding([turtle: turtle,
     move: turtle.&move,
@@ -1254,12 +1249,14 @@ def binding = new Binding([turtle: turtle,
     up: Direction.up,
     down: Direction.down])
 
+def compilerConfig = new CompilerConfiguration()
+
 def shell = new GroovyShell(this.class.classLoader,
     binding,
     compilerConfig)
 ///////////////////////
 def gameDSL = '''
-move right by 2
+moooooooooove right by 2
 move up by 3
 '''
 //////////////////////
@@ -1379,14 +1376,6 @@ enum Direction {
 
 
 def turtle = new Turtle(new Position(1, 1, Direction.left))
-def compilerConfig = new CompilerConfiguration()
-
-def tc = new org.codehaus.groovy.control.customizers.ASTTransformationCustomizer(
-  groovy.transform.TypeChecked, extensions:['TurtleExtension.groovy'])
-def ti = new org.codehaus.groovy.control.customizers.ASTTransformationCustomizer(
-  [value:5L], groovy.transform.TimedInterrupt)
-
-compilerConfig.addCompilationCustomizers(tc, ti)
 
 def binding = new Binding([turtle: turtle,
     move: turtle.&move,
@@ -1394,6 +1383,11 @@ def binding = new Binding([turtle: turtle,
     right: Direction.right,
     up: Direction.up,
     down: Direction.down])
+
+def compilerConfig = new CompilerConfiguration()
+
+compilerConfig.addCompilationCustomizers(
+    new ASTTransformationCustomizer(TypeChecked, extensions:['TurtleExtension.groovy']))
 
 def shell = new GroovyShell(this.class.classLoader,
     binding,
@@ -1522,22 +1516,6 @@ enum Direction {
 
 
 def turtle = new Turtle(new Position(1, 1, Direction.left))
-def compilerConfig = new CompilerConfiguration()
-
-def tc = new org.codehaus.groovy.control.customizers.ASTTransformationCustomizer(
-  groovy.transform.TypeChecked, extensions:['TurtleExtension.groovy'])
-def ti = new org.codehaus.groovy.control.customizers.ASTTransformationCustomizer(
-  [value:5L], groovy.transform.TimedInterrupt)
-
-
-def secure = new org.codehaus.groovy.control.customizers.SecureASTCustomizer()
-secure.with {
-     receiversClassesBlackList = [
-        System
-     ].asImmutable()
- }
-
-compilerConfig.addCompilationCustomizers(tc, ti, secure)
 
 def binding = new Binding([turtle: turtle,
     move: turtle.&move,
@@ -1545,6 +1523,13 @@ def binding = new Binding([turtle: turtle,
     right: Direction.right,
     up: Direction.up,
     down: Direction.down])
+
+def compilerConfig = new CompilerConfiguration()
+
+def tc = new ASTTransformationCustomizer(TypeChecked, extensions:['TurtleExtension.groovy'])
+def ti = new ASTTransformationCustomizer([value:5L], TimedInterrupt)
+
+compilerConfig.addCompilationCustomizers(tc, ti)
 
 def shell = new GroovyShell(this.class.classLoader,
     binding,
@@ -1555,7 +1540,7 @@ def gameDSL = '''
     move up by 2
     move left by 2
     move down by 2
-        System.exit(-1)
+    System.exit(-1)
 '''
 //////////////////////
 // Run DSL script.

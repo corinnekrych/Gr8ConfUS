@@ -664,13 +664,33 @@ var editor8 = new dslPrez.editor("editor8");
 function editor8TurtleSend() {
     var value = editor8.getValue();
     value += "import groovy.lang.Script;\nimport org.codehaus.groovy.control.CompilerConfiguration\n";
+    value += "import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer;\nimport groovy.transform.TypeChecked\n";
     submitTurtleForm(value, "#output8", 'canvas8');
 }
+
+
+function editor8Key1() {
+    var value = "compilerConfig.addCompilationCustomizers(\n" +
+        "    new ASTTransformationCustomizer(TypeChecked, extensions:['TurtleExtension.groovy']))\n\n";
+    editor8.replaceRange(value, {line:82, ch:0});
+    editor8.addLineClass(82, "background", "highlight");
+    editor8.addLineClass(83, "background", "highlight");
+    editor8.addLineClass(84, "background", "highlight");
+}
+function editor8Key2() {
+    editor8.removeLineClass(82, "background", "highlight");
+    editor8.removeLineClass(83, "background", "highlight");
+    editor8.removeLineClass(84, "background", "highlight");
+}
+
 var keymap8 = {
+    "1": editor8Key1,
+    "2": editor8Key2,
     "Ctrl-S": editor8TurtleSend,
     "Cmd-S": editor8TurtleSend
 };
 editor8.addKeyMap(keymap8);
+editor8.scrollIntoView({line:80, ch:0});
 
 //------------------------------------------------------------------->
 // 9. Turn
@@ -679,9 +699,26 @@ var editor9 = new dslPrez.editor("editor9");
 function editor9TurtleSend() {
     var value = editor9.getValue();
     value += "import groovy.lang.Script;\nimport org.codehaus.groovy.control.CompilerConfiguration\n";
+    value += "import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer;\nimport groovy.transform.TypeChecked\n";
+    value += "import groovy.transform.TimedInterrupt\n";
     submitTurtleForm(value, "#output9", 'canvas9');
 }
+
+
+function editor9Key1() {
+    var value = "    new ASTTransformationCustomizer(TypeChecked, extensions:['TurtleExtension.groovy']),\n" +
+                "    new ASTTransformationCustomizer([value:5L], TimedInterrupt))\n";
+    editor9.removeLine(83);
+    editor9.replaceRange(value, {line:83, ch:0});
+    editor9.addLineClass(84, "background", "highlight");
+}
+function editor9Key2() {
+    editor9.removeLineClass(84, "background", "highlight");
+}
+
 var keymap9 = {
+    "1":editor9Key1,
+    "2":editor9Key2,
     "Ctrl-S": editor9TurtleSend,
     "Cmd-S": editor9TurtleSend
 };
@@ -694,9 +731,42 @@ var editor10 = new dslPrez.editor("editor10");
 function editor10TurtleSend() {
     var value = editor10.getValue();
     value += "import groovy.lang.Script;\nimport org.codehaus.groovy.control.CompilerConfiguration\n";
+    value += "import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer;\nimport groovy.transform.TypeChecked\n";
+    value += "import groovy.transform.TimedInterrupt;\nimport org.codehaus.groovy.control.customizers.SecureASTCustomizer\n"
     submitTurtleForm(value, "#output10", 'canvas10');
 }
+
+function editor10Key1() {
+    var value = "def secure = new SecureASTCustomizer()\n" +
+                "secure.with {\n" +
+                "    receiversClassesBlackList = [\n" +
+                "        java.lang.System\n" +
+                "    ].asImmutable()\n" +
+                "}\n\n";
+
+    editor10.replaceRange(value, {line:85, ch:0});
+    editor10.addLineClass(85, "background", "highlight");
+    editor10.addLineClass(86, "background", "highlight");
+    editor10.addLineClass(87, "background", "highlight");
+    editor10.addLineClass(88, "background", "highlight");
+    editor10.addLineClass(89, "background", "highlight");
+    editor10.addLineClass(90, "background", "highlight");
+    editor10.removeLine(92);
+    var value = "compilerConfig.addCompilationCustomizers(tc, ti, secure)\n";
+    editor10.replaceRange(value, {line:92, ch:0});
+}
+function editor10Key2() {
+    editor10.removeLineClass(85, "background", "highlight");
+    editor10.removeLineClass(86, "background", "highlight");
+    editor10.removeLineClass(87, "background", "highlight");
+    editor10.removeLineClass(88, "background", "highlight");
+    editor10.removeLineClass(89, "background", "highlight");
+    editor10.removeLineClass(90, "background", "highlight");
+}
+
 var keymap10 = {
+    "1":editor10Key1,
+    "2":editor10Key2,
     "Ctrl-S": editor10TurtleSend,
     "Cmd-S": editor10TurtleSend
 };
