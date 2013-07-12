@@ -14,6 +14,7 @@ dslPrez.editor = function (location) {
 
     var inside = false;
 
+
     var editor = CodeMirror.fromTextArea(document.getElementById(location), {
         lineNumbers: true,
         theme: "eclipse",
@@ -40,7 +41,6 @@ dslPrez.editor = function (location) {
         wrap.style.height = winHeight() + "px";
         editor.refresh();
     };
-
 
     $(window).resize(function() {
         resizeForSlide();

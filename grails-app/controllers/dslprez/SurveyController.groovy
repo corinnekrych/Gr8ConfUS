@@ -4,7 +4,7 @@ import grails.converters.JSON
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.springframework.dao.DataIntegrityViolationException
 import org.codehaus.groovy.grails.web.json.JSONObject
-
+import groovy.transform.TypeChecked
 class SurveyController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -79,18 +79,16 @@ class SurveyController {
 
         render binding.inputs as JSON
     }
-// Groovy 2.1
-// upgrade groovy 2.0.7
-//    class StepCategory {
-//        static Integer getSteps(Integer self) {
-//            self
-//        }
-//    }
-
 
     def runTurtle() {
+
         def turtle = new dslprez.Turtle(new Position(1, 1, Direction.left))
         def compilerConfig = new CompilerConfiguration()
+
+        compilerConfig.addCompilationCustomizers(
+                new org.codehaus.groovy.control.customizers.ASTTransformationCustomizer(
+                        groovy.transform.TypeChecked, extensions:['TurtleExtension.groovy']))
+
         def binding = new Binding([turtle: turtle,
                 move: turtle.&move,
                 left: Direction.left,
@@ -101,24 +99,17 @@ class SurveyController {
                 binding,
                 compilerConfig)
 
-        //Integer.mixin SurveyController.StepCategory
-
-
-///////////////////////
         def gameDSL = '''
-2.times {
-  move right by 2
-  move up by 1
-}
-'''
-//////////////////////
-// Run DSL script.
-// result contains turtle object
-// with all steps
+turtle1
+turtleee
+2
+        '''
+
         shell.evaluate gameDSL
         def builder = new groovy.json.JsonBuilder()
+        List turtleSteps =  ((Turtle)binding["turtle"]).steps
         builder {
-            steps binding["turtle"].steps
+            steps turtleSteps
         }
         println builder
         render builder as JSON
