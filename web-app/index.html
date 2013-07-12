@@ -653,7 +653,7 @@ def result = shell.evaluate gameDSL
 <!-- step4 inject binding, remove def left in GameScript
 <!-- step5 replace inheritance by binding
 <!------------------------------------------------------------------->
-<li class="slide" style="text-align: left" title="Add Turtle class (Press 1..8)">
+<li class="slide" style="text-align: left" title="Add Turtle class (Press 1..7)">
     <textarea id="editor4" name="editor4">
 // Configure the GroovyShell.
 abstract class GameScript extends Script {
@@ -858,7 +858,7 @@ step 5: remove steps.add from turtle mve
 step 6: add steps.add to turtle by
 step 7: change new Position to add direction
 ------------------------------------------------------------------->
-<li class="slide" style="text-align: left" title="Command Chaining (Press 1..7))">
+<li class="slide" style="text-align: left" title="Command Chaining (Press 1..7)">
     <textarea id="editor6" name="editor6">
 class Position {
   int x
@@ -992,7 +992,15 @@ builder.toString()
     <div class="row-fluid marketing">
         <div class="span1">
         </div>
-        <div class="span10">
+        <div class="span5">
+            <hr>
+            <div style="line-height:150%;font-size:25px;text-align:left;">
+                <div style="color:grey"> move left by 2</div>
+                <div>    => move(left).by(2)</div>
+            </div>
+            <hr>
+        </div>
+        <div class="span5">
             <hr>
             <div style="line-height:150%;font-size:25px;text-align:left;">
                 <div style="color:grey"> move left by 2 steps</div>
@@ -1011,7 +1019,7 @@ step 2: move left by 2 steps
 step 3: highlight by method
 step 4: change by method to return map
 ------------------------------------------------------------------->
-<li class="slide" style="text-align: left" title="Odd Command Chaining (Press 1..4))">
+<li class="slide" style="text-align: left" title="Odd Command Chaining (Press 1..4)">
     <textarea id="editor6b" name="editor6">
 class Position {
   int x
@@ -1134,12 +1142,17 @@ builder.toString()
     </div>
 </li>
 
-<!------------------------------------------------------------------->
-<!-- 7. Adding behavior to Integer
-<!-- step1: catgory
-<1-- step3: mixin
-<!------------------------------------------------------------------->
-<li class="slide" style="text-align: left" title="Adding behavior to Integer (Press 1..2))">
+<!-------------------------------------------------------------------
+7. Adding behavior to Integer
+step1: highlight dsl
+step2: move left by 2.steps
+step3: add class StepCategory
+step4: highlight shell.eval
+step5: modify shell.eval with use()
+step6: highlight class StepCategory
+step7: replace with @Category annotation
+------------------------------------------------------------------->
+<li class="slide" style="text-align: left" title="Adding behavior to Integer (Press 1..7)">
     <textarea id="editor7" name="editor7">
 class Position {
   int x
@@ -1263,29 +1276,12 @@ builder.toString()
     </div>
 </li>
 
+<!-------------------------------------------------------------------
+8. TypeChecked
+step 1: highlight compiler
+step 2: add typechecked ext
 <!------------------------------------------------------------------->
-<!-- 8. TypeChecked
-<!-- step1: runtime error
-2.times {
-  if(false) {
-    move right by "2"
-  }
-  move up by 1
-}
-
-step2: TypeChecked our DSL
-compilerConfig.addCompilationCustomizers(
-  new org.codehaus.groovy.control.customizers.ASTTransformationCustomizer(
-  groovy.transform.TypeChecked, extensions:['TurtleExtension.groovy']))
-
-
-step3:
-in idea uncomment TurtleExtension.groovy
-
-step4
-mooove
-<!------------------------------------------------------------------->
-<li class="slide" style="text-align: left" title="TypeChecked (Press 1..2))">
+<li class="slide" style="text-align: left" title="TypeChecked (Press 1..2)">
     <textarea id="editor8" name="editor8">
 class Position {
     int x
@@ -1413,14 +1409,15 @@ builder.toString()
     </div>
 </li>
 
-<!------------------------------------------------------------------->
-<!-- 9. Turn around
-<!-- step 1 Add the while run kill server
-<!-- step 2 Add timedout
-<!-- step 3 Show the console
-<!------------------------------------------------------------------->
+<!-------------------------------------------------------------------
+9. Turn around
+step1: highlight dsl
+step2: modify dsl with infinite loop
+step3: highlight ASTTransformationCustomizer
+step4: add TimeInterrupt
+------------------------------------------------------------------->
 
-<li class="slide" style="text-align: left" title="Franklin wants to turn around">
+<li class="slide" style="text-align: left" title="Franklin wants to turn around (Press 1..4)">
     <textarea id="editor9" name="editor9">
 class Position {
     int x
@@ -1512,12 +1509,12 @@ def shell = new GroovyShell(this.class.classLoader,
     compilerConfig)
 ///////////////////////
 def gameDSL = '''
-while(true) {
+
     move right by 2
     move up by 2
-    move left by 2
-    move down by 2
-}
+    move right by 2
+    move up by 2
+
 '''
 //////////////////////
 // Run DSL script.
@@ -1554,13 +1551,14 @@ builder.toString()
 </li>
 
 
-<!------------------------------------------------------------------->
-<!-- 10. Sneaky
-<!-- step 1 System run kill server
-<!-- step 2 Add SecureAST
-<!------------------------------------------------------------------->
+<!-------------------------------------------------------------------
+10. Sneaky
+step 1: highlight dsl
+step 2: add system.exit
+step 3: add SecureASTCustomizer
+------------------------------------------------------------------->
 
-<li class="slide" style="text-align: left" title="Franklin wants to play with fire">
+<li class="slide" style="text-align: left" title="Franklin wants to play with fire (Press 1..3)">
     <textarea id="editor10" name="editor10">
 class Position {
     int x
@@ -1658,7 +1656,7 @@ def gameDSL = '''
     move up by 2
     move left by 2
     move down by 2
-    System.exit(-1)
+
 '''
 //////////////////////
 // Run DSL script.
@@ -1695,62 +1693,38 @@ builder.toString()
 </li>
 
 
-<!------------------------------------------------------------------->
-<!-- 11.ask
-<!------------------------------------------------------------------->
+<!-------------------------------------------------------------------
+11.ask
+step1: insert DSL ask
+step2: add ask method
+step3: add propertyMissingMethod
+step4: add display map method
+step5: add display map in DSL
+------------------------------------------------------------------->
 
-<li class="slide" style="text-align: left" title="Franklin wants to ask" keypress="(Press 1..2)">
+<li class="slide" style="text-align: left" title="Franklin wants to ask" keypress="(Press 1..5)">
     <textarea id="editor11" name="editor9">
+abstract class GameScript extends Script {
+
+
+}
 def compilerConfig = new CompilerConfiguration()
-compilerConfig.scriptBaseClass = SurveyScript.class.name
+compilerConfig.scriptBaseClass = GameScript.class.name
 def binding = new Binding()
-// Configure the GroovyShell.
 def shell = new GroovyShell(this.class.classLoader,
                             binding,
                             compilerConfig)
-
 ///////////////////////
 def surveyDSL = '''
-ask "what is your name?" assign to name
-ask "what is your birthday?" assign to date
-display map
+
 '''
 //////////////////////
 // Run DSL script.
 shell.evaluate surveyDSL
-
-abstract class SurveyScript extends Script {
-
-  def i = 1;
-  def map = [:]
-
-  def ask(question) {
-    [assign : { to ->
-      [:].withDefault {variable ->
-        map["question$i"] = question
-        map["variable$i"] = variable
-        i++
-      }
-    }]
-  }
-
-  def propertyMissing(def propertyName) {
-    propertyName
-  }
-
-  def display(Map mapToDisplay) {
-    mapToDisplay.eachWithIndex { key, value, index ->
-      println "$key: $value"
-      if (index % 2) {
-        println "______________________________________\n"
-      }
-    }
-  }
-}
     </textarea>
 </li>
 
-<li class="slide" style="text-align: left" title="output9">
+<li class="slide" style="text-align: left" title="output11">
     <div class="container-narrow">
         <div class="row-fluid marketing">
             <div class="span2">

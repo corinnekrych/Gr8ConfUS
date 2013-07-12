@@ -25,7 +25,7 @@ class ConsoleController {
 		System.setErr(printStream)
 		try {
 			result = new GroovyShell(this.class.classLoader, aBinding).evaluate(params.content)
-		} catch (groovy.lang.GroovyRuntimeException e) {
+		} catch (Throwable e) {
 			stacktrace = e.message - 'startup failed:\nScript1.groovy: '
 		} finally {
 			System.setOut(originalOut)
