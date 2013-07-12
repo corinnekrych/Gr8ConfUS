@@ -115,43 +115,43 @@ var showSlide = function(index) {
                 window[$(slides[index]).children()[0].id].focus();
             }
 
-            if (supportsTouch) {
-                if ($(slides[index]).children()[0].id === 'editor1') {
-                    $('#current').parent().append('<button id="key1" onclick="editor1Key1()"> 1 </button>');
-                    $('#current').parent().append('<button id="send" onclick="editor1Send()"> Send </button>');
-                } else if ($(slides[index]).children()[0].id === 'editor2') {
-                    $('#current').parent().append('<button id="key1" onclick="editor2Key1()"> 1</button>');
-                    $('#current').parent().append('<button id="key2" onclick="editor2Key2()">2</button>');
-                    $('#current').parent().append('<button id="key3" onclick="editor2Key3()">3</button>');
-                    $('#current').parent().append('<button id="key4" onclick="editor2Key4()">4 </button>');
-                    $('#current').parent().append('<button id="send" onclick="editor2Send()"> Send </button>');
-                } else if ($(slides[index]).children()[0].id === 'editor3') {
-                    $('#current').parent().append('<button id="key1" onclick="editor3Key1()"> 1</button>');
-                    $('#current').parent().append('<button id="key2" onclick="editor3Key2()">2</button>');
-                    $('#current').parent().append('<button id="key3" onclick="editor3Key3()">3</button>');
-                    $('#current').parent().append('<button id="key4" onclick="editor3Key4()">4</button>');
-                    $('#current').parent().append('<button id="key5" onclick="editor3Key5()">5</button>');
-                    $('#current').parent().append('<button id="key6" onclick="editor3Key6()">6 </button>');
-                    $('#current').parent().append('<button id="send" onclick="editor3Send()"> Send </button>');
-                } else if ($(slides[index]).children()[0].id === 'editor4') {
-                    $('#current').parent().append('<button id="key1" onclick="editor4Key1()"> 1</button>');
-                    $('#current').parent().append('<button id="key2" onclick="editor4Key2()">2</button>');
-                    $('#current').parent().append('<button id="key3" onclick="editor4Key3()">3</button>');
-                    $('#current').parent().append('<button id="key4" onclick="editor4Key4()">4 </button>');
-                    $('#current').parent().append('<button id="send" onclick="editor4Send()"> Send </button>');
-                } else if ($(slides[index]).children()[0].id === 'editor5') {
-                    $('#current').parent().append('<button id="key1" onclick="editor5Key1()"> 1</button>');
-                    $('#current').parent().append('<button id="key2" onclick="editor5Key2()">2 </button>');
-                    $('#current').parent().append('<button id="send" onclick="editor5Send()"> Send </button>');
-                } else if ($(slides[index]).children()[0].id === 'editor6') {
-                    $('#current').parent().append('<button id="send" onclick="editor6Send()"> Send </button>');
-                } else if ($(slides[index]).children()[0].id === 'editor7') {
-                    $('#current').parent().append('<button id="send" onclick="editor7Send()"> Send </button>');
-                } else if ($(slides[index]).children()[0].id === 'editor8') {
-                    $('#current').parent().append('<button id="send" onclick="editor8Send()"> Send </button>');
-                }
-            }
-
+//            if (supportsTouch) {
+//                if ($(slides[index]).children()[0].id === 'editor1') {
+//                    $('#current').parent().append('<button id="key1" onclick="editor1Key1()"> 1 </button>');
+//                    $('#current').parent().append('<button id="send" onclick="editor1Send()"> Send </button>');
+//                } else if ($(slides[index]).children()[0].id === 'editor2') {
+//                    $('#current').parent().append('<button id="key1" onclick="editor2Key1()"> 1</button>');
+//                    $('#current').parent().append('<button id="key2" onclick="editor2Key2()">2</button>');
+//                    $('#current').parent().append('<button id="key3" onclick="editor2Key3()">3</button>');
+//                    $('#current').parent().append('<button id="key4" onclick="editor2Key4()">4 </button>');
+//                    $('#current').parent().append('<button id="send" onclick="editor2Send()"> Send </button>');
+//                } else if ($(slides[index]).children()[0].id === 'editor3') {
+//                    $('#current').parent().append('<button id="key1" onclick="editor3Key1()"> 1</button>');
+//                    $('#current').parent().append('<button id="key2" onclick="editor3Key2()">2</button>');
+//                    $('#current').parent().append('<button id="key3" onclick="editor3Key3()">3</button>');
+//                    $('#current').parent().append('<button id="key4" onclick="editor3Key4()">4</button>');
+//                    $('#current').parent().append('<button id="key5" onclick="editor3Key5()">5</button>');
+//                    $('#current').parent().append('<button id="key6" onclick="editor3Key6()">6 </button>');
+//                    $('#current').parent().append('<button id="send" onclick="editor3Send()"> Send </button>');
+//                } else if ($(slides[index]).children()[0].id === 'editor4') {
+//                    $('#current').parent().append('<button id="key1" onclick="editor4Key1()"> 1</button>');
+//                    $('#current').parent().append('<button id="key2" onclick="editor4Key2()">2</button>');
+//                    $('#current').parent().append('<button id="key3" onclick="editor4Key3()">3</button>');
+//                    $('#current').parent().append('<button id="key4" onclick="editor4Key4()">4 </button>');
+//                    $('#current').parent().append('<button id="send" onclick="editor4Send()"> Send </button>');
+//                } else if ($(slides[index]).children()[0].id === 'editor5') {
+//                    $('#current').parent().append('<button id="key1" onclick="editor5Key1()"> 1</button>');
+//                    $('#current').parent().append('<button id="key2" onclick="editor5Key2()">2 </button>');
+//                    $('#current').parent().append('<button id="send" onclick="editor5Send()"> Send </button>');
+//                } else if ($(slides[index]).children()[0].id === 'editor6') {
+//                    $('#current').parent().append('<button id="send" onclick="editor6Send()"> Send </button>');
+//                } else if ($(slides[index]).children()[0].id === 'editor7') {
+//                    $('#current').parent().append('<button id="send" onclick="editor7Send()"> Send </button>');
+//                } else if ($(slides[index]).children()[0].id === 'editor8') {
+//                    $('#current').parent().append('<button id="send" onclick="editor8Send()"> Send </button>');
+//                }
+//            }
+//
         }
     });
     var previous;
@@ -171,8 +171,8 @@ var showSlide = function(index) {
     $('#previous-title').empty().append(newPrevious);
     var newNext = $(slides[next]).attr('title');
     $('#next-title').empty().append(newNext);
-    $('#current').empty().append($(slides[index]).attr('title'));
-
+    $('#currentTitle').empty().append($(slides[index]).attr('title'));
+    $('#currentPress').empty().append($(slides[index]).attr('press'));
 };
 
 var showCloud = function() {
