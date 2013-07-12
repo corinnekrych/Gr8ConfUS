@@ -24,21 +24,21 @@
 <div id="header" >
     <div style="float:left">
         <a href="http://groovy.codehaus.org">
-            <table><tr><td style="vertical-align:middle;"><img  src="img/groovy.png" style="height:35px"/></td><td > </td></tr></table>
+            <table><tr><td style="vertical-align:middle;"><img  src="img/turtle1.png" style="height:35px"/></td><td > </td></tr></table>
         </a>
     </div>
     <div style="display: inline-block; margin:0 auto;">
-        <a href="https://github.com/corinnekrych/Gr8ConfUS">Groovy DSL for Kids</a>
+        <a id="currentTitle" style="font-size:20px;" href="https://github.com/corinnekrych/Gr8ConfUS">Groovy DSL for Kids</a>
     </div>
     <div style="float:right">
         <a href="http://grails.org">
-            <table><tr><td style="vertical-align: middle; "> </td><td><img src="img/grails.png" style="height:35px"/></td></tr></table>
+            <table><tr><td style="vertical-align: middle; "> </td><td><img src="img/turtle2.png" style="height:35px"/></td></tr></table>
         </a>
     </div>
 </div>
 <div style="overflow: hidden;" id="wrapper">
 <ul>
-<li class="slide"  title="Start">
+<li class="slide"  title="">
 
     <div class="container-narrow">
         <hr>
@@ -63,7 +63,7 @@
 
         <div class="jumbotron">
             <p>to run this presentation: be full screen (F11)</p>
-            <p>to submit the editor code to cloud foundry: ctrl S (command S on Mac)</p>
+            <p>to submit the editor code to Heroku: ctrl S (command S on Mac)</p>
             <p>be careful using 1,2,3... it makes code snippet appears in the editor(focus must be inside editor)</p>
         </div>
 
@@ -289,13 +289,23 @@
         </div>
         <hr>
         <div class="row-fluid marketing">
-            <div class="span2">
+            <div class="span12">
+                <h1>From</h1><br/>
+                <div style="float: left; font-size: 25px; text-align: center; display: inline-block; width: 50%">
+                    <img src="img/grails48.jpg" width="80%"/>
+                </div>
+                <div style="float: left; font-size: 25px; text-align: center; display: inline-block; width: 50%">
+                    <img src="img/amadeus.jpg" width="80%"/>
+                </div>
             </div>
-            <div class="span8">
-                <p style="line-height: 150%;font-size: 35px"><strong>Grails48 + Amadeus<strong></p>
-                <p style="line-height: 150%;font-size: 30px" ></p>
+        </div>
+        <div class="jumbotron">
+            <h1>To Kissing Turtles</h1><br/>
+            <div style="float: left; font-size: 25px; text-align: center; display: inline-block; width: 50%">
+                <img src="img/turtle1.png" width="40%"/>
             </div>
-            <div class="span2">
+            <div style="float: left; font-size: 25px; text-align: center; display: inline-block; width: 50%">
+                <img src="img/turtle2.png" width="40%"/>
             </div>
         </div>
     </div>
@@ -315,6 +325,16 @@
                 <p style="line-height: 150%;font-size: 35px"><strong>Domain-specific language</strong> (noun)</p>
                 <p style="line-height: 150%;font-size: 30px" >a computer programming language of limited expressiveness focused on a particular domain</p>
                 <h3>- Martin Fowler</h3>
+            </div>
+            <div class="span2">
+            </div>
+        </div>
+        <div class="row-fluid marketing">
+            <div class="span2">
+            </div>
+            <div class="span8">
+                <p style="line-height: 150%;font-size: 30px" >a language offering expressive power focused on a particular problem domain, such as a specific class of applications or application aspect</p>
+                <h3>- Czarnecki Krzysztof </h3>
             </div>
             <div class="span2">
             </div>
@@ -461,12 +481,12 @@
             <div class="span6">
                 <h1>Internal</h1>
                 <pre style="text-align: left;white-space: pre;font-size: 16px">
-<b style="color:#AF956F;">class</b> HelloSpock <b style="color:#AF956F;">extends</b> spock.lang.Specification {
-  <b style="color:#AF956F;">def</b> <b style="color:#5D90CD;">"length of Spock's and his friends' names"</b>() {
-    expect:
-    name.size() == length
+<b style="color:#AF956F;">class</b> HelloSpock <b style="color:#AF956F;">extends</b> Specification {
+ <b style="color:#AF956F;">def</b> <b style="color:#5D90CD;">"Spock's and his friends' names length"</b>() {
+  expect:
+   name.size() == length
 
-    where:
+   where:
     name     | length
     <b style="color:#5D90CD;">"Spock"</b>  | <b style="color:#46A609;">5</b>
     <b style="color:#5D90CD;">"Kirk"</b>   | <b style="color:#46A609;">4</b>
@@ -501,17 +521,17 @@
                 <h1>User1: Franklin</h1>
                 <hr>
                 <pre class="code">move left by 2.steps
-
-when (franklin.isHere) {
-
-}</pre>
+move up by 3.steps
+</pre>
                 <hr>
             </div>
             <div class="span6">
                 <h1>User2: Emily</h1>
                 <hr>
                 <div> </div>
-                <pre class="code">['cake', 'smoothie'].each{eat it}</pre>
+                <pre class="code">move left by 2.steps
+ask "What's is your name?" assign to name
+</pre>
                 <hr>
             </div>
 
@@ -1939,11 +1959,11 @@ public class SurveyCustomizer extends CompilationCustomizer {
                 <a href="https://github.com/corinnekrych/Gr8ConfUS" style="line-height: 150%;font-size:20px;">https://github.com/corinnekrych/Gr8ConfUS</a>
 
                 <div style="line-height: 150%;font-size:30px;font-weight:bold">Want to play with it?</div>
-                <a href='http://dslprez.cloudfoundry.com' style="line-height: 150%;font-size:20px;">http://dslprez.cloudfoundry.com</a>
+                <a href='http://heroku.com' style="line-height: 150%;font-size:20px;">http://heroku.com</a>
             </div>
             <div class="span5">
                 <div style="line-height: 150%;font-size:30px;font-weight:bold">Special Thanks</div>
-                <div style="line-height: 150%;font-size:20px;">Fabrice Matrat</div>
+                <div style="line-height: 150%;font-size:20px;">Mathieu Bruyen, Sebastien Blanc</div>
                 <div style="line-height: 150%;font-size:30px;font-weight:bold">References</div>
                 <div style="line-height: 150%;font-size:20px;">Domain-Specific Languages</div>
                 <div style="line-height: 150%;font-size:20px;font-style:italic">Martin Fowler, with Rebecca Parsons</div>
@@ -1975,7 +1995,7 @@ public class SurveyCustomizer extends CompilationCustomizer {
 
 
     <div style="display: inline-block; margin:0 auto;">
-        <a id="current" style="font-size:20px;">Groovy DSL and User Interaction</a>
+        <a id="currentPress" style="font-size:20px;"></a>
     </div>
     <div style="float:right;">
         <a id="next">
