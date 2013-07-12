@@ -35,7 +35,19 @@ grails.project.dependency.resolution = {
 
         // runtime 'mysql:mysql-connector-java:5.1.16'
         runtime 'postgresql:postgresql:9.1-901-1.jdbc4'
-    }
+ 
+        runtime 'org.scala-lang:scala-compiler:2.11.0-M3'
+        runtime 'org.scala-lang:scala-library:2.11.0-M3'
+        runtime 'org.scala-lang:jline:2.11.0-M3'
+	runtime 'org.scala-lang.plugins:continuations:2.11.0-M3'
+     //   runtime 'org.scala-lang:scalap:2.11.0-M3'
+      //  runtime 'org.scala-lang:scala-actors:2.11.0-M3'
+      // runtime 'org.scala-lang:scala-swing:2.11.0-M3'
+        runtime 'org.scala-lang:scala-reflect:2.11.0-M3'
+      //  runtime 'org.scala-lang:scala-partest:2.11.0-M3'
+
+
+   }
 
     plugins {
         //runtime ":hibernate:$grailsVersion"
@@ -47,6 +59,10 @@ grails.project.dependency.resolution = {
         //runtime ":cached-resources:1.0"
         //runtime ":yui-minify-resources:0.1.4"
 
+   grails.plugin.location.scala="/usr/home/pcohen/Dev/workspace/grails-scala"
+        compile ":scala:0.6.5.2"
+
+
         //build ":tomcat:$grailsVersion"
 
         compile ':heroku:1.0.1'
@@ -54,8 +70,8 @@ grails.project.dependency.resolution = {
         compile ':webxml:1.4.1'
 
         // plugins for the build system only
-        build ':tomcat:7.0.39'
+        build ':tomcat:2.2.3'
         // plugins needed at runtime but not for compilation
-        runtime ':hibernate:3.6.10.M3'
+        runtime ':hibernate:2.2.3'
     }
 }
