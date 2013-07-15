@@ -278,11 +278,13 @@ editor3.addKeyMap(keymap3);
 
 //------------------------------------------------------------------->
 // 4. Structure my code
-// TODO step 1 dslprez.Position
-// TODO step 2 Turtle
-// TODO step 3 Direction
-// TODO step4 inject binding, remove def left in GameScript
-// TODO step5 replace inheritance by binding
+// step 1 add Position
+// step 2 add Driection enums
+// step 3 add turtle class
+// step 4 new Turtle()
+// step 5 highlight compilerconf + binding
+// step 6 inject binding,
+// step 7 remove def left in GameScript
 //------------------------------------------------------------------->
 var editor4 = new dslPrez.editor("editor4");
 function editor4Send() {
@@ -416,11 +418,13 @@ editor4.addKeyMap(keymap4);
 
 //------------------------------------------------------------------->
 // 5. Building JSON
-//  step 1 use steps instead println
-//  step 2 after eval get value of steps
-//  step 3 jsonbuilder
-//  step 4 up stairs
-//  step 5 if
+//  step 1 def step= [] to use steps instead println
+//  step 2 steps.add(start) to store initial position steps after move
+//  step 3 hightlight
+//  step 4 steps.add(newPosition) to store position after move
+//  step 5 add json builder
+//  step 6 highlight
+//  step 7 mix plain groovy + DSL 4.times {move left}
 //------------------------------------------------------------------->
 var editor5 = new dslPrez.editor("editor5");
 function editor5Send() {
@@ -487,11 +491,6 @@ function editor5Key8() {
     for(var i = 64; i <68 ; i++) {
         editor5.removeLineClass(i, "background", "highlight");
     }
-    var value = "4.times {\n" +
-        "  move right\n" +
-        "  move up\n" +
-        "}";
-    editor5.replaceRange(value, {line: 64, ch: 0}, {line: 67});
 }
 
 var keymap5 = {
