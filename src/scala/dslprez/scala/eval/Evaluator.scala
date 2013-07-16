@@ -13,7 +13,8 @@ object Evaluator  {
     
     val oldOut = System.out
     val oldErr = System.err
-    
+    var r = new Object()
+ 
     try {
       System.setOut(stream)
       System.setErr(stream)
@@ -35,16 +36,17 @@ object Evaluator  {
 
       val n=new scala.tools.nsc.Interpreter(env)
 
-      val r = n.interpret(s)
+      r = n.interpret(s)
 
       n.close()
       r
     } catch {
       case t:Throwable => t.printStackTrace(out)
-    } finally {
+      r 
+   } finally {
       out.close()
       System.setOut(oldOut)
       System.setErr(oldErr)
     }
-  }
+ }
 }

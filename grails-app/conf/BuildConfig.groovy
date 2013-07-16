@@ -38,14 +38,8 @@ grails.project.dependency.resolution = {
  
         runtime 'org.scala-lang:scala-compiler:2.11.0-M3'
         runtime 'org.scala-lang:scala-library:2.11.0-M3'
-        runtime 'org.scala-lang:jline:2.11.0-M3'
-	runtime 'org.scala-lang.plugins:continuations:2.11.0-M3'
-     //   runtime 'org.scala-lang:scalap:2.11.0-M3'
-      //  runtime 'org.scala-lang:scala-actors:2.11.0-M3'
-      // runtime 'org.scala-lang:scala-swing:2.11.0-M3'
-        runtime 'org.scala-lang:scala-reflect:2.11.0-M3'
-      //  runtime 'org.scala-lang:scala-partest:2.11.0-M3'
-
+        runtime 'scalainterpreter:scalainterpreter:1.0'
+        runtime 'net.liftweb:lift-json_2.10:2.5.1'
 
    }
 
@@ -59,8 +53,8 @@ grails.project.dependency.resolution = {
         //runtime ":cached-resources:1.0"
         //runtime ":yui-minify-resources:0.1.4"
 
-   grails.plugin.location.scala="/usr/home/pcohen/Dev/workspace/grails-scala"
-        compile ":scala:0.6.5.2"
+   //grails.plugin.location.scala="/usr/home/pcohen/Dev/workspace/grails-scala"
+   //     compile ":scala:0.6.5.2"
 
 
         //build ":tomcat:$grailsVersion"

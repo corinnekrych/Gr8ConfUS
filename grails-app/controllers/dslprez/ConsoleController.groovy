@@ -56,8 +56,11 @@ class ConsoleController {
    def executeScala() {
    // Ugly search how to do better
     def cp = System.getProperty("java.class.path")
-    cp = "/usr/home/pcohen/Dev/Scala/scala-2.11.0-M3/lib/scala-reflect.jar:/usr/home/pcohen/Dev/Scala/scala-2.11.0-M3/lib/scala-compiler.jar:/usr/home/pcohen/Dev/Scala/scala-2.11.0-M3/lib/scala-library.jar:/usr/home/pcohen/Dev/workspace/Gr8ConfUS/target/classes:"+cp
-    System.setProperty("java.class.path",cp)
+//    cp = "/usr/home/pcohen/Dev/workspace/Gr8ConfUS/lib/scalaeval-1.O.jar:/usr/home/pcohen/Dev/Scala/scala-2.11.0-M3/lib/scala-reflect.jar:/usr/home/pcohen/Dev/Scala/scala-2.11.0-M3/lib/scala-compiler.jar:/usr/home/pcohen/Dev/Scala/scala-2.11.0-M3/lib/scala-library.jar:/usr/home/pcohen/Dev/workspace/Gr8ConfUS/target/classes:"+cp
+ 
+ cp = "lib/scalainterpreter-1.O.jar:lib/scala-reflect.jar:lib/scala-compiler.jar:lib/scala-library.jar:lib/lift-json-2.0.jar:target/classes:"+cp
+
+   System.setProperty("java.class.path",cp)
     
     def urls = new URL[0] //getClass().classLoader.rootLoader.URLs
 	
@@ -69,8 +72,7 @@ class ConsoleController {
     def stacktrace = ""
     
     try {
-      def silent = false //params.silent
-      result = Evaluator.eval(params.content,urls,printStream,silent)
+      result = new Evaluator(printStream).eval(params.content)
     } catch (Exception e) {
       stacktrace = e.message
     } 
