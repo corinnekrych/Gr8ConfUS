@@ -70,8 +70,8 @@ function submitForm(input, output) {
 //------------------------------------------------------------------->
 var editor1 = new dslPrez.editor("editor1");
 function editor1Key1() {
-    var value = "def move(left) {\n"
-        + "    println \"moving $left\"\n"
+    var value = "def move(direction) {\n"
+        + "    println \"moving $direction\"\n"
         + "}\n"
         + "move \"left\"\n";
     editor1.replaceRange(value, {line:5, ch:0});
@@ -120,7 +120,7 @@ editor1.addKeyMap(keymap);
 var editor2 = new dslPrez.editor("editor2");
 function editor2Key1() {
     var value = "abstract class GameScript extends Script {\n"
-        + "  def move = {left -> println \"moving $left\" }\n"
+        + "  def move = {direction -> println \"moving $direction\" }\n"
         + "  def left = \"left\"\n"
         + "}\n";
     editor2.replaceRange(value, {line: 1, ch: 0});
@@ -358,23 +358,26 @@ function editor4Key3() {
     //editor4.scrollIntoView();
 }
 function editor4Key4() {
+    editor4.scrollIntoView(58);
     for(var i = 17; i <37 ; i++) {
         editor4.removeLineClass(i, "background", "highlight");
     }
     var value = "def turtle = new Turtle(new Position(1, 1))\n";
     editor4.replaceRange(value, {line: 37, ch: 0});
     editor4.addLineClass(37, "background", "highlight");
+
 }
 function editor4Key5() {
     editor4.removeLineClass(37, "background", "highlight");
-    editor4.addLineClass(43, "background", "highlight");
-    editor4.addLineClass(44, "background", "highlight");
+//    editor4.addLineClass(43, "background", "highlight");
+//    editor4.addLineClass(44, "background", "highlight");
     editor4.addLineClass(45, "background", "highlight");
+    editor4.scrollIntoView(58);
 
 }
 function editor4Key6() {
-    editor4.removeLineClass(43, "background", "highlight");
-    editor4.removeLineClass(44, "background", "highlight");
+//    editor4.removeLineClass(43, "background", "highlight");
+//    editor4.removeLineClass(44, "background", "highlight");
     editor4.removeLineClass(45, "background", "highlight");
 
     var value = "def compilerConfig = new CompilerConfiguration()\n" +
@@ -382,12 +385,12 @@ function editor4Key6() {
         "                     left: Direction.left, right: Direction.right])\n";
 
     editor4.replaceRange(value, {line: 43, ch: 0}, {line:45});
-    editor4.addLineClass(43, "background", "highlight");
     editor4.addLineClass(44, "background", "highlight");
     editor4.addLineClass(45, "background", "highlight");
+    editor4.addLineClass(46, "background", "highlight");
 }
 function editor4Key7() {
-    for(var i = 43; i <46 ; i++) {
+    for(var i = 44; i <47 ; i++) {
         editor4.removeLineClass(i, "background", "highlight");
     }
     for(var i = 39; i <43 ; i++) {
@@ -439,6 +442,7 @@ function editor5TurtleSend() {
 }
 
 function editor5Key1() {
+    editor5.scrollIntoView(0);
     var value = "   def steps = []";
     editor5.replaceRange(value, {line: 23, ch: 0}, {line:23});
     editor5.addLineClass(23, "background", "highlight");
@@ -450,6 +454,7 @@ function editor5Key2() {
     editor5.addLineClass(26, "background", "highlight");
 }
 function editor5Key3() {
+    editor5.scrollIntoView(57);
     editor5.removeLineClass(26, "background", "highlight");
     editor5.addLineClass(41, "background", "highlight");
 }
@@ -458,6 +463,7 @@ function editor5Key4() {
     editor5.replaceRange(value, {line: 41, ch: 0}, {line:41});
 }
 function editor5Key5() {
+    editor5.scrollIntoView(82);
     editor5.removeLineClass(41, "background", "highlight");
     var value = "def builder = new groovy.json.JsonBuilder()\n" +
 "builder {\n" +
@@ -469,7 +475,6 @@ function editor5Key5() {
     for(var i = 74; i <80 ; i++) {
         editor5.addLineClass(i, "background", "highlight");
     }
-    editor5.scrollIntoView(80);
 }
 function editor5Key6() {
     for(var i = 74; i <80 ; i++) {
@@ -508,6 +513,7 @@ var keymap5 = {
 editor5.addKeyMap(keymap5);
 
 
+
 //-------------------------------------------------------------------
 //6. Command chaining odd number
 //step 1: highlight dsl syntax
@@ -537,8 +543,8 @@ function editor6Key2() {
         editor6.removeLineClass(i, "background", "highlight");
     }
     var value = "2.times {\n" +
-        "    move right by 2 \n" +
-        "    move up by 1\n" +
+        "  move right by 2 \n" +
+        "  move up by 1\n" +
         "}";
     editor6.replaceRange(value, {line: 78, ch: 0}, {line:81});
     for(var i = 78; i <82 ; i++) {
@@ -546,12 +552,13 @@ function editor6Key2() {
     }
 }
 function editor6Key3() {
+    editor6.scrollIntoView(77);
     for(var i = 78; i <82 ; i++) {
         editor6.removeLineClass(i, "background", "highlight");
     }
     var value = "  Turtle by (Integer step) {\n" +
 "    Position newPosition = currentPosition.move(step)\n" +
-"    steps.add(newPosition)\n" +
+"    \n" +
 "    currentPosition = newPosition\n" +
 "    this\n" +
 "  }\n";
@@ -708,6 +715,7 @@ function editor7Key2() {
 }
 
 function editor7Key3() {
+    editor7.scrollIntoView(55);
     for(var i = 83; i <87 ; i++) {
         editor7.removeLineClass(i, "background", "highlight");
     }
@@ -720,7 +728,7 @@ function editor7Key3() {
     for(var i = 65; i <70 ; i++) {
         editor7.addLineClass(i, "background", "highlight");
     }
-    editor7.scrollIntoView(70);
+
 }
 
 function editor7Key4() {
@@ -738,11 +746,11 @@ function editor7Key5() {
 }
 
 function editor7Key6() {
+    editor7.scrollIntoView(50);
     editor7.removeLineClass(98, "background", "highlight");
     for(var i = 65; i <70 ; i++) {
         editor7.addLineClass(i, "background", "highlight");
     }
-    editor7.scrollIntoView(70);
 }
 
 function editor7Key7() {
@@ -801,7 +809,8 @@ function editor8Key1() {
 }
 function editor8Key2() {
     var value = "compilerConfig.addCompilationCustomizers(\n" +
-        "    new ASTTransformationCustomizer(TypeChecked, extensions:['TurtleExtension.groovy']))\n\n";
+        "    new ASTTransformationCustomizer(TypeChecked,\n"+
+        "        extensions:['TurtleExtension.groovy']))\n\n";
     editor8.replaceRange(value, {line:82, ch:0});
     editor8.addLineClass(80, "background", "highlight");
     editor8.addLineClass(81, "background", "highlight");
@@ -854,11 +863,11 @@ function editor9Key2() {
         editor9.removeLineClass(i, "background", "highlight");
     }
     var value = "while(true) {\n" +
-    "    move right by 2\n" +
-    "    move up by 2\n" +
-    "    move left by 2\n" +
-    "    move down by 2\n" +
-    "}";
+        "    move right by 2\n" +
+        "    move up by 2\n" +
+        "    move left by 2\n" +
+        "    move down by 2\n" +
+        "}";
     editor9.replaceRange(value, {line: 90, ch: 0}, {line:95});
 
     for(var i = 90; i <96 ; i++) {

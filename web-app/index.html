@@ -328,16 +328,16 @@
             <div class="span2">
             </div>
         </div>
-        <div class="row-fluid marketing">
-            <div class="span2">
-            </div>
-            <div class="span8">
-                <p style="line-height: 150%;font-size: 30px" >a language offering expressive power focused on a particular problem domain, such as a specific class of applications or application aspect</p>
-                <h3>- Czarnecki Krzysztof </h3>
-            </div>
-            <div class="span2">
-            </div>
-        </div>
+        <!--<div class="row-fluid marketing">-->
+            <!--<div class="span2">-->
+            <!--</div>-->
+            <!--<div class="span8">-->
+                <!--<p style="line-height: 150%;font-size: 30px" >a language offering expressive power focused on a particular problem domain, such as a specific class of applications or application aspect</p>-->
+                <!--<h3>- Czarnecki Krzysztof </h3>-->
+            <!--</div>-->
+            <!--<div class="span2">-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
 </li>
 
@@ -420,8 +420,8 @@
                         L = left face
                         U = up face
                         D = down face
-                        A letter by itself means turn that face 90 degrees clockwise (eg. F).
-                        A letter followed by an apostrophe means turn that face 90 degrees anti-clockwise (eg. F').
+                        A letter by itself means turn that face 90 degrees clockwise (eg. F)
+                        A letter followed by an apostrophe means turn that face 90 degrees anti-clockwise (eg. F')
                     </pre>
             </div>
             <div class="span2">
@@ -587,8 +587,8 @@ def shell = new GroovyShell()
 
 ///////////////////////
 def gameDSL = '''
-def move(left) {
-  println "moving $left"
+def move(direction) {
+  println "moving $direction"
 }
 def left = "left"
 move left
@@ -626,7 +626,7 @@ def result = shell.evaluate gameDSL
     <textarea id="editor3" name="editor3">
 // Configure the GroovyShell.
 abstract class GameScript extends Script {
-  def move = {left -> println "moving $left" }
+  def move = {direction -> println "moving $direction" }
   def left = "left"
 }
 def compilerConfig = new CompilerConfiguration()
@@ -670,11 +670,11 @@ def result = shell.evaluate gameDSL
 <!-- step4 inject binding, remove def left in GameScript
 <!-- step5 replace inheritance by binding
 <!------------------------------------------------------------------->
-<li class="slide" style="text-align: left" title="Add Turtle class" press="Press 1..7">
+<li class="slide" style="text-align: left" title="Add Turtle class" press="Press 1..8">
     <textarea id="editor4" name="editor4">
 // Configure the GroovyShell.
 abstract class GameScript extends Script {
-  def move = {left -> println "moving $left" }
+  def move = {direction -> println "moving $direction" }
   def left = "left"
 }
 def compilerConfig = new CompilerConfiguration()
@@ -795,6 +795,17 @@ def gameDSL = '''
 // result contains turtle object
 // with all steps
 shell.evaluate gameDSL
+
+
+
+
+
+
+
+
+
+
+
 
 
 </textarea>
@@ -955,7 +966,7 @@ def shell = new GroovyShell(this.class.classLoader,
         compilerConfig)
 ///////////////////////
 def gameDSL = '''
-4.times {
+2.times {
   move right
   move up
 }
