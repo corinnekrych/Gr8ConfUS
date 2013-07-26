@@ -55,15 +55,11 @@ class ConsoleController {
 
    def executeScala() {
    // Ugly search how to do better
-    def cp = System.getProperty("java.class.path")
-//    cp = "/usr/home/pcohen/Dev/workspace/Gr8ConfUS/lib/scalaeval-1.O.jar:/usr/home/pcohen/Dev/Scala/scala-2.11.0-M3/lib/scala-reflect.jar:/usr/home/pcohen/Dev/Scala/scala-2.11.0-M3/lib/scala-compiler.jar:/usr/home/pcohen/Dev/Scala/scala-2.11.0-M3/lib/scala-library.jar:/usr/home/pcohen/Dev/workspace/Gr8ConfUS/target/classes:"+cp
- 
- cp = "lib/scalainterpreter-1.O.jar:lib/scala-reflect.jar:lib/scala-compiler.jar:lib/scala-library.jar:lib/lift-json-2.0.jar:target/classes:"+cp
+   def cp = System.getProperty("java.class.path")
+   cp = "lib/scalainterpreter.jar:lib/scala-reflect.jar:lib/scala-compiler.jar:lib/scala-library.jar:lib/lift-json.jar:target/classes:"+cp
 
    System.setProperty("java.class.path",cp)
-    
-    def urls = new URL[0] //getClass().classLoader.rootLoader.URLs
-	
+     	
     def encoding = 'UTF-8'
     def stream = new ByteArrayOutputStream()
     def printStream = new PrintStream(stream, true, encoding)
@@ -71,11 +67,15 @@ class ConsoleController {
     def result = ""
     def stacktrace = ""
     
+    def evaluator
     try {
-      result = new Evaluator(printStream).eval(params.content)
+      evaluator = new Evaluator(printStream).withContinuations().withPluginsDir("lib/plugins")
+      result = evaluator.eval(params.content)
     } catch (Exception e) {
       stacktrace = e.message
-    } 
+    } finally {
+      if (evaluator != null) evaluator.close()
+    }
 
     def resultObject = new Result()
     resultObject.result = stream.toString(encoding)
