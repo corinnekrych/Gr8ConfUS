@@ -10,16 +10,28 @@ case class Step(i:Int) {
 
 implicit def toSteps(i:Int) = Step(i)
 
-case class Position(x:Int, y:Int) {
-def left  = Position(x-1,y)
-def right = Position(x+1,y)
-def up    = Position(x,y+1)
-def down  = Position(x,y-1)
+val Left = left
+val Right = right
+val Up = up
+val Down = down 
+
+case class Position(x:Int, y:Int, d:Option[Direction]) {
+def left  = Position(x-1,y,Some(Left))
+def right = Position(x+1,y,Some(Right))
+def up    = Position(x,y+1,Some(Up))
+def down  = Position(x,y-1,Some(Down))
 }
 
-class Turtle(var p:Position) {
+implicit def toJsonValue(p:Position) = ("direction"->p.d.toString)~("x"->p.x)~("y"->p.y)
 
-var d:Direction = _
+
+class Turtle(position:Position) {
+
+var steps = position #:: Stream.empty
+
+def lastPosition = steps.head
+
+var currentDirection:Option[Direction] = None
 
 def move(d: Direction) = {
   d match {
@@ -28,51 +40,38 @@ def move(d: Direction) = {
     case `up` => steps = Stream(steps.head.up) ++ steps
     case `down` => steps = Stream(steps.head.down) ++ steps
     }
+  currentDirection = Some(d)
   this
   }
- }
   
 def by(s:Step) = {
-println("should move to "+d+" "+s)
+for (d <- currentDirection; i <- 1 until s.i) move(d)
+currentDirection = None
 }
 }
+
 val t = new Turtle
 
 t move left
+t move up by 3 steps
+
+//JSon part
+import net.liftweb.json._
+import net.liftweb.json.JsonDSL._
+
+//avoid warning
+import scala.language.implicitConversions
+
+compact(render(t.steps))
+
+
+=======================================================
 
 class Position {
   int x
   int y
   Direction direction
-  Position left() {
-     new Position(x, y, Direction.left);
-  }
-  Position right() {
-    new Position(x, y, Direction.right);
-  }
-  Position up() {
-    new Position(x , y, Direction.up);
-  }
-  Position down() {
-    new Position(x , y, Direction.down);
-  }
-  def Position(moveX, moveY, myDirection) {
-    x = moveX
-    y = moveY
-    direction = myDirection
-  }
-  Position move(Integer step) {
-    Position newPosition
-    if(direction == Direction.left) {
-      newPosition = new Position(x - step, y, direction)
-    } else if(direction == Direction.right) {
-      newPosition = new Position(x + step, y, direction)
-    } else if(direction == Direction.up) {
-      newPosition = new Position(x, y + step, direction)
-    } else if(direction == Direction.down) {
-      newPosition = new Position(x, y - step, direction)
-    }
-  }
+  /* ... */
 }
 
 class Turtle {
@@ -82,32 +81,7 @@ class Turtle {
       currentPosition = start
       steps.add(start)
    }
-
-   Turtle move(Direction dir) {
-      Position newPosition
-      if (dir == Direction.left) {
-        newPosition = currentPosition.left()
-      } else if (dir == Direction.right) {
-        newPosition = currentPosition.right()
-      } else if (dir == Direction.up) {
-        newPosition = currentPosition.up()
-      } else if (dir == Direction.down) {
-        newPosition = currentPosition.down()
-      }
-      currentPosition = newPosition
-      this
-   }
-
-  Turtle by (Integer step) {
-    Position newPosition = currentPosition.move(step)
-    steps.add(newPosition)
-    currentPosition = newPosition
-    steps.add(newPosition)
-    this
-  }
-}
-enum Direction {
-  left, right, up, down
+/* ... */
 }
 
 def turtle = new Turtle(new Position(1, 1, Direction.left))

@@ -31,11 +31,11 @@ t move left
 // Alternative with implicits
 implicit val t = new Turtle(Position(1,1))
 
-// Disambiguation 
 // suppress warning
 import scala.language.postfixOps
 
 //Disambiguation of left inside move object
+// Not needed in dsl.scala using package to qualify
 val Left = left
 val Right = right
 val Up = up

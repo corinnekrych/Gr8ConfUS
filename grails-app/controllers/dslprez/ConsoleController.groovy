@@ -56,7 +56,7 @@ class ConsoleController {
    def executeScala() {
    // Ugly search how to do better
    def cp = System.getProperty("java.class.path")
-   cp = "lib/scalainterpreter.jar:lib/scala-reflect.jar:lib/scala-compiler.jar:lib/scala-library.jar:lib/lift-json.jar:target/classes:"+cp
+   cp = "lib/scaladsl.jar:lib/scalainterpreter.jar:lib/scala-reflect.jar:lib/scala-compiler.jar:lib/scala-library.jar:lib/lift-json.jar:target/classes:"+cp
 
    System.setProperty("java.class.path",cp)
      	

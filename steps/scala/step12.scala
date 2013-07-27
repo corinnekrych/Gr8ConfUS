@@ -1,3 +1,45 @@
+import dslprez.continuations.Ask
+import scala.util.continuations._
+
+val a = new Ask
+
+def f = {
+  val un = a.ask("first ","one")
+  println("un = "+un)
+  
+  val two = a.ask("second ","two")
+  println("deux = "+two)
+  
+  if (two == "two") {
+  	val trois = a.ask("third ","trois")
+    println("trois = "+trois)
+    trois
+  } else {
+    two
+  }
+  
+  //val trois = if (two == "two") {
+  //a.ask("third ","trois")
+  // } else {
+  //   a.ask("thirdV2 ","drei")
+  //}
+  //println("trois = "+trois)
+  println("The End")
+
+}
+
+a.start(f)
+
+a.callCont
+
+println("Lets have a break")
+
+a.callCont
+a.callCont
+
+
+
+======================================================
 def compilerConfig = new CompilerConfiguration()
 compilerConfig.scriptBaseClass = SurveyScript.class.name
 def binding = new Binding()
