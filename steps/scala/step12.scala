@@ -1,43 +1,27 @@
 import dslprez.continuations.Ask
 import scala.util.continuations._
 
-val a = new Ask
-
 def f = {
-  val un = a.ask("first ","one")
-  println("un = "+un)
-  
-  val two = a.ask("second ","two")
-  println("deux = "+two)
-  
-  if (two == "two") {
-  	val trois = a.ask("third ","trois")
-    println("trois = "+trois)
-    trois
+  val fName = Ask.ask("What is your first name")
+  println("Hello "+fName)
+
+  val mName = if (fName == "John") {
+  	Ask.ask("So What is your middle name "+fName)
   } else {
-    two
+  	""
   }
   
-  //val trois = if (two == "two") {
-  //a.ask("third ","trois")
-  // } else {
-  //   a.ask("thirdV2 ","drei")
-  //}
-  //println("trois = "+trois)
-  println("The End")
-
+  if (mName != "")
+  println("Hello "+fName+" "+mName)
+   
+  
+  val lName = Ask.ask("And what is your last name "+fName)
+  println("Hello "+fName+" "+lName)
 }
 
-a.start(f)
+Ask.start(f)
 
-a.callCont
-
-println("Lets have a break")
-
-a.callCont
-a.callCont
-
-
+Ask.answer("")
 
 ======================================================
 def compilerConfig = new CompilerConfiguration()
