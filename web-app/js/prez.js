@@ -70,8 +70,8 @@ function submitForm(input, output) {
 //------------------------------------------------------------------->
 var editor1 = new dslPrez.editor("editor1");
 function editor1Key1() {
-    var value = "def move(left) {\n"
-        + "    println \"moving $left\"\n"
+    var value = "def move(direction) {\n"
+        + "    println \"moving $direction\"\n"
         + "}\n"
         + "move \"left\"\n";
     editor1.replaceRange(value, {line:5, ch:0});
@@ -120,7 +120,7 @@ editor1.addKeyMap(keymap);
 var editor2 = new dslPrez.editor("editor2");
 function editor2Key1() {
     var value = "abstract class GameScript extends Script {\n"
-        + "  def move = {left -> println \"moving $left\" }\n"
+        + "  def move = {direction -> println \"moving $direction\" }\n"
         + "  def left = \"left\"\n"
         + "}\n";
     editor2.replaceRange(value, {line: 1, ch: 0});
@@ -278,11 +278,13 @@ editor3.addKeyMap(keymap3);
 
 //------------------------------------------------------------------->
 // 4. Structure my code
-// TODO step 1 dslprez.Position
-// TODO step 2 Turtle
-// TODO step 3 Direction
-// TODO step4 inject binding, remove def left in GameScript
-// TODO step5 replace inheritance by binding
+// step 1 add Position
+// step 2 add Driection enums
+// step 3 add turtle class
+// step 4 new Turtle()
+// step 5 highlight compilerconf + binding
+// step 6 inject binding,
+// step 7 remove def left in GameScript
 //------------------------------------------------------------------->
 var editor4 = new dslPrez.editor("editor4");
 function editor4Send() {
@@ -356,23 +358,26 @@ function editor4Key3() {
     //editor4.scrollIntoView();
 }
 function editor4Key4() {
+    editor4.scrollIntoView(58);
     for(var i = 17; i <37 ; i++) {
         editor4.removeLineClass(i, "background", "highlight");
     }
     var value = "def turtle = new Turtle(new Position(1, 1))\n";
     editor4.replaceRange(value, {line: 37, ch: 0});
     editor4.addLineClass(37, "background", "highlight");
+
 }
 function editor4Key5() {
     editor4.removeLineClass(37, "background", "highlight");
-    editor4.addLineClass(43, "background", "highlight");
-    editor4.addLineClass(44, "background", "highlight");
+//    editor4.addLineClass(43, "background", "highlight");
+//    editor4.addLineClass(44, "background", "highlight");
     editor4.addLineClass(45, "background", "highlight");
+    editor4.scrollIntoView(58);
 
 }
 function editor4Key6() {
-    editor4.removeLineClass(43, "background", "highlight");
-    editor4.removeLineClass(44, "background", "highlight");
+//    editor4.removeLineClass(43, "background", "highlight");
+//    editor4.removeLineClass(44, "background", "highlight");
     editor4.removeLineClass(45, "background", "highlight");
 
     var value = "def compilerConfig = new CompilerConfiguration()\n" +
@@ -380,12 +385,12 @@ function editor4Key6() {
         "                     left: Direction.left, right: Direction.right])\n";
 
     editor4.replaceRange(value, {line: 43, ch: 0}, {line:45});
-    editor4.addLineClass(43, "background", "highlight");
     editor4.addLineClass(44, "background", "highlight");
     editor4.addLineClass(45, "background", "highlight");
+    editor4.addLineClass(46, "background", "highlight");
 }
 function editor4Key7() {
-    for(var i = 43; i <46 ; i++) {
+    for(var i = 44; i <47 ; i++) {
         editor4.removeLineClass(i, "background", "highlight");
     }
     for(var i = 39; i <43 ; i++) {
@@ -416,20 +421,13 @@ editor4.addKeyMap(keymap4);
 
 //------------------------------------------------------------------->
 // 5. Building JSON
-// TODO step 1 use steps instead println
-// TODO step 2 after eval get value of steps
-// TODO step 3 jsonbuilder
-// TODO step 4 up stairs
-// TODO step 5 if
-//5.times {
-//    if(turtle.currentPosition.x < 5)
-//        move right
-//else
-//    move left
-//    if(turtle.currentPosition.y < 5)
-//        move up
-//else
-//    move down
+//  step 1 def step= [] to use steps instead println
+//  step 2 steps.add(start) to store initial position steps after move
+//  step 3 hightlight
+//  step 4 steps.add(newPosition) to store position after move
+//  step 5 add json builder
+//  step 6 highlight
+//  step 7 mix plain groovy + DSL 4.times {move left}
 //------------------------------------------------------------------->
 var editor5 = new dslPrez.editor("editor5");
 function editor5Send() {
@@ -444,6 +442,7 @@ function editor5TurtleSend() {
 }
 
 function editor5Key1() {
+    editor5.scrollIntoView(0);
     var value = "   def steps = []";
     editor5.replaceRange(value, {line: 23, ch: 0}, {line:23});
     editor5.addLineClass(23, "background", "highlight");
@@ -455,6 +454,7 @@ function editor5Key2() {
     editor5.addLineClass(26, "background", "highlight");
 }
 function editor5Key3() {
+    editor5.scrollIntoView(57);
     editor5.removeLineClass(26, "background", "highlight");
     editor5.addLineClass(41, "background", "highlight");
 }
@@ -463,6 +463,7 @@ function editor5Key4() {
     editor5.replaceRange(value, {line: 41, ch: 0}, {line:41});
 }
 function editor5Key5() {
+    editor5.scrollIntoView(82);
     editor5.removeLineClass(41, "background", "highlight");
     var value = "def builder = new groovy.json.JsonBuilder()\n" +
 "builder {\n" +
@@ -495,11 +496,6 @@ function editor5Key8() {
     for(var i = 64; i <68 ; i++) {
         editor5.removeLineClass(i, "background", "highlight");
     }
-    var value = "4.times {\n" +
-        "  move right\n" +
-        "  move up\n" +
-        "}";
-    editor5.replaceRange(value, {line: 64, ch: 0}, {line: 67});
 }
 
 var keymap5 = {
@@ -515,6 +511,7 @@ var keymap5 = {
     "8": editor5Key8
 };
 editor5.addKeyMap(keymap5);
+
 
 
 //-------------------------------------------------------------------
@@ -546,8 +543,8 @@ function editor6Key2() {
         editor6.removeLineClass(i, "background", "highlight");
     }
     var value = "2.times {\n" +
-        "    move right by 2 \n" +
-        "    move up by 1\n" +
+        "  move right by 2 \n" +
+        "  move up by 1\n" +
         "}";
     editor6.replaceRange(value, {line: 78, ch: 0}, {line:81});
     for(var i = 78; i <82 ; i++) {
@@ -555,12 +552,13 @@ function editor6Key2() {
     }
 }
 function editor6Key3() {
+    editor6.scrollIntoView(77);
     for(var i = 78; i <82 ; i++) {
         editor6.removeLineClass(i, "background", "highlight");
     }
     var value = "  Turtle by (Integer step) {\n" +
 "    Position newPosition = currentPosition.move(step)\n" +
-"    steps.add(newPosition)\n" +
+"    \n" +
 "    currentPosition = newPosition\n" +
 "    this\n" +
 "  }\n";
@@ -622,7 +620,6 @@ function editor6bTurtleSend() {
     submitTurtleForm(value, "#output6b", 'canvas6b');
 }
 
-
 function editor6bKey1() {
     for(var i = 83; i <87 ; i++) {
         editor6b.addLineClass(i, "background", "highlight");
@@ -683,133 +680,15 @@ var keymap6b = {
 };
 editor6b.addKeyMap(keymap6b);
 
-//------------------------------------------------------------------->
-// 7. category/mixin
-// TODO step 1 use
-//class dslprez.Position {
-//    int x
-//    int y
-//    Direction direction
-//    dslprez.Position left() {
-//        new dslprez.Position(x, y, Direction.left);
-//    }
-//    dslprez.Position right() {
-//        new dslprez.Position(x, y, Direction.right);
-//    }
-//    dslprez.Position up() {
-//        new dslprez.Position(x , y, Direction.up);
-//    }
-//    dslprez.Position down() {
-//        new dslprez.Position(x , y, Direction.down);
-//    }
-//    def dslprez.Position(moveX, moveY, myDirection) {
-//        x = moveX
-//        y = moveY
-//        direction = myDirection
-//    }
-//    dslprez.Position move(Integer step) {
-//        dslprez.Position newPosition
-//        if(direction == Direction.left) {
-//            newPosition = new dslprez.Position(x - step, y, direction)
-//        } else if(direction == Direction.right) {
-//            newPosition = new dslprez.Position(x + step, y, direction)
-//        } else if(direction == Direction.up) {
-//            newPosition = new dslprez.Position(x, y + step, direction)
-//        } else if(direction == Direction.down) {
-//            newPosition = new dslprez.Position(x, y - step, direction)
-//        }
-//    }
-//}
-//
-//class Turtle {
-//    def currentPosition
-//    def steps = []
-//    Turtle(dslprez.Position start) {
-//        currentPosition = start
-//        steps.add(start)
-//    }
-//
-//    Turtle move(Direction dir) {
-//        dslprez.Position newPosition
-//        if (dir == Direction.left) {
-//            newPosition = currentPosition.left()
-//        } else if (dir == Direction.right) {
-//            newPosition = currentPosition.right()
-//        } else if (dir == Direction.up) {
-//            newPosition = currentPosition.up()
-//        } else if (dir == Direction.down) {
-//            newPosition = currentPosition.down()
-//        }
-//        currentPosition = newPosition
-//        this
-//    }
-//
-//    Turtle by (Integer step) {
-//        dslprez.Position newPosition = currentPosition.move(step)
-//        steps.add(newPosition)
-//        currentPosition = newPosition
-//        this
-//    }
-//}
-//
-//class StepCategory {
-//    static Integer getSteps(Integer self) {
-//        self
-//    }
-//}
-//enum Direction {
-//    left, right, up, down
-//}
-//
-//
-//def turtle = new Turtle(new dslprez.Position(1, 1, Direction.left))
-//def compilerConfig = new CompilerConfiguration()
-//def binding = new Binding([turtle: turtle,
-//    move: turtle.&move,
-//    left: Direction.left,
-//    right: Direction.right,
-//    up: Direction.up,
-//    down: Direction.down])
-//def shell = new GroovyShell(this.class.classLoader,
-//    binding,
-//    compilerConfig)
-/////////////////////////
-//def gameDSL = '''
-////use(StepCategory) {
-//
-//move left by 2.steps
-//move right by 3.steps
-//
-////}
-//'''
-////////////////////////
-//// Run DSL script.
-//// result contains turtle object
-//// with all steps
-//shell.evaluate "use(StepCategory) {" + gameDSL + "}"
-//
-//def builder = new groovy.json.JsonBuilder()
-//builder {
-//    steps binding["turtle"].steps
-//}
-//println builder
-//builder.toString()
-
-
-// TODO step 2
-//2.times {
-//    move right by 2.steps
-//    move up by 1.steps
-//}
-//gameDSL = "use(StepCategory) { $gameDSL }"
-// TODO step3 annotation
-//@Category(Integer)
-//class StepCategory {
-//    Integer getSteps() {
-//        this;
-//    }
-//}
-//
+//-------------------------------------------------------------------
+//7. Adding behavior to Integer
+//step1: highlight dsl
+//step2: move left by 2.steps
+//step3: add class StepCategory
+//step4: highlight shell.eval
+//step5: modify shell.eval with use()
+//step6: highlight class StepCategory
+//step7: replace with @Category annotation
 //------------------------------------------------------------------->
 var editor7 = new dslPrez.editor("editor7");
 function editor7TurtleSend() {
@@ -817,15 +696,103 @@ function editor7TurtleSend() {
     value += "import groovy.lang.Script;\nimport org.codehaus.groovy.control.CompilerConfiguration\n";
     submitTurtleForm(value, "#output7", 'canvas7');
 }
+
+function editor7Key1() {
+    for(var i = 83; i <87 ; i++) {
+        editor7.addLineClass(i, "background", "highlight");
+    }
+    editor7.scrollIntoView(87);
+}
+function editor7Key2() {
+    var value = "2.times {\n" +
+        "  move right by 2.steps\n" +
+        "  move up by 1.steps\n" +
+        "}";
+    editor7.replaceRange(value, {line: 83, ch: 0}, {line: 86});
+    for(var i = 83; i <87 ; i++) {
+        editor7.addLineClass(i, "background", "highlight");
+    }
+}
+
+function editor7Key3() {
+    editor7.scrollIntoView(55);
+    for(var i = 83; i <87 ; i++) {
+        editor7.removeLineClass(i, "background", "highlight");
+    }
+    var value = "class StepCategory {\n" +
+    "  static Integer getSteps(Integer self) {\n" +
+    "    self\n" +
+    "  }\n" +
+    "}\n\n";
+    editor7.replaceRange(value, {line: 65, ch: 0});
+    for(var i = 65; i <70 ; i++) {
+        editor7.addLineClass(i, "background", "highlight");
+    }
+
+}
+
+function editor7Key4() {
+    for(var i = 65; i <70 ; i++) {
+        editor7.removeLineClass(i, "background", "highlight");
+    }
+    editor7.addLineClass(98, "background", "highlight");
+    editor7.scrollIntoView(105);
+}
+
+function editor7Key5() {
+    var value = "shell.evaluate \"use(StepCategory) {\" + gameDSL + \"}\"";
+    editor7.replaceRange(value, {line: 98, ch: 0}, {line:98});
+    editor7.addLineClass(98, "background", "highlight");
+}
+
+function editor7Key6() {
+    editor7.scrollIntoView(50);
+    editor7.removeLineClass(98, "background", "highlight");
+    for(var i = 65; i <70 ; i++) {
+        editor7.addLineClass(i, "background", "highlight");
+    }
+}
+
+function editor7Key7() {
+    for(var i = 65; i <70 ; i++) {
+        editor7.removeLineClass(i, "background", "highlight");
+    }
+    var value = "@Category(Integer)\n" +
+                "class StepCategory {\n" +
+                "    Integer getSteps() {\n" +
+                "        this;\n" +
+                "    }\n" +
+                "}";
+    editor7.replaceRange(value, {line: 65, ch: 0}, {line: 70});
+    for(var i = 65; i <71 ; i++) {
+        editor7.addLineClass(i, "background", "highlight");
+    }
+}
+
+function editor7Key8() {
+    for(var i = 65; i <71 ; i++) {
+        editor7.removeLineClass(i, "background", "highlight");
+    }
+}
+
 var keymap7 = {
     "Ctrl-S": editor7TurtleSend,
-    "Cmd-S": editor7TurtleSend
+    "Cmd-S": editor7TurtleSend,
+    "1": editor7Key1,
+    "2": editor7Key2,
+    "3": editor7Key3,
+    "4": editor7Key4,
+    "5": editor7Key5,
+    "6": editor7Key6,
+    "7": editor7Key7,
+    "8": editor7Key8
 };
 editor7.addKeyMap(keymap7);
 
 //------------------------------------------------------------------->
 // 8. TypeChecked
-//TODO step 1
+// step 1: highlight compiler
+// step 2: add typechecked ext
 //------------------------------------------------------------------->
 var editor8 = new dslPrez.editor("editor8");
 function editor8TurtleSend() {
@@ -835,16 +802,25 @@ function editor8TurtleSend() {
     submitTurtleForm(value, "#output8", 'canvas8');
 }
 
-
 function editor8Key1() {
+    editor8.addLineClass(80, "background", "highlight");
+    editor8.addLineClass(81, "background", "highlight");
+    editor8.scrollIntoView(105);
+}
+function editor8Key2() {
     var value = "compilerConfig.addCompilationCustomizers(\n" +
-        "    new ASTTransformationCustomizer(TypeChecked, extensions:['TurtleExtension.groovy']))\n\n";
+        "    new ASTTransformationCustomizer(TypeChecked,\n"+
+        "        extensions:['TurtleExtension.groovy']))\n\n";
     editor8.replaceRange(value, {line:82, ch:0});
+    editor8.addLineClass(80, "background", "highlight");
+    editor8.addLineClass(81, "background", "highlight");
     editor8.addLineClass(82, "background", "highlight");
     editor8.addLineClass(83, "background", "highlight");
     editor8.addLineClass(84, "background", "highlight");
 }
-function editor8Key2() {
+function editor8Key3() {
+    editor8.removeLineClass(80, "background", "highlight");
+    editor8.removeLineClass(81, "background", "highlight");
     editor8.removeLineClass(82, "background", "highlight");
     editor8.removeLineClass(83, "background", "highlight");
     editor8.removeLineClass(84, "background", "highlight");
@@ -853,6 +829,7 @@ function editor8Key2() {
 var keymap8 = {
     "1": editor8Key1,
     "2": editor8Key2,
+    "3": editor8Key3,
     "Ctrl-S": editor8TurtleSend,
     "Cmd-S": editor8TurtleSend
 };
@@ -860,7 +837,11 @@ editor8.addKeyMap(keymap8);
 editor8.scrollIntoView({line:80, ch:0});
 
 //------------------------------------------------------------------->
-// 9. Turn
+// 9. Turn around
+// step1: highlight dsl
+// step2: modify dsl with infinite loop
+// step3: highlight ASTTransformationCustomizer
+// step4: add TimeInterrupt
 //------------------------------------------------------------------->
 var editor9 = new dslPrez.editor("editor9");
 function editor9TurtleSend() {
@@ -871,28 +852,69 @@ function editor9TurtleSend() {
     submitTurtleForm(value, "#output9", 'canvas9');
 }
 
-
 function editor9Key1() {
-    var value = "    new ASTTransformationCustomizer(TypeChecked, extensions:['TurtleExtension.groovy']),\n" +
-                "    new ASTTransformationCustomizer([value:5L], TimedInterrupt))\n";
-    editor9.removeLine(83);
-    editor9.replaceRange(value, {line:83, ch:0});
-    editor9.addLineClass(84, "background", "highlight");
+    for(var i = 90; i <96 ; i++) {
+        editor9.addLineClass(i, "background", "highlight");
+    }
+    editor9.scrollIntoView(105);
 }
 function editor9Key2() {
-    editor9.removeLineClass(84, "background", "highlight");
+    for(var i = 90; i <96 ; i++) {
+        editor9.removeLineClass(i, "background", "highlight");
+    }
+    var value = "while(true) {\n" +
+        "    move right by 2\n" +
+        "    move up by 2\n" +
+        "    move left by 2\n" +
+        "    move down by 2\n" +
+        "}";
+    editor9.replaceRange(value, {line: 90, ch: 0}, {line:95});
+
+    for(var i = 90; i <96 ; i++) {
+        editor9.addLineClass(i, "background", "highlight");
+    }
+}
+function editor9Key3() {
+    for(var i = 90; i <96 ; i++) {
+        editor9.removeLineClass(i, "background", "highlight");
+    }
+    editor9.addLineClass(82, "background", "highlight");
+    editor9.addLineClass(83, "background", "highlight");
+}
+function editor9Key4() {
+    for(var i = 82; i <85 ; i++) {
+        editor9.removeLineClass(i, "background", "highlight");
+    }
+    var value = "    new ASTTransformationCustomizer(TypeChecked, extensions:['TurtleExtension.groovy']),\n" +
+        "    new ASTTransformationCustomizer([value:5L], TimedInterrupt))\n";
+    editor9.removeLine(83);
+    editor9.replaceRange(value, {line:83, ch:0});
+    for(var i = 82; i <85 ; i++) {
+        editor9.addLineClass(i, "background", "highlight");
+    }
+}
+function editor9Key5() {
+    for(var i = 82; i <85 ; i++) {
+        editor9.removeLineClass(i, "background", "highlight");
+    }
 }
 
 var keymap9 = {
     "1":editor9Key1,
     "2":editor9Key2,
+    "3":editor9Key3,
+    "4":editor9Key4,
+    "5":editor9Key5,
     "Ctrl-S": editor9TurtleSend,
     "Cmd-S": editor9TurtleSend
 };
 editor9.addKeyMap(keymap9);
 
 //------------------------------------------------------------------->
-// 10. System.exit
+// 10. Sneaky
+// step 1: highlight dsl
+// step 2: add system.exit
+// step 3: add SecureASTCustomizer
 //------------------------------------------------------------------->
 var editor10 = new dslPrez.editor("editor10");
 function editor10TurtleSend() {
@@ -904,6 +926,22 @@ function editor10TurtleSend() {
 }
 
 function editor10Key1() {
+    for(var i = 92; i <97 ; i++) {
+        editor10.addLineClass(i, "background", "highlight");
+    }
+    editor10.scrollIntoView(115);
+}
+
+function editor10Key2() {
+    var value = "    System.exit(-1)";
+    editor10.replaceRange(value, {line:96, ch:0});
+    editor10.addLineClass(96, "background", "highlight");
+}
+
+function editor10Key3() {
+    for(var i = 92; i <97 ; i++) {
+        editor10.removeLineClass(i, "background", "highlight");
+    }
     var value = "def secure = new SecureASTCustomizer()\n" +
                 "secure.with {\n" +
                 "    receiversClassesBlackList = [\n" +
@@ -912,17 +950,14 @@ function editor10Key1() {
                 "}\n\n";
 
     editor10.replaceRange(value, {line:85, ch:0});
-    editor10.addLineClass(85, "background", "highlight");
-    editor10.addLineClass(86, "background", "highlight");
-    editor10.addLineClass(87, "background", "highlight");
-    editor10.addLineClass(88, "background", "highlight");
-    editor10.addLineClass(89, "background", "highlight");
-    editor10.addLineClass(90, "background", "highlight");
+    for(var i = 85; i <91 ; i++) {
+        editor10.addLineClass(i, "background", "highlight");
+    }
     editor10.removeLine(92);
     var value = "compilerConfig.addCompilationCustomizers(tc, ti, secure)\n";
     editor10.replaceRange(value, {line:92, ch:0});
 }
-function editor10Key2() {
+function editor10Key4() {
     editor10.removeLineClass(85, "background", "highlight");
     editor10.removeLineClass(86, "background", "highlight");
     editor10.removeLineClass(87, "background", "highlight");
@@ -934,6 +969,8 @@ function editor10Key2() {
 var keymap10 = {
     "1":editor10Key1,
     "2":editor10Key2,
+    "3":editor10Key3,
+    "4":editor10Key4,
     "Ctrl-S": editor10TurtleSend,
     "Cmd-S": editor10TurtleSend
 };
@@ -941,7 +978,12 @@ editor10.addKeyMap(keymap10);
 
 
 //------------------------------------------------------------------->
-// 11. ask
+// 11. ask: dynamic interception
+//step1: insert DSL ask
+//step2: add ask method
+//step3: add propertyMissingMethod
+//step4: add display map method
+//step5: add display map in DSL
 //------------------------------------------------------------------->
 var editor11 = new dslPrez.editor("editor11");
 function editor11Send() {
@@ -949,7 +991,82 @@ function editor11Send() {
     value += "import groovy.lang.Script;\nimport org.codehaus.groovy.control.CompilerConfiguration\n";
     submitForm(value, "#output11");
 }
+
+function editor11Key1() {
+    editor11.replaceRange("ask \"Where do you wan to meet\" assign to meeting", {line:12, ch:0}, {line:12});
+    editor11.addLineClass(12, "background", "highlight");
+}
+
+function editor11Key2() {
+    editor11.removeLineClass(12, "background", "highlight");
+    var value = "  def i = 1;\n" +
+        "  def map = [:]\n" +
+        "\n" +
+        "  def ask(question) {\n" +
+        "    [assign : { to -> \n" +
+        "      [:].withDefault {variable ->\n" +
+        "        map[\"question$i\"] = question\n" +
+        "        map[\"variable$i\"] = variable\n" +
+        "        i++\n" +
+        "      }\n" +
+        "    }]\n" +
+        "  }\n";
+    editor11.replaceRange(value, {line:2, ch:0});
+    for(var i = 2; i <14 ; i++) {
+        editor11.addLineClass(i, "background", "highlight");
+    }
+}
+
+function editor11Key3() {
+    for(var i = 2; i <14 ; i++) {
+        editor11.removeLineClass(i, "background", "highlight");
+    }
+    var value = "  def propertyMissing(def propertyName) {\n" +
+        "    propertyName\n" +
+        "  }\n";
+    editor11.replaceRange(value, {line:14, ch:0});
+    for(var i = 14; i <17 ; i++) {
+        editor11.addLineClass(i, "background", "highlight");
+    }
+}
+
+function editor11Key4() {
+    for(var i = 14; i <17 ; i++) {
+        editor11.removeLineClass(i, "background", "highlight");
+    }
+    var value = "  def display(Map mapToDisplay) {\n" +
+        "    mapToDisplay.eachWithIndex { key, value, index ->\n" +
+        "      println \"$key: $value\"\n" +
+        "      if (index % 2) {\n" +
+        "        println \"______________________________________\\n\"\n" +
+        "      }\n" +
+        "    }\n" +
+        " }";
+    editor11.replaceRange(value, {line:17, ch:0});
+    for(var i = 17; i <25 ; i++) {
+        editor11.addLineClass(i, "background", "highlight");
+    }
+}
+
+function editor11Key5() {
+    for(var i = 17; i <25 ; i++) {
+        editor11.removeLineClass(i, "background", "highlight");
+    }
+    editor11.replaceRange("display map\n", {line:35, ch:0});
+    editor11.addLineClass(35, "background", "highlight");
+}
+
+function editor11Key6() {
+    editor11.removeLineClass(35, "background", "highlight");
+}
+
 var keymap11 = {
+    "1":editor11Key1,
+    "2":editor11Key2,
+    "3":editor11Key3,
+    "4":editor11Key4,
+    "5":editor11Key5,
+    "6":editor11Key6,
     "Ctrl-S": editor11Send,
     "Cmd-S": editor11Send
 };
@@ -983,228 +1100,6 @@ var keymap12 = {
     "Cmd-S": editor12Send
 };
 editor12.addKeyMap(keymap12);
-
-
-
-//var editor7 = new dslPrez.editor("editor7");
-//
-//function editor7Send() {
-//    var value = editor7.getValue();
-//    value += "import groovy.lang.Script;\nimport org.codehaus.groovy.control.CompilerConfiguration\n";
-//    submitForm(value, "#output7");
-//}
-//function editor7Key1() {
-//    editor7.removeLine(40);
-//    editor7.removeLine(40);
-//    var value = "ask \"what is your name?\" assign to name\nask \"what is your birthdate?\" assign to date\n";
-//    editor7.replaceRange(value, {line: 40, ch: 0});
-//}
-//function editor7Key2() {
-//    editor7.removeLine(9);
-//    editor7.removeLine(9);
-//    editor7.removeLine(9);
-//    editor7.removeLine(9);
-//    var value = "  def assign(to) {\n  }\n";
-//    editor7.replaceRange(value, {line: 9, ch: 0});
-//}
-//function editor7Key3() {
-//    var value = "    [:].withDefault { }\n";
-//    editor7.replaceRange(value, {line: 10, ch: 0});
-//}
-//function editor7Key4() {
-//    editor7.removeLine(10);
-//    var value = "    [:].withDefault { variable ->\n      map[\"variable$j\"] = variable\n      j++\n    }\n";
-//    editor7.replaceRange(value, {line: 10, ch: 0});
-//    value = "  def j = 1\n";
-//    editor7.replaceRange(value, {line: 2, ch: 0});
-//    value = "    i++\n";
-//    editor7.replaceRange(value, {line: 7, ch: 0});
-//}
-//
-//var keymap7 = {
-//    "Ctrl-S": editor7Send,
-//    "Cmd-S": editor7Send,
-//    "1": editor7Key1,
-//    "2": editor7Key2,
-//    "3": editor7Key3,
-//    "4": editor7Key4
-//};
-//
-//editor7.addKeyMap(keymap7);
-//
-
-
-//var editor5 = new dslPrez.editor("editor5");
-//
-//function editor5Send() {
-//    var value = editor5.getValue();
-//    value = "import groovy.lang.Script;\nimport org.codehaus.groovy.control.CompilerConfiguration\n"
-//        +"import org.codehaus.groovy.ast.*\n"
-//        +"import org.codehaus.groovy.ast.expr.*\n"
-//        +"import org.codehaus.groovy.ast.stmt.*\n"
-//        +"import org.codehaus.groovy.classgen.GeneratorContext\n"
-//        +"import org.codehaus.groovy.control.CompilationFailedException\n"
-//        +"import org.codehaus.groovy.control.CompilePhase\n"
-//        +"import org.codehaus.groovy.control.CompilerConfiguration\n"
-//        +"import org.codehaus.groovy.control.SourceUnit\n"
-//        +"import org.codehaus.groovy.control.customizers.*\n"
-//        +"import org.codehaus.groovy.ast.builder.AstBuilder\n"
-//        +"import org.codehaus.groovy.syntax.Token\n"
-//        +"import org.codehaus.groovy.syntax.Types\n"
-//        +"import static org.objectweb.asm.Opcodes.ACC_PUBLIC\n" + value;
-//    submitForm(value, "#output5");
-//}
-//function editor5Key1() {
-//    var value = "binding.setVariable(\"whichMeal\", \"What would you like to have for lunch?\")\n";
-//    editor5.replaceRange(value, {line: 4, ch: 0});
-//}
-//function editor5Key2() {
-//    var value = "ask whichMeal assign to meal\n";
-//    editor5.replaceRange(value, {line: 11, ch: 0});
-//}
-//
-//var keymap5 = {
-//    "Ctrl-S": editor5Send,
-//    "Cmd-S": editor5Send,
-//    "1": editor5Key1,
-//    "2": editor5Key2
-//};
-//
-//editor5.addKeyMap(keymap5);
-//
-//var editor6 = new dslPrez.editor("editor6");
-//
-//function editor6Send() {
-//    var value = editor6.getValue();
-//    value = "import groovy.lang.Script;\nimport org.codehaus.groovy.control.CompilerConfiguration\n"
-//        +"import org.codehaus.groovy.ast.*\n"
-//        +"import org.codehaus.groovy.ast.expr.*\n"
-//        +"import org.codehaus.groovy.ast.stmt.*\n"
-//        +"import org.codehaus.groovy.classgen.GeneratorContext\n"
-//        +"import org.codehaus.groovy.control.CompilationFailedException\n"
-//        +"import org.codehaus.groovy.control.CompilePhase\n"
-//        +"import org.codehaus.groovy.control.CompilerConfiguration\n"
-//        +"import org.codehaus.groovy.control.SourceUnit\n"
-//        +"import org.codehaus.groovy.control.customizers.*\n"
-//        +"import org.codehaus.groovy.ast.builder.AstBuilder\n"
-//        +"import org.codehaus.groovy.syntax.Token\n"
-//        +"import org.codehaus.groovy.syntax.Types\n"
-//        +"import static org.objectweb.asm.Opcodes.ACC_PUBLIC\n" + value;
-//    submitForm(value, "#output6");
-//}
-//
-//var keymap6 = {
-//    "Ctrl-S": editor6Send,
-//    "Cmd-S": editor6Send
-//};
-//
-//editor6.addKeyMap(keymap6);
-//
-//var editor7 = new dslPrez.editor("editor7");
-//
-//function editor7Send() {
-//    var value = editor7.getValue();
-//    value = "import groovy.lang.Script;\nimport org.codehaus.groovy.control.CompilerConfiguration\n"
-//        +"import org.codehaus.groovy.ast.*\n"
-//        +"import org.codehaus.groovy.ast.expr.*\n"
-//        +"import org.codehaus.groovy.ast.stmt.*\n"
-//        +"import org.codehaus.groovy.classgen.GeneratorContext\n"
-//        +"import org.codehaus.groovy.control.CompilationFailedException\n"
-//        +"import org.codehaus.groovy.control.CompilePhase\n"
-//        +"import org.codehaus.groovy.control.CompilerConfiguration\n"
-//        +"import org.codehaus.groovy.control.SourceUnit\n"
-//        +"import org.codehaus.groovy.control.customizers.*\n"
-//        +"import org.codehaus.groovy.ast.builder.AstBuilder\n"
-//        +"import org.codehaus.groovy.syntax.Token\n"
-//        +"import org.codehaus.groovy.syntax.Types\n"
-//        +"import static org.objectweb.asm.Opcodes.ACC_PUBLIC\n" + value;
-//    submitForm(value, "#output7");
-//}
-//
-//var keymap7 = {
-//    "Ctrl-S": editor7Send,
-//    "Cmd-S": editor7Send
-//};
-//
-//editor7.addKeyMap(keymap7);
-//
-//var editor8 = new dslPrez.editor("editor8");
-//
-//function editor8Send() {
-//    var value = editor8.getValue();
-//    var title = $('#titleCreate').val();
-//    submitCreateForm(title, value, "#output8");
-//}
-//
-//var keymap8 = {
-//    "Ctrl-S": editor8Send,
-//    "Cmd-S": editor8Send
-//};
-//
-//editor8.addKeyMap(keymap8);
-//
-//document.getElementById("editor8").addEventListener("touchstart", function(e)
-//{
-//    e.preventDefault();
-//    alert('test2');
-//});
-//
-//function submitCreateForm(title, input, output) {
-//    var url = serverUrl + "/survey/create?=";
-//    $.post(url, {
-//        title:"myScript", content:input
-//    },function (data) {
-//        $("#displayQuestion").removeData();
-//        $('.displayAnswer').remove();
-//        $(".surveystart").show();
-//        $("#displayQuestion").data('scriptId', data.id);
-//        $("#displayQuestion").data('scriptContent', data.content);
-//        $('#scriptContent').text(data.content);
-//        $('#submitButton').click();
-//        $('#next').click();
-//    });
-//}
-//
-//$('#submitButton').bind('click', function() {
-//    var answer = $('#answer').val();
-//    $('#answer').val('');
-//    var answerMap = $("#displayQuestion").data('answerMap');
-//    var question = $("#displayQuestion").data('question');
-//    var scriptId = $("#displayQuestion").data('scriptId');
-//    var counter = $("#displayQuestion").data('counter');
-//    var lastAssignment = $("#displayQuestion").data('lastAssignment');
-//    if (answerMap)
-//        answerMap[counter] = {variable: lastAssignment, question: question, answer:answer};
-//    var stringAnswerMap = JSON.stringify(answerMap);
-//    var url = serverUrl + "/survey/run?=";
-//
-//    $.post(url, {
-//        scriptId:scriptId, question: question, lastAssignment:lastAssignment, counter:counter, answer:answer, answerMap:stringAnswerMap
-//    }, function(data) {
-//
-//        var answerMap = data.answerMap;
-//        var counter = data.counter;
-//        var question = data.question;
-//        var lastAssignment = data.lastAssignment;
-//        $("#displayQuestion").data('answerMap', answerMap);
-//        $("#displayQuestion").data('question', question);
-//        $("#displayQuestion").data('counter', counter);
-//        $("#displayQuestion").data('lastAssignment', lastAssignment);
-//        if(data.finished==true) {
-//            $(".surveystart").hide();
-//            for(var index = 1; index <= counter;index++)  {
-//                if (answerMap[index]) {
-//                    var output8Value = '<div class="displayAnswer">' + answerMap[index].question + ' ' + answerMap[index].answer + '</div>';
-//                    $("#output8bis").append(output8Value);
-//                }
-//            }
-//            $('#next').click();
-//        } else {
-//            $("#displayQuestion").text(data.question);
-//        }
-//    });
-//});
-//
 
 
 $("#technologies").airport([ 'Twitter Bootstrap', 'iScroll', 'jCloud', 'jQuery-airport', 'grails', 'Code Mirror', 'jQuery' ]);
