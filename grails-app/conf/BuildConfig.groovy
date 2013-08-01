@@ -40,8 +40,8 @@ grails.project.dependency.resolution = {
         runtime 'org.scala-lang:scala-library:2.11.0-M4'
         runtime 'scalainterpreter:scalainterpreter:1.0'
         runtime 'net.liftweb:lift-json_2.10:2.5.1'
-
-   }
+        runtime 'postgresql:postgresql:9.1-901-1.jdbc4'
+    }
 
     plugins {
         //runtime ":hibernate:$grailsVersion"
@@ -53,10 +53,6 @@ grails.project.dependency.resolution = {
         //runtime ":cached-resources:1.0"
         //runtime ":yui-minify-resources:0.1.4"
 
-   //grails.plugin.location.scala="/usr/home/pcohen/Dev/workspace/grails-scala"
-   //     compile ":scala:0.6.5.2"
-
-
         //build ":tomcat:$grailsVersion"
 
         compile ':heroku:1.0.1'
@@ -64,10 +60,9 @@ grails.project.dependency.resolution = {
         compile ':webxml:1.4.1'
 
         // plugins for the build system only
-        build ':tomcat:2.2.3'
+        build ':tomcat:7.0.39'
         // plugins needed at runtime but not for compilation
         runtime ':hibernate:3.6.10.M3'
-                 //hibernate:2.2.3'
     }
 }
 
